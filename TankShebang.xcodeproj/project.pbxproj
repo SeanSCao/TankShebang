@@ -7,64 +7,70 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		144714EB236C9836001E7067 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 144714EA236C9836001E7067 /* AppDelegate.swift */; };
-		144714ED236C9836001E7067 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 144714EC236C9836001E7067 /* ViewController.swift */; };
-		144714F0236C9836001E7067 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 144714EE236C9836001E7067 /* Main.storyboard */; };
-		144714F2236C9839001E7067 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 144714F1236C9839001E7067 /* Assets.xcassets */; };
-		144714F5236C9839001E7067 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 144714F3236C9839001E7067 /* LaunchScreen.storyboard */; };
-		14471500236C983A001E7067 /* TankShebangTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 144714FF236C983A001E7067 /* TankShebangTests.swift */; };
-		1447150B236C983A001E7067 /* TankShebangUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1447150A236C983A001E7067 /* TankShebangUITests.swift */; };
+		145A1C452372441F006D8603 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145A1C442372441F006D8603 /* AppDelegate.swift */; };
+		145A1C472372441F006D8603 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 145A1C462372441F006D8603 /* GameScene.sks */; };
+		145A1C492372441F006D8603 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 145A1C482372441F006D8603 /* Actions.sks */; };
+		145A1C4B2372441F006D8603 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145A1C4A2372441F006D8603 /* GameScene.swift */; };
+		145A1C4D2372441F006D8603 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145A1C4C2372441F006D8603 /* GameViewController.swift */; };
+		145A1C502372441F006D8603 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 145A1C4E2372441F006D8603 /* Main.storyboard */; };
+		145A1C5223724421006D8603 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 145A1C5123724421006D8603 /* Assets.xcassets */; };
+		145A1C5523724421006D8603 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 145A1C5323724421006D8603 /* LaunchScreen.storyboard */; };
+		145A1C6023724421006D8603 /* TankShebangTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145A1C5F23724421006D8603 /* TankShebangTests.swift */; };
+		145A1C6B23724421006D8603 /* TankShebangUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145A1C6A23724421006D8603 /* TankShebangUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		144714FC236C983A001E7067 /* PBXContainerItemProxy */ = {
+		145A1C5C23724421006D8603 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 144714DF236C9835001E7067 /* Project object */;
+			containerPortal = 145A1C392372441F006D8603 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 144714E6236C9835001E7067;
+			remoteGlobalIDString = 145A1C402372441F006D8603;
 			remoteInfo = TankShebang;
 		};
-		14471507236C983A001E7067 /* PBXContainerItemProxy */ = {
+		145A1C6723724421006D8603 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 144714DF236C9835001E7067 /* Project object */;
+			containerPortal = 145A1C392372441F006D8603 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 144714E6236C9835001E7067;
+			remoteGlobalIDString = 145A1C402372441F006D8603;
 			remoteInfo = TankShebang;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		144714E7236C9835001E7067 /* TankShebang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TankShebang.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		144714EA236C9836001E7067 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		144714EC236C9836001E7067 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		144714EF236C9836001E7067 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		144714F1236C9839001E7067 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		144714F4236C9839001E7067 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		144714F6236C9839001E7067 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		144714FB236C983A001E7067 /* TankShebangTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TankShebangTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		144714FF236C983A001E7067 /* TankShebangTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankShebangTests.swift; sourceTree = "<group>"; };
-		14471501236C983A001E7067 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		14471506236C983A001E7067 /* TankShebangUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TankShebangUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		1447150A236C983A001E7067 /* TankShebangUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankShebangUITests.swift; sourceTree = "<group>"; };
-		1447150C236C983A001E7067 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		145A1C412372441F006D8603 /* TankShebang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TankShebang.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		145A1C442372441F006D8603 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		145A1C462372441F006D8603 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		145A1C482372441F006D8603 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
+		145A1C4A2372441F006D8603 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		145A1C4C2372441F006D8603 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		145A1C4F2372441F006D8603 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		145A1C5123724421006D8603 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		145A1C5423724421006D8603 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		145A1C5623724421006D8603 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		145A1C5B23724421006D8603 /* TankShebangTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TankShebangTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		145A1C5F23724421006D8603 /* TankShebangTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankShebangTests.swift; sourceTree = "<group>"; };
+		145A1C6123724421006D8603 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		145A1C6623724421006D8603 /* TankShebangUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TankShebangUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		145A1C6A23724421006D8603 /* TankShebangUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankShebangUITests.swift; sourceTree = "<group>"; };
+		145A1C6C23724421006D8603 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		144714E4236C9835001E7067 /* Frameworks */ = {
+		145A1C3E2372441F006D8603 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		144714F8236C983A001E7067 /* Frameworks */ = {
+		145A1C5823724421006D8603 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		14471503236C983A001E7067 /* Frameworks */ = {
+		145A1C6323724421006D8603 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -74,53 +80,56 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		144714DE236C9835001E7067 = {
+		145A1C382372441F006D8603 = {
 			isa = PBXGroup;
 			children = (
-				144714E9236C9835001E7067 /* TankShebang */,
-				144714FE236C983A001E7067 /* TankShebangTests */,
-				14471509236C983A001E7067 /* TankShebangUITests */,
-				144714E8236C9835001E7067 /* Products */,
+				145A1C432372441F006D8603 /* TankShebang */,
+				145A1C5E23724421006D8603 /* TankShebangTests */,
+				145A1C6923724421006D8603 /* TankShebangUITests */,
+				145A1C422372441F006D8603 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		144714E8236C9835001E7067 /* Products */ = {
+		145A1C422372441F006D8603 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				144714E7236C9835001E7067 /* TankShebang.app */,
-				144714FB236C983A001E7067 /* TankShebangTests.xctest */,
-				14471506236C983A001E7067 /* TankShebangUITests.xctest */,
+				145A1C412372441F006D8603 /* TankShebang.app */,
+				145A1C5B23724421006D8603 /* TankShebangTests.xctest */,
+				145A1C6623724421006D8603 /* TankShebangUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		144714E9236C9835001E7067 /* TankShebang */ = {
+		145A1C432372441F006D8603 /* TankShebang */ = {
 			isa = PBXGroup;
 			children = (
-				144714EA236C9836001E7067 /* AppDelegate.swift */,
-				144714EC236C9836001E7067 /* ViewController.swift */,
-				144714EE236C9836001E7067 /* Main.storyboard */,
-				144714F1236C9839001E7067 /* Assets.xcassets */,
-				144714F3236C9839001E7067 /* LaunchScreen.storyboard */,
-				144714F6236C9839001E7067 /* Info.plist */,
+				145A1C442372441F006D8603 /* AppDelegate.swift */,
+				145A1C462372441F006D8603 /* GameScene.sks */,
+				145A1C482372441F006D8603 /* Actions.sks */,
+				145A1C4A2372441F006D8603 /* GameScene.swift */,
+				145A1C4C2372441F006D8603 /* GameViewController.swift */,
+				145A1C4E2372441F006D8603 /* Main.storyboard */,
+				145A1C5123724421006D8603 /* Assets.xcassets */,
+				145A1C5323724421006D8603 /* LaunchScreen.storyboard */,
+				145A1C5623724421006D8603 /* Info.plist */,
 			);
 			path = TankShebang;
 			sourceTree = "<group>";
 		};
-		144714FE236C983A001E7067 /* TankShebangTests */ = {
+		145A1C5E23724421006D8603 /* TankShebangTests */ = {
 			isa = PBXGroup;
 			children = (
-				144714FF236C983A001E7067 /* TankShebangTests.swift */,
-				14471501236C983A001E7067 /* Info.plist */,
+				145A1C5F23724421006D8603 /* TankShebangTests.swift */,
+				145A1C6123724421006D8603 /* Info.plist */,
 			);
 			path = TankShebangTests;
 			sourceTree = "<group>";
 		};
-		14471509236C983A001E7067 /* TankShebangUITests */ = {
+		145A1C6923724421006D8603 /* TankShebangUITests */ = {
 			isa = PBXGroup;
 			children = (
-				1447150A236C983A001E7067 /* TankShebangUITests.swift */,
-				1447150C236C983A001E7067 /* Info.plist */,
+				145A1C6A23724421006D8603 /* TankShebangUITests.swift */,
+				145A1C6C23724421006D8603 /* Info.plist */,
 			);
 			path = TankShebangUITests;
 			sourceTree = "<group>";
@@ -128,13 +137,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		144714E6236C9835001E7067 /* TankShebang */ = {
+		145A1C402372441F006D8603 /* TankShebang */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1447150F236C983A001E7067 /* Build configuration list for PBXNativeTarget "TankShebang" */;
+			buildConfigurationList = 145A1C6F23724421006D8603 /* Build configuration list for PBXNativeTarget "TankShebang" */;
 			buildPhases = (
-				144714E3236C9835001E7067 /* Sources */,
-				144714E4236C9835001E7067 /* Frameworks */,
-				144714E5236C9835001E7067 /* Resources */,
+				145A1C3D2372441F006D8603 /* Sources */,
+				145A1C3E2372441F006D8603 /* Frameworks */,
+				145A1C3F2372441F006D8603 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -142,69 +151,69 @@
 			);
 			name = TankShebang;
 			productName = TankShebang;
-			productReference = 144714E7236C9835001E7067 /* TankShebang.app */;
+			productReference = 145A1C412372441F006D8603 /* TankShebang.app */;
 			productType = "com.apple.product-type.application";
 		};
-		144714FA236C983A001E7067 /* TankShebangTests */ = {
+		145A1C5A23724421006D8603 /* TankShebangTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 14471512236C983A001E7067 /* Build configuration list for PBXNativeTarget "TankShebangTests" */;
+			buildConfigurationList = 145A1C7223724421006D8603 /* Build configuration list for PBXNativeTarget "TankShebangTests" */;
 			buildPhases = (
-				144714F7236C983A001E7067 /* Sources */,
-				144714F8236C983A001E7067 /* Frameworks */,
-				144714F9236C983A001E7067 /* Resources */,
+				145A1C5723724421006D8603 /* Sources */,
+				145A1C5823724421006D8603 /* Frameworks */,
+				145A1C5923724421006D8603 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				144714FD236C983A001E7067 /* PBXTargetDependency */,
+				145A1C5D23724421006D8603 /* PBXTargetDependency */,
 			);
 			name = TankShebangTests;
 			productName = TankShebangTests;
-			productReference = 144714FB236C983A001E7067 /* TankShebangTests.xctest */;
+			productReference = 145A1C5B23724421006D8603 /* TankShebangTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		14471505236C983A001E7067 /* TankShebangUITests */ = {
+		145A1C6523724421006D8603 /* TankShebangUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 14471515236C983A001E7067 /* Build configuration list for PBXNativeTarget "TankShebangUITests" */;
+			buildConfigurationList = 145A1C7523724421006D8603 /* Build configuration list for PBXNativeTarget "TankShebangUITests" */;
 			buildPhases = (
-				14471502236C983A001E7067 /* Sources */,
-				14471503236C983A001E7067 /* Frameworks */,
-				14471504236C983A001E7067 /* Resources */,
+				145A1C6223724421006D8603 /* Sources */,
+				145A1C6323724421006D8603 /* Frameworks */,
+				145A1C6423724421006D8603 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				14471508236C983A001E7067 /* PBXTargetDependency */,
+				145A1C6823724421006D8603 /* PBXTargetDependency */,
 			);
 			name = TankShebangUITests;
 			productName = TankShebangUITests;
-			productReference = 14471506236C983A001E7067 /* TankShebangUITests.xctest */;
+			productReference = 145A1C6623724421006D8603 /* TankShebangUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		144714DF236C9835001E7067 /* Project object */ = {
+		145A1C392372441F006D8603 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1030;
-				LastUpgradeCheck = 1030;
-				ORGANIZATIONNAME = TankShebang;
+				LastSwiftUpdateCheck = 1100;
+				LastUpgradeCheck = 1100;
+				ORGANIZATIONNAME = "Sean Cao, Robert Beit, Aryan Aru Agarwal";
 				TargetAttributes = {
-					144714E6236C9835001E7067 = {
-						CreatedOnToolsVersion = 10.3;
+					145A1C402372441F006D8603 = {
+						CreatedOnToolsVersion = 11.0;
 					};
-					144714FA236C983A001E7067 = {
-						CreatedOnToolsVersion = 10.3;
-						TestTargetID = 144714E6236C9835001E7067;
+					145A1C5A23724421006D8603 = {
+						CreatedOnToolsVersion = 11.0;
+						TestTargetID = 145A1C402372441F006D8603;
 					};
-					14471505236C983A001E7067 = {
-						CreatedOnToolsVersion = 10.3;
-						TestTargetID = 144714E6236C9835001E7067;
+					145A1C6523724421006D8603 = {
+						CreatedOnToolsVersion = 11.0;
+						TestTargetID = 145A1C402372441F006D8603;
 					};
 				};
 			};
-			buildConfigurationList = 144714E2236C9835001E7067 /* Build configuration list for PBXProject "TankShebang" */;
+			buildConfigurationList = 145A1C3C2372441F006D8603 /* Build configuration list for PBXProject "TankShebang" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -212,37 +221,39 @@
 				en,
 				Base,
 			);
-			mainGroup = 144714DE236C9835001E7067;
-			productRefGroup = 144714E8236C9835001E7067 /* Products */;
+			mainGroup = 145A1C382372441F006D8603;
+			productRefGroup = 145A1C422372441F006D8603 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				144714E6236C9835001E7067 /* TankShebang */,
-				144714FA236C983A001E7067 /* TankShebangTests */,
-				14471505236C983A001E7067 /* TankShebangUITests */,
+				145A1C402372441F006D8603 /* TankShebang */,
+				145A1C5A23724421006D8603 /* TankShebangTests */,
+				145A1C6523724421006D8603 /* TankShebangUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		144714E5236C9835001E7067 /* Resources */ = {
+		145A1C3F2372441F006D8603 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				144714F5236C9839001E7067 /* LaunchScreen.storyboard in Resources */,
-				144714F2236C9839001E7067 /* Assets.xcassets in Resources */,
-				144714F0236C9836001E7067 /* Main.storyboard in Resources */,
+				145A1C502372441F006D8603 /* Main.storyboard in Resources */,
+				145A1C472372441F006D8603 /* GameScene.sks in Resources */,
+				145A1C5223724421006D8603 /* Assets.xcassets in Resources */,
+				145A1C5523724421006D8603 /* LaunchScreen.storyboard in Resources */,
+				145A1C492372441F006D8603 /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		144714F9236C983A001E7067 /* Resources */ = {
+		145A1C5923724421006D8603 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		14471504236C983A001E7067 /* Resources */ = {
+		145A1C6423724421006D8603 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -252,59 +263,60 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		144714E3236C9835001E7067 /* Sources */ = {
+		145A1C3D2372441F006D8603 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				144714ED236C9836001E7067 /* ViewController.swift in Sources */,
-				144714EB236C9836001E7067 /* AppDelegate.swift in Sources */,
+				145A1C4B2372441F006D8603 /* GameScene.swift in Sources */,
+				145A1C4D2372441F006D8603 /* GameViewController.swift in Sources */,
+				145A1C452372441F006D8603 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		144714F7236C983A001E7067 /* Sources */ = {
+		145A1C5723724421006D8603 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				14471500236C983A001E7067 /* TankShebangTests.swift in Sources */,
+				145A1C6023724421006D8603 /* TankShebangTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		14471502236C983A001E7067 /* Sources */ = {
+		145A1C6223724421006D8603 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1447150B236C983A001E7067 /* TankShebangUITests.swift in Sources */,
+				145A1C6B23724421006D8603 /* TankShebangUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		144714FD236C983A001E7067 /* PBXTargetDependency */ = {
+		145A1C5D23724421006D8603 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 144714E6236C9835001E7067 /* TankShebang */;
-			targetProxy = 144714FC236C983A001E7067 /* PBXContainerItemProxy */;
+			target = 145A1C402372441F006D8603 /* TankShebang */;
+			targetProxy = 145A1C5C23724421006D8603 /* PBXContainerItemProxy */;
 		};
-		14471508236C983A001E7067 /* PBXTargetDependency */ = {
+		145A1C6823724421006D8603 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 144714E6236C9835001E7067 /* TankShebang */;
-			targetProxy = 14471507236C983A001E7067 /* PBXContainerItemProxy */;
+			target = 145A1C402372441F006D8603 /* TankShebang */;
+			targetProxy = 145A1C6723724421006D8603 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		144714EE236C9836001E7067 /* Main.storyboard */ = {
+		145A1C4E2372441F006D8603 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				144714EF236C9836001E7067 /* Base */,
+				145A1C4F2372441F006D8603 /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		144714F3236C9839001E7067 /* LaunchScreen.storyboard */ = {
+		145A1C5323724421006D8603 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				144714F4236C9839001E7067 /* Base */,
+				145A1C5423724421006D8603 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -312,7 +324,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		1447150D236C983A001E7067 /* Debug */ = {
+		145A1C6D23724421006D8603 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -344,7 +356,6 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -363,7 +374,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -373,7 +384,7 @@
 			};
 			name = Debug;
 		};
-		1447150E236C983A001E7067 /* Release */ = {
+		145A1C6E23724421006D8603 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -405,7 +416,6 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -418,7 +428,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -428,56 +438,54 @@
 			};
 			name = Release;
 		};
-		14471510236C983A001E7067 /* Debug */ = {
+		145A1C7023724421006D8603 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8JM3T449V7;
 				INFOPLIST_FILE = TankShebang/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = TankShebang.TankShebang;
+				PRODUCT_BUNDLE_IDENTIFIER = NYU.edu.TankShebang;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		14471511236C983A001E7067 /* Release */ = {
+		145A1C7123724421006D8603 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8JM3T449V7;
 				INFOPLIST_FILE = TankShebang/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = TankShebang.TankShebang;
+				PRODUCT_BUNDLE_IDENTIFIER = NYU.edu.TankShebang;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
-		14471513236C983A001E7067 /* Debug */ = {
+		145A1C7323724421006D8603 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8JM3T449V7;
 				INFOPLIST_FILE = TankShebangTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = TankShebang.TankShebangTests;
+				PRODUCT_BUNDLE_IDENTIFIER = NYU.edu.TankShebangTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -485,20 +493,20 @@
 			};
 			name = Debug;
 		};
-		14471514236C983A001E7067 /* Release */ = {
+		145A1C7423724421006D8603 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8JM3T449V7;
 				INFOPLIST_FILE = TankShebangTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = TankShebang.TankShebangTests;
+				PRODUCT_BUNDLE_IDENTIFIER = NYU.edu.TankShebangTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -506,19 +514,18 @@
 			};
 			name = Release;
 		};
-		14471516236C983A001E7067 /* Debug */ = {
+		145A1C7623724421006D8603 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8JM3T449V7;
 				INFOPLIST_FILE = TankShebangUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = TankShebang.TankShebangUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = NYU.edu.TankShebangUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -526,19 +533,18 @@
 			};
 			name = Debug;
 		};
-		14471517236C983A001E7067 /* Release */ = {
+		145A1C7723724421006D8603 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8JM3T449V7;
 				INFOPLIST_FILE = TankShebangUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = TankShebang.TankShebangUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = NYU.edu.TankShebangUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -549,43 +555,43 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		144714E2236C9835001E7067 /* Build configuration list for PBXProject "TankShebang" */ = {
+		145A1C3C2372441F006D8603 /* Build configuration list for PBXProject "TankShebang" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1447150D236C983A001E7067 /* Debug */,
-				1447150E236C983A001E7067 /* Release */,
+				145A1C6D23724421006D8603 /* Debug */,
+				145A1C6E23724421006D8603 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1447150F236C983A001E7067 /* Build configuration list for PBXNativeTarget "TankShebang" */ = {
+		145A1C6F23724421006D8603 /* Build configuration list for PBXNativeTarget "TankShebang" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				14471510236C983A001E7067 /* Debug */,
-				14471511236C983A001E7067 /* Release */,
+				145A1C7023724421006D8603 /* Debug */,
+				145A1C7123724421006D8603 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		14471512236C983A001E7067 /* Build configuration list for PBXNativeTarget "TankShebangTests" */ = {
+		145A1C7223724421006D8603 /* Build configuration list for PBXNativeTarget "TankShebangTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				14471513236C983A001E7067 /* Debug */,
-				14471514236C983A001E7067 /* Release */,
+				145A1C7323724421006D8603 /* Debug */,
+				145A1C7423724421006D8603 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		14471515236C983A001E7067 /* Build configuration list for PBXNativeTarget "TankShebangUITests" */ = {
+		145A1C7523724421006D8603 /* Build configuration list for PBXNativeTarget "TankShebangUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				14471516236C983A001E7067 /* Debug */,
-				14471517236C983A001E7067 /* Release */,
+				145A1C7623724421006D8603 /* Debug */,
+				145A1C7723724421006D8603 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 144714DF236C9835001E7067 /* Project object */;
+	rootObject = 145A1C392372441F006D8603 /* Project object */;
 }
