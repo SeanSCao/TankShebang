@@ -11,79 +11,115 @@ import GameplayKit
 
 class GameScene: SKScene {
     
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
+    let player1 = SKSpriteNode(imageNamed: "tank")
+    let player1Right = SKSpriteNode(imageNamed: "redRight")
+    let player1Left = SKSpriteNode(imageNamed: "redLeft")
+    var p1leftPressed = false
+    var p1rightPressed = false
+    
+    let player2 = SKSpriteNode(imageNamed: "tank")
+    
+    let tankRotateSpeed = 0.02
+    
     
     override func didMove(to view: SKView) {
         
-        // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
-        }
+        backgroundColor = SKColor.white
         
-        // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
+        player1.position = CGPoint(x: size.width * 0.5, y: size.height * 0.1)
+        player1Right.position = CGPoint(x: size.width - player1Right.size.width/2, y: player1Right.size.height/2)
+        player1Left.position = CGPoint(x: player1Left.size.width/2, y: player1Left.size.height/2)
+        player1Right.alpha = 0.6
+        player1Left.alpha = 0.6
+        addChild(player1)
+        addChild(player1Right)
+        addChild(player1Left)
         
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
-            
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
-        }
+        player2.position = CGPoint(x: size.width * 0.5, y: size.height * 0.9)
+        addChild(player2)
+        
+//        run(SKAction.repeatForever(
+//            SKAction.run(moveTanksForward)
+//        ))
+        
+    }
+    
+    // Moves tank forward in the direction it is facing
+    func moveTanksForward() {
+        let dest1 = CGPoint(x:player1.position.x - sin(player1.zRotation) * 5,y:player1.position.y + cos(player1.zRotation) * 5)
+        let dest2 = CGPoint(x:player2.position.x + sin(player2.zRotation) * 5,y:player2.position.y - cos(player2.zRotation) * 5)
+        let moveTank1 = SKAction.move(to: dest1, duration:0.1)
+        let moveTank2 = SKAction.move(to: dest2, duration:0.1)
+        player1.run(moveTank1)
+//        player2.run(moveTank2)
     }
     
     
     func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
-        }
+        
     }
     
     func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
-        }
+        
     }
     
     func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
-        }
+        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.label {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
+        for touch in touches {
+            let location = touch.location(in:self)
+            if (player1Left.contains(location)){
+                p1leftPressed = true
+//                let rotateAction = SKAction.rotate(byAngle: CGFloat(tankRotateSpeed), duration: 0)
+//                player1.run(rotateAction)
+            }
+            
+            else if (player1Right.contains(location)){
+                p1rightPressed = true
+            }
+//            else {
+//                var move = SKAction.move(to:location, duration:1.0)
+//                player1.run(move)
+//            }
         }
-        
-        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
+//        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
+        for touch in touches {
+            let location = touch.location(in:self)
+            if (player1Left.contains(location)){
+                p1leftPressed = true
+            }
+            else{
+                p1leftPressed = false
+            }
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+//        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+        for touch in touches {
+            let location = touch.location(in:self)
+            if (player1Left.contains(location)){
+                p1leftPressed = false
+            }
+        }
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches { self.touchUp(atPoint: t.location(in: self)) }
     }
     
-    
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+        if (p1leftPressed) {
+            player1.zRotation += CGFloat(tankRotateSpeed)
+        } else if (p1rightPressed) {
+            run(SKAction.run(moveTanksForward))
+//            player1.zRotation = CGFloat(0-tankRotateSpeed)
+        }
     }
 }
