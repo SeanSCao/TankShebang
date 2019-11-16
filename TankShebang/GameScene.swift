@@ -176,11 +176,11 @@ class GameScene: SKScene {
                 p2LeftPressed = false
             }
             if (player1Right.contains(location)){
-                player = 1;
+                player = 1
                 p1LeftPressed = false
             }
             if (player2Right.contains(location)){
-                player = 2;
+                player = 2
                 p1LeftPressed = false
             }
         }
@@ -191,12 +191,18 @@ class GameScene: SKScene {
         
         // 2 - Set up initial location of projectile
         let projectile = SKSpriteNode(imageNamed: "projectile")
+        var direc = CGPoint(x:player1.position.x - sin(player1.zRotation) * 3,y:player1.position.y + cos(player1.zRotation) * 3)
         if(player == 1){
            projectile.position = player1.position
+            
+             direc = CGPoint(x:player1.position.x - sin(player1.zRotation) * 3,y:player1.position.y + cos(player1.zRotation) * 3)
+            
         }
         if(player == 2){
             projectile.position = player2.position
+             direc = CGPoint(x:player2.position.x - sin(player2.zRotation) * 3,y:player2.position.y + cos(player2.zRotation) * 3)
         }
+       
         
         
         // 3 - Determine offset of location to projectile
@@ -215,10 +221,10 @@ class GameScene: SKScene {
         let shootAmount = direction * 1000
         
         // 8 - Add the shoot amount to the current position
-        let realDest = shootAmount + projectile.position
+        let realDest = direc * 1000
         
         // 9 - Create the actions
-        let actionMove = SKAction.move(to: realDest, duration: 2.0)
+        let actionMove = SKAction.move(to: direc, duration: 2.0)
         let actionMoveDone = SKAction.removeFromParent()
         projectile.run(SKAction.sequence([actionMove, actionMoveDone]))
     }
