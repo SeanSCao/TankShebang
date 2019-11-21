@@ -10,6 +10,19 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
+    let playableRect: CGRect
+    
+    override init(size: CGSize) {
+        let maxAspectRatio:CGFloat = 16.0/19.0
+        let playableHeight = size.width / maxAspectRatio
+        let playableMargin = (size.height-playableHeight)/2.0
+        playableRect = CGRect(x: 0, y:playableMargin, width: size.width, height:playableHeight)
+        super.init(size:size)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     let player1 = SKSpriteNode(imageNamed: "tank") //player 1 tank
     let player1Right = SKSpriteNode(imageNamed: "red") //player 1 shoot button
@@ -60,7 +73,41 @@ class GameScene: SKScene {
         addChild(player2)
         addChild(player2Right)
         addChild(player2Left)
-
+        
+        debugDrawPlayableArea()
+        
+    }
+    
+    func boundsChecktanks(){
+        let bottomLeft = CGPoint(x:0, y:playableRect.minY)
+        let topRight = CGPoint(x: size.width, y: playableRect.maxY)
+        
+        if player1.position.x <= bottomLeft.x {
+            player1.position.x = bottomLeft.x
+        }
+        if player1.position.x >= topRight.x {
+            player1.position.x = topRight.x
+        }
+        if player1.position.y <= bottomLeft.y {
+            player1.position.y = bottomLeft.y
+        }
+        if player1.position.y >= topRight.y {
+            player1.position.y = topRight.y
+        }
+        
+        if player2.position.x <= bottomLeft.x {
+            player2.position.x = bottomLeft.x
+        }
+        if player2.position.x >= topRight.x {
+            player2.position.x = topRight.x
+        }
+        if player2.position.y <= bottomLeft.y {
+            player2.position.y = bottomLeft.y
+        }
+        if player2.position.y >= topRight.y {
+            player2.position.y = topRight.y
+        }
+        
     }
     
     // Moves tank forward in the direction it is facing
@@ -80,7 +127,7 @@ class GameScene: SKScene {
         let projectile = SKSpriteNode(imageNamed: "defaultProjectile")
         let direction = CGPoint(x:player.position.x - sin(player.zRotation) * 1000,y:player.position.y + cos(player.zRotation) * 1000)
         projectile.position = player.position
-         
+        
         addChild(projectile)
         
         let shoot = SKAction.move(to: direction, duration: 2.0)
@@ -108,9 +155,9 @@ class GameScene: SKScene {
             if (player1Left.contains(location)){
                 p1LeftPressed = true
             }
-            // player 1 shoot button pressed
+                // player 1 shoot button pressed
             else if (player1Right.contains(location)){
-//                p1RightPressed = true
+                //                p1RightPressed = true
                 fireProjectile(player: player1)
             }
             
@@ -118,16 +165,16 @@ class GameScene: SKScene {
             if (player2Left.contains(location)){
                 p2LeftPressed = true
             }
-            // player 2 shoot button pressed
+                // player 2 shoot button pressed
             else if (player2Right.contains(location)){
-//                p2RightPressed = true
+                //                p2RightPressed = true
                 fireProjectile(player: player2)
             }
         }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
+        //        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
         for touch in touches {
             let location = touch.location(in:self)
             // if player 1 turn button no longer pressed
@@ -141,7 +188,7 @@ class GameScene: SKScene {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+        //        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
         for touch in touches {
             let location = touch.location(in:self)
             // if player 1 turn button no longer pressed
@@ -176,7 +223,20 @@ class GameScene: SKScene {
         }
         // player 1 shoot
         if (p1RightPressed) {
-//            player1.zRotation = CGFloat(0-tankRotateSpeed)
+            //            player1.zRotation = CGFloat(0-tankRotateSpeed)
         }
+        
+        boundsChecktanks()
+    }
+    
+    func debugDrawPlayableArea(){
+        let shape = SKShapeNode()
+        let path = CGMutablePath()
+        path.addRect(playableRect)
+        shape.path = path
+        shape.strokeColor = SKColor.black
+        shape.lineWidth = 4.0
+        addChild(shape)
+        
     }
 }
