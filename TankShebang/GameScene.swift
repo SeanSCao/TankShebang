@@ -163,16 +163,12 @@ class GameScene: SKScene {
         let shootDone = SKAction.removeFromParent()
         projectile.run(SKAction.sequence([shoot, shootDone]))
     }
-    func projectileDidCollideWithPlayer1(projectile: SKSpriteNode, player1: SKSpriteNode) {
+    func projectileDidCollideWithPlayer(projectile: SKSpriteNode, player: SKSpriteNode) {
         print("Hit")
         projectile.removeFromParent()
-        player1.removeFromParent()
+        player.removeFromParent()
     }
-    func projectileDidCollideWithPlayer2(projectile: SKSpriteNode, player2: SKSpriteNode) {
-        print("Hit")
-        projectile.removeFromParent()
-        player2.removeFromParent()
-    }
+    
     
     
     func touchDown(atPoint pos : CGPoint) {
@@ -283,5 +279,33 @@ class GameScene: SKScene {
     }
 }
 extension GameScene: SKPhysicsContactDelegate {
+    func didBegin(_ contact: SKPhysicsContact) {
+        // 1
+        var firstBody: SKPhysicsBody
+        var secondBody: SKPhysicsBody
+        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+            firstBody = contact.bodyA
+            secondBody = contact.bodyB
+        } else {
+            firstBody = contact.bodyB
+            secondBody = contact.bodyA
+        }
+        
+        // 2
+        if ((firstBody.categoryBitMask & PhysicsCategory.player1 != 0) &&
+            (secondBody.categoryBitMask & PhysicsCategory.projectile != 0)) {
+            if let player1 = firstBody.node as? SKSpriteNode,
+                let projectile = secondBody.node as? SKSpriteNode {
+                projectileDidCollideWithPlayer(projectile: projectile, player: player1)
+            }
+        }
+        if ((firstBody.categoryBitMask & PhysicsCategory.player2 != 0) &&
+            (secondBody.categoryBitMask & PhysicsCategory.projectile != 0)) {
+            if let player2 = firstBody.node as? SKSpriteNode,
+                let projectile = secondBody.node as? SKSpriteNode {
+                projectileDidCollideWithPlayer(projectile: projectile, player: player2)
+            }
+        }
+    }
     
 }
