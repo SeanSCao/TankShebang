@@ -15,8 +15,7 @@ class GameScene: SKScene {
     let playableRect: CGRect
     
     override init(size: CGSize) {
-        let maxAspectRatio:CGFloat = 16.0/19.0
-        let playableHeight = size.width / maxAspectRatio
+        let playableHeight = size.width
         let playableMargin = (size.height-playableHeight)/2.0
         playableRect = CGRect(x: 0, y:playableMargin, width: size.width, height:playableHeight)
         super.init(size:size)
@@ -26,11 +25,12 @@ class GameScene: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var numberOfPlayers = 2
+    var numberOfPlayers = 4
     var players = [SKSpriteNode]()
-    var playerRightButtons = [SKSpriteNode]()
-    var playerLeftButtons = [SKSpriteNode]()
-    var playerLeftPressed = [false, false, false, false]
+    let playerSprites = ["tank", "tank", "tank", "tank"]
+    var rightButtons = [SKShapeNode]()
+    var leftButtons = [SKShapeNode]()
+    var leftPressed = [false, false, false, false]
     
     let tankMoveSpeed = CGFloat(3)
     let tankRotateSpeed = 0.1 //tank turning speed
@@ -41,57 +41,246 @@ class GameScene: SKScene {
         
         initPlayers()
         
+        initButtons()
+        
         debugDrawPlayableArea()
         
     }
     
+    // create sprite node for each player tank and position accordingly
     func initPlayers(){
+        let playableHeight = size.width
+        let playableMargin = (size.height-playableHeight)/2.0
         
         for i in 1...numberOfPlayers {
-            let player = SKSpriteNode(imageNamed: "tank") //player tank
-            let playerLeft = SKSpriteNode(imageNamed: "red") //player turn button
-            let playerRight = SKSpriteNode(imageNamed: "red") //player shoot button
+            let player = SKSpriteNode(imageNamed: playerSprites[i-1]) //player tank
             
+            // position for different corners of play area
+            let bottomLeftCorner = CGPoint(x: size.width * 0.05, y: playableMargin + size.width * 0.05)
+            let bottomRightCorner = CGPoint(x: size.width * 0.95, y: playableMargin + size.width * 0.05)
+            let topLeftCorner = CGPoint(x: size.width * 0.05, y: playableMargin + size.width * 0.95)
+            let topRightCorner = CGPoint(x: size.width * 0.95, y: playableMargin + size.width * 0.95)
             
-            if (i==1){
-                // player 1 tank and button positioning
-                player.position = CGPoint(x: size.width * 0.5, y: size.height * 0.1)
-                playerLeft.position = CGPoint(x: playerLeft.size.width/2, y: playerLeft.size.height/2)
-                playerRight.position = CGPoint(x: size.width - playerRight.size.width/2, y: playerRight.size.height/2)
+            if (numberOfPlayers==2){ // 2 player game
+                if (i==1){
+                    // player 1 tank positioning
+                    player.position = bottomLeftCorner
+                    
+                    player.zRotation += .pi * 7/4
+                }
                 
-                playerRight.zRotation += .pi/2
+                if (i==2){
+                    // player 2 tank positioning
+                    player.position = topRightCorner
+                    
+                    player.zRotation += .pi * 3/4
+                }
+            } else if( numberOfPlayers == 3 ){ // 3 player game
+                if (i==1){
+                    // player 1 tank positioning
+                    player.position = bottomLeftCorner
+                    
+                    player.zRotation += .pi * 7/4
+                }
                 
-                playerRight.alpha = 0.6
-                playerLeft.alpha = 0.6
+                if (i==2){
+                    // player 2 tank position
+                    player.position = topLeftCorner
+                    player.zRotation += .pi * 5/4
+                }
                 
-                addChild(player)
-                addChild(playerRight)
-                addChild(playerLeft)
+                if (i==3){
+                    // player 2 tank position
+                    player.position = topRightCorner
+                    player.zRotation += .pi * 3/4
+                }
+                
+            } else { // 4 player game
+                if (i==1){
+                    // player 1 tank positioning
+                    player.position = bottomLeftCorner
+                    
+                    player.zRotation += .pi * 7/4
+                }
+                
+                if (i==2){
+                    // player 2 tank position
+                    player.position = bottomRightCorner
+                    player.zRotation += .pi * 1/4
+                }
+                
+                if (i==3){
+                    // player 2 tank position
+                    player.position = topRightCorner
+                    player.zRotation += .pi * 3/4
+                }
+                if (i==4){
+                    // player 2 tank position
+                    player.position = topLeftCorner
+                    player.zRotation += .pi * 5/4
+                }
+                
             }
-            
-            if (i==2){
-                // player 2 tank and button positioning
-                player.position = CGPoint(x: size.width * 0.5, y: size.height * 0.9)
-                playerLeft.position = CGPoint(x: size.width - playerLeft.size.width/2, y: size.height - playerLeft.size.height/2)
-                playerRight.position = CGPoint(x: playerRight.size.width/2, y: size.height - playerRight.size.height/2)
-                
-                player.zRotation += .pi
-                playerLeft.zRotation += .pi
-                playerRight.zRotation -= .pi/2
-                
-                playerRight.alpha = 0.6
-                playerLeft.alpha = 0.6
-                
-                addChild(player)
-                addChild(playerRight)
-                addChild(playerLeft)
-            }
-            
+            addChild(player)
             players.append(player)
-            playerLeftButtons.append(playerLeft)
-            playerRightButtons.append(playerRight)
         }
-        
+    }
+    
+    // create large triangle shape node button
+    func createTriangle() -> SKShapeNode{
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: 0.0, y: 0.0))
+        path.addLine(to: CGPoint(x: size.width * 0.2, y: 0.0))
+        path.addLine(to: CGPoint(x: 0.0, y: size.width * 0.2))
+        path.addLine(to: CGPoint(x: 0.0, y: 0.0))
+        let triangle = SKShapeNode(path: path.cgPath)
+        return triangle
+    }
+    
+    // create small triangle shape node left button
+    func createSmallLeftTriangle() -> SKShapeNode{
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: 0.0, y: 0.0))
+        path.addLine(to: CGPoint(x: size.width * 0.1, y: size.width * 0.1))
+        path.addLine(to: CGPoint(x: 0.0, y: size.width * 0.2))
+        path.addLine(to: CGPoint(x: 0.0, y: 0.0))
+        let triangle = SKShapeNode(path: path.cgPath)
+        return triangle
+    }
+    
+    // create small triangle shape node rightbutton
+    func createSmallRightTriangle() -> SKShapeNode{
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: 0.0, y: 0.0))
+        path.addLine(to: CGPoint(x: size.width * 0.2, y: 0))
+        path.addLine(to: CGPoint(x: size.width * 0.1, y: size.width * 0.1))
+        path.addLine(to: CGPoint(x: 0.0, y: 0.0))
+        let triangle = SKShapeNode(path: path.cgPath)
+        return triangle
+    }
+    
+    // create shape nodes for control buttons
+    func initButtons(){
+        var playerLeft:SKShapeNode
+        var playerRight:SKShapeNode
+        for i in 1...numberOfPlayers {
+            if (numberOfPlayers==2){ // 2 player game use large buttons
+                playerLeft = createTriangle()
+                playerRight = createTriangle()
+                if (i==1){
+                    // player 1 button positioning
+                    playerLeft.fillColor = SKColor.black
+                    playerRight.fillColor = SKColor.black
+                    playerLeft.position = CGPoint(x:0, y:0)
+                    playerRight.position = CGPoint(x:size.width, y:0)
+                    playerRight.zRotation += .pi/2
+                    
+                    playerRight.alpha = 0.6
+                    playerLeft.alpha = 0.6
+                } else if (i==2){
+                    // player 2 button positioning
+                    playerLeft.fillColor = SKColor.red
+                    playerRight.fillColor = SKColor.red
+                    playerLeft.position = CGPoint(x:size.width, y:size.height)
+                    playerRight.position = CGPoint(x:0, y:size.height)
+                    playerLeft.zRotation += .pi
+                    playerRight.zRotation -= .pi/2
+                    
+                    playerRight.alpha = 0.6
+                    playerLeft.alpha = 0.6
+                }
+            } else if (numberOfPlayers==3){ // 3 player game use mix of large and small buttons
+                if (i==1){
+                    // player 1 button positioning
+                    playerLeft = createTriangle()
+                    playerRight = createTriangle()
+                    playerLeft.fillColor = SKColor.black
+                    playerRight.fillColor = SKColor.black
+                    playerLeft.position = CGPoint(x:0, y:0)
+                    playerRight.position = CGPoint(x:size.width, y:0)
+                    playerRight.zRotation += .pi/2
+                    
+                    playerRight.alpha = 0.6
+                    playerLeft.alpha = 0.6
+                } else if (i==2) {
+                    // player 2 button positioning
+                    playerLeft = createSmallLeftTriangle()
+                    playerRight = createSmallRightTriangle()
+                    playerLeft.fillColor = SKColor.red
+                    playerRight.fillColor = SKColor.red
+                    playerLeft.position = CGPoint(x:0, y:size.height)
+                    playerRight.position = CGPoint(x:0, y:size.height)
+                    playerLeft.zRotation += .pi * 3/2
+                    playerRight.zRotation += .pi * 3/2
+                    
+                    playerRight.alpha = 0.6
+                    playerLeft.alpha = 0.6
+                } else {
+                    playerLeft = createSmallLeftTriangle()
+                    playerRight = createSmallRightTriangle()
+                    playerLeft.fillColor = SKColor.blue
+                    playerRight.fillColor = SKColor.blue
+                    playerLeft.position = CGPoint(x:size.width, y:size.height)
+                    playerRight.position = CGPoint(x:size.width, y:size.height)
+                    playerLeft.zRotation += .pi * 2/2
+                    playerRight.zRotation += .pi * 2/2
+                    
+                    playerRight.alpha = 0.6
+                    playerLeft.alpha = 0.6
+                }
+            } else { // 4 player game use small buttons
+                playerLeft = createSmallLeftTriangle()
+                playerRight = createSmallRightTriangle()
+                if (i==1){
+                    // player 1 button positioning
+                    playerLeft.fillColor = SKColor.black
+                    playerRight.fillColor = SKColor.black
+                    playerLeft.position = CGPoint(x:0, y:0)
+                    playerRight.position = CGPoint(x:0, y:0)
+                    
+                    playerRight.alpha = 0.6
+                    playerLeft.alpha = 0.6
+                } else if (i==2) {
+                    // player 2 button positioning
+                    playerLeft.fillColor = SKColor.red
+                    playerRight.fillColor = SKColor.red
+                    playerLeft.position = CGPoint(x:size.width, y:0)
+                    playerRight.position = CGPoint(x:size.width, y:0)
+                    playerLeft.zRotation += .pi * 1/2
+                    playerRight.zRotation += .pi * 1/2
+                    
+                    playerRight.alpha = 0.6
+                    playerLeft.alpha = 0.6
+                } else if (i==3){
+                    playerLeft.fillColor = SKColor.blue
+                    playerRight.fillColor = SKColor.blue
+                    playerLeft.position = CGPoint(x:size.width, y:size.height)
+                    playerRight.position = CGPoint(x:size.width, y:size.height)
+                    playerLeft.zRotation += .pi
+                    playerRight.zRotation += .pi
+                    
+                    playerRight.alpha = 0.6
+                    playerLeft.alpha = 0.6
+                } else {
+                    playerLeft.fillColor = SKColor.green
+                    playerRight.fillColor = SKColor.green
+                    playerLeft.position = CGPoint(x:0, y:size.height)
+                    playerRight.position = CGPoint(x:0, y:size.height)
+                    playerLeft.zRotation += .pi * 3/2
+                    playerRight.zRotation += .pi * 3/2
+                    
+                    playerRight.alpha = 0.6
+                    playerLeft.alpha = 0.6
+                }
+            }
+            
+            addChild(playerLeft)
+            addChild(playerRight)
+            
+            
+            leftButtons.append(playerLeft)
+            rightButtons.append(playerRight)
+        }
     }
     
     func boundsChecktanks(){
@@ -166,11 +355,11 @@ class GameScene: SKScene {
             let location = touch.location(in:self)
             
             for i in 1...numberOfPlayers {
-                if (playerLeftButtons[i-1].contains(location)){
-                    playerLeftPressed[i-1] = true
+                if (leftButtons[i-1].contains(location)){
+                    leftPressed[i-1] = true
                 }
                 
-                if (playerRightButtons[i-1].contains(location)){
+                if (rightButtons[i-1].contains(location)){
                     fireProjectile(player: players[i-1])
                 }
             }
@@ -183,10 +372,10 @@ class GameScene: SKScene {
             let location = touch.location(in:self)
             
             for i in 1...numberOfPlayers {
-                if (playerLeftButtons[i-1].contains(location)){
-                    playerLeftPressed[i-1] = true
+                if (leftButtons[i-1].contains(location)){
+                    leftPressed[i-1] = true
                 } else{
-                    playerLeftPressed[i-1] = false
+                    leftPressed[i-1] = false
                 }
             }
         }
@@ -198,11 +387,11 @@ class GameScene: SKScene {
             let location = touch.location(in:self)
             
             for i in 1...numberOfPlayers {
-                if (playerLeftButtons[i-1].contains(location)){
-                    playerLeftPressed[i-1] = false
+                if (leftButtons[i-1].contains(location)){
+                    leftPressed[i-1] = false
                 }
                 
-                if (playerRightButtons[i-1].contains(location)){
+                if (rightButtons[i-1].contains(location)){
                 }
             }
         }
@@ -215,10 +404,10 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
         // move all tanks forward
-        run(SKAction.run(moveTanksForward))
+        //        run(SKAction.run(moveTanksForward))
         
         for i in 1...numberOfPlayers {
-            if (playerLeftPressed[i-1]){
+            if (leftPressed[i-1]){
                 players[i-1].zRotation += CGFloat(tankRotateSpeed)
             }
         }
