@@ -308,22 +308,16 @@ class GameScene: SKScene {
     func moveTanksForward() {
         
         for i in 1...numberOfPlayers {
-            var direction = CGPoint(x: 0, y:0)
+            var direction : CGPoint
             
             // some basic trigonometry to calculate direction tanks are moving
             if (i==1){
                 direction = CGPoint(x:players[i-1].position.x - sin(players[i-1].zRotation) * tankMoveSpeed,y:players[i-1].position.y + cos(players[i-1].zRotation) * tankMoveSpeed)
-            }
-            
-            if (i==2){
+            } else if (i==2){
                 direction = CGPoint(x:players[i-1].position.x - sin(players[i-1].zRotation) * tankMoveSpeed,y:players[i-1].position.y + cos(players[i-1].zRotation) * tankMoveSpeed)
-            }
-            
-            if (i==3){
+            } else if (i==3){
                 direction = CGPoint(x:players[i-1].position.x - sin(players[i-1].zRotation) * tankMoveSpeed,y:players[i-1].position.y + cos(players[i-1].zRotation) * tankMoveSpeed)
-            }
-            
-            if (i==4){
+            } else {
                 direction = CGPoint(x:players[i-1].position.x - sin(players[i-1].zRotation) * tankMoveSpeed,y:players[i-1].position.y + cos(players[i-1].zRotation) * tankMoveSpeed)
             }
             
