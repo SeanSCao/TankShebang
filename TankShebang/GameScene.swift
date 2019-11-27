@@ -312,11 +312,19 @@ class GameScene: SKScene {
             
             // some basic trigonometry to calculate direction tanks are moving
             if (i==1){
-                direction = CGPoint(x:players[0].position.x - sin(players[0].zRotation) * tankMoveSpeed,y:players[0].position.y + cos(players[0].zRotation) * tankMoveSpeed)
+                direction = CGPoint(x:players[i-1].position.x - sin(players[i-1].zRotation) * tankMoveSpeed,y:players[i-1].position.y + cos(players[i-1].zRotation) * tankMoveSpeed)
             }
             
             if (i==2){
-                direction = CGPoint(x:players[1].position.x - sin(players[1].zRotation) * tankMoveSpeed,y:players[1].position.y + cos(players[1].zRotation) * tankMoveSpeed)
+                direction = CGPoint(x:players[i-1].position.x - sin(players[i-1].zRotation) * tankMoveSpeed,y:players[i-1].position.y + cos(players[i-1].zRotation) * tankMoveSpeed)
+            }
+            
+            if (i==3){
+                direction = CGPoint(x:players[i-1].position.x - sin(players[i-1].zRotation) * tankMoveSpeed,y:players[i-1].position.y + cos(players[i-1].zRotation) * tankMoveSpeed)
+            }
+            
+            if (i==4){
+                direction = CGPoint(x:players[i-1].position.x - sin(players[i-1].zRotation) * tankMoveSpeed,y:players[i-1].position.y + cos(players[i-1].zRotation) * tankMoveSpeed)
             }
             
             let moveTank = SKAction.move(to: direction, duration:0)
@@ -404,7 +412,7 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
         // move all tanks forward
-        //        run(SKAction.run(moveTanksForward))
+        run(SKAction.run(moveTanksForward))
         
         for i in 1...numberOfPlayers {
             if (leftPressed[i-1]){
