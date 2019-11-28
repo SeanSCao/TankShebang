@@ -17,6 +17,8 @@
 		145A1C5523724421006D8603 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 145A1C5323724421006D8603 /* LaunchScreen.storyboard */; };
 		145A1C6023724421006D8603 /* TankShebangTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145A1C5F23724421006D8603 /* TankShebangTests.swift */; };
 		145A1C6B23724421006D8603 /* TankShebangUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145A1C6A23724421006D8603 /* TankShebangUITests.swift */; };
+		72C95286239048FD00EBAF27 /* Menu.sks in Resources */ = {isa = PBXBuildFile; fileRef = 72C95285239048FD00EBAF27 /* Menu.sks */; };
+		72C9528823904A2A00EBAF27 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C9528723904A2A00EBAF27 /* Menu.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,8 @@
 		145A1C6623724421006D8603 /* TankShebangUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TankShebangUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		145A1C6A23724421006D8603 /* TankShebangUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankShebangUITests.swift; sourceTree = "<group>"; };
 		145A1C6C23724421006D8603 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		72C95285239048FD00EBAF27 /* Menu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Menu.sks; sourceTree = "<group>"; };
+		72C9528723904A2A00EBAF27 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +116,8 @@
 				145A1C5123724421006D8603 /* Assets.xcassets */,
 				145A1C5323724421006D8603 /* LaunchScreen.storyboard */,
 				145A1C5623724421006D8603 /* Info.plist */,
+				72C95285239048FD00EBAF27 /* Menu.sks */,
+				72C9528723904A2A00EBAF27 /* Menu.swift */,
 			);
 			path = TankShebang;
 			sourceTree = "<group>";
@@ -238,6 +244,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				72C95286239048FD00EBAF27 /* Menu.sks in Resources */,
 				145A1C502372441F006D8603 /* Main.storyboard in Resources */,
 				145A1C472372441F006D8603 /* GameScene.sks in Resources */,
 				145A1C5223724421006D8603 /* Assets.xcassets in Resources */,
@@ -269,6 +276,7 @@
 			files = (
 				145A1C4B2372441F006D8603 /* GameScene.swift in Sources */,
 				145A1C4D2372441F006D8603 /* GameViewController.swift in Sources */,
+				72C9528823904A2A00EBAF27 /* Menu.swift in Sources */,
 				145A1C452372441F006D8603 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
