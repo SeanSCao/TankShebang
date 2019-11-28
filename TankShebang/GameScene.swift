@@ -24,6 +24,7 @@ class GameScene: SKScene {
     let playableRect: CGRect
     
     override init(size: CGSize) {
+        print(size.width)
         let playableHeight = size.width
         let playableMargin = (size.height-playableHeight)/2.0
         playableRect = CGRect(x: 0, y:playableMargin, width: size.width, height:playableHeight)
@@ -362,14 +363,30 @@ class GameScene: SKScene {
     // fire projectile in direction player tank is facing
     func fireProjectile(player: SKSpriteNode) {
         let projectile = SKSpriteNode(imageNamed: "defaultProjectile")
-        let direction = CGPoint(x:player.position.x - sin(player.zRotation) * 1000,y:player.position.y + cos(player.zRotation) * 1000)
-        projectile.position = player.position
+        let direction = CGPoint(x:player.position.x - sin(player.zRotation) * 2000,y:player.position.y + cos(player.zRotation) * 2000)
+        let xDirection = player.position.x - sin(player.zRotation) + (-35 * sin(player.zRotation))
+        let yDirection = player.position.y + cos(player.zRotation) + (35 * cos(player.zRotation))
+        
+        projectile.position = CGPoint(x: xDirection,y:yDirection)
+        
+        projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
+        projectile.physicsBody?.isDynamic = true
+        projectile.physicsBody?.categoryBitMask = PhysicsCategory.shot
+        projectile.physicsBody?.contactTestBitMask = PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p3 | PhysicsCategory.p4 | PhysicsCategory.obstacle
+        projectile.physicsBody?.collisionBitMask = PhysicsCategory.none
+        projectile.physicsBody?.usesPreciseCollisionDetection = true
         
         addChild(projectile)
         
         let shoot = SKAction.move(to: direction, duration: 2.0)
         let shootDone = SKAction.removeFromParent()
         projectile.run(SKAction.sequence([shoot, shootDone]))
+    }
+    
+    func projectileDidCollideWithMonster(projectile: SKSpriteNode, player: SKSpriteNode) {
+        print("Hit")
+        projectile.removeFromParent()
+        player.removeFromParent()
     }
     
     
@@ -439,7 +456,7 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
         // move all tanks forward
-        run(SKAction.run(moveTanksForward))
+//        run(SKAction.run(moveTanksForward))
         
         for i in 1...numberOfPlayers {
             if (leftPressed[i-1]){
@@ -463,7 +480,7 @@ class GameScene: SKScene {
         shape.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
         shape.physicsBody?.contactTestBitMask = PhysicsCategory.shot
         shape.physicsBody?.collisionBitMask = PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p3 | PhysicsCategory.p4
-
+        
         
         addChild(shape)
         
@@ -471,5 +488,40 @@ class GameScene: SKScene {
 }
 
 extension GameScene: SKPhysicsContactDelegate {
-
+    func didBegin(_ contact: SKPhysicsContact) {
+        
+        var firstBody: SKPhysicsBody
+        var secondBody: SKPhysicsBody
+        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+            firstBody = contact.bodyA
+            secondBody = contact.bodyB
+        } else {
+            firstBody = contact.bodyB
+            secondBody = contact.bodyA
+        }
+        
+        if ((firstBody.categoryBitMask == PhysicsCategory.p1) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
+            if let player = firstBody.node as? SKSpriteNode, let projectile = secondBody.node as? SKSpriteNode {
+                projectileDidCollideWithMonster(projectile: projectile, player: player)
+            }
+        }
+        
+        if ((firstBody.categoryBitMask == PhysicsCategory.p2) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
+            if let player = firstBody.node as? SKSpriteNode, let projectile = secondBody.node as? SKSpriteNode {
+                projectileDidCollideWithMonster(projectile: projectile, player: player)
+            }
+        }
+        
+        if ((firstBody.categoryBitMask == PhysicsCategory.p3) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
+            if let player = firstBody.node as? SKSpriteNode, let projectile = secondBody.node as? SKSpriteNode {
+                projectileDidCollideWithMonster(projectile: projectile, player: player)
+            }
+        }
+        
+        if ((firstBody.categoryBitMask == PhysicsCategory.p4) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
+            if let player = firstBody.node as? SKSpriteNode, let projectile = secondBody.node as? SKSpriteNode {
+                projectileDidCollideWithMonster(projectile: projectile, player: player)
+            }
+        }
+    }
 }
