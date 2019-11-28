@@ -1,13 +1,22 @@
-//
 //  GameScene.swift
 //  TankShebang
 //
 //  Created by Sean Cao on 11/5/19.
 //  Copyright © 2019 Sean Cao, Robert Beit, Aryan Aru Agarwal. All rights reserved.
-//
 
 import SpriteKit
 import GameplayKit
+
+struct PhysicsCategory {
+    static let none         : UInt32 = 0
+    static let all          : UInt32 = UInt32.max
+    static let p1           : UInt32 = 0b1
+    static let p2           : UInt32 = 0b10
+    static let p3           : UInt32 = 0b11
+    static let p4           : UInt32 = 0b100
+    static let obstacle     : UInt32 = 0b101
+    static let shot         : UInt32 = 0b110
+}
 
 class GameScene: SKScene {
     
@@ -45,6 +54,9 @@ class GameScene: SKScene {
         
         debugDrawPlayableArea()
         
+        physicsWorld.gravity = .zero
+        physicsWorld.contactDelegate = self
+        
     }
     
     // create sprite node for each player tank and position accordingly
@@ -60,6 +72,27 @@ class GameScene: SKScene {
             let bottomRightCorner = CGPoint(x: size.width * 0.95, y: playableMargin + size.width * 0.05)
             let topLeftCorner = CGPoint(x: size.width * 0.05, y: playableMargin + size.width * 0.95)
             let topRightCorner = CGPoint(x: size.width * 0.95, y: playableMargin + size.width * 0.95)
+            
+            player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
+            player.physicsBody?.isDynamic = true
+            
+            if(i==1) {
+                player.physicsBody?.categoryBitMask = PhysicsCategory.p1
+                player.physicsBody?.contactTestBitMask = PhysicsCategory.shot
+                player.physicsBody?.collisionBitMask = PhysicsCategory.obstacle | PhysicsCategory.p2 | PhysicsCategory.p4 | PhysicsCategory.p4
+            } else if(i==2) {
+                player.physicsBody?.categoryBitMask = PhysicsCategory.p2
+                player.physicsBody?.contactTestBitMask = PhysicsCategory.shot
+                player.physicsBody?.collisionBitMask = PhysicsCategory.obstacle | PhysicsCategory.p1 | PhysicsCategory.p3 | PhysicsCategory.p4
+            } else if(i==3) {
+                player.physicsBody?.categoryBitMask = PhysicsCategory.p3
+                player.physicsBody?.contactTestBitMask = PhysicsCategory.shot
+                player.physicsBody?.collisionBitMask = PhysicsCategory.obstacle | PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p4
+            } else {
+                player.physicsBody?.categoryBitMask = PhysicsCategory.p4
+                player.physicsBody?.contactTestBitMask = PhysicsCategory.shot
+                player.physicsBody?.collisionBitMask = PhysicsCategory.obstacle | PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p3
+            }
             
             if (numberOfPlayers==2){ // 2 player game
                 if (i==1){
@@ -424,7 +457,19 @@ class GameScene: SKScene {
         shape.path = path
         shape.strokeColor = SKColor.black
         shape.lineWidth = 4.0
+        
+        shape.physicsBody = SKPhysicsBody(edgeLoopFrom: playableRect)
+        shape.physicsBody?.isDynamic = true
+        shape.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
+        shape.physicsBody?.contactTestBitMask = PhysicsCategory.shot
+        shape.physicsBody?.collisionBitMask = PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p3 | PhysicsCategory.p4
+
+        
         addChild(shape)
         
     }
+}
+
+extension GameScene: SKPhysicsContactDelegate {
+
 }
