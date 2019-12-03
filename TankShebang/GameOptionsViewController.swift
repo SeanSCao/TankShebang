@@ -14,7 +14,8 @@ class GameOptionsViewController: UIViewController {
     @IBOutlet weak var KillLength: UIButton!
     @IBOutlet weak var GameMode: UIButton!
     let modes = ["Tank Hunter","Pilot Hunter","Deathmatch"]
-    
+    var sound = String()
+    var music = String()
     let kills = ["1","3","5"]
     let levels = ["Open Space","Moon","Dance"]
     var mode_start = 0
@@ -56,10 +57,14 @@ class GameOptionsViewController: UIViewController {
         mode = modes[mode_start]
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        var game_view = segue.destination as! GameViewController
-        game_view.Mode = mode
-        game_view.Level = level
-        game_view.Kill = kill
+        if(segue.identifier == "Game"){
+            var game_view = segue.destination as! GameViewController
+            game_view.Mode = mode
+            game_view.Level = level
+            game_view.Kill = kill
+            
+        }
+        
         
         
     }
