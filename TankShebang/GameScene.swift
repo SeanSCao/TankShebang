@@ -38,7 +38,7 @@ class GameScene: SKScene {
     let mapSetting = 1
     
     var numberOfPlayers = 4
-    var players = [SKSpriteNode]()
+    var players = [Player]()
     let playerSprites = ["tank", "tank", "tank", "tank"]
     
     var rightButtons = [SKShapeNode]()
@@ -72,7 +72,7 @@ class GameScene: SKScene {
         let playableMargin = (size.height-playableHeight)/2.0
         
         for i in 1...numberOfPlayers {
-            let player = SKSpriteNode(imageNamed: playerSprites[i-1]) //player tank
+            let player:Player = Player(imageNamed: playerSprites[i-1]) //player tank
             
             player.setScale(gameScale)
             
@@ -380,28 +380,6 @@ class GameScene: SKScene {
         map.addChild(bottomLayer)
     }
     
-    // Moves tank forward in the direction it is facing
-    func moveTanksForward() {
-        
-        for i in 1...numberOfPlayers {
-            var direction : CGPoint
-            
-            // some basic trigonometry to calculate direction tanks are moving
-            if (i==1){
-                direction = CGPoint(x:players[i-1].position.x - sin(players[i-1].zRotation) * tankMoveSpeed,y:players[i-1].position.y + cos(players[i-1].zRotation) * tankMoveSpeed)
-            } else if (i==2){
-                direction = CGPoint(x:players[i-1].position.x - sin(players[i-1].zRotation) * tankMoveSpeed,y:players[i-1].position.y + cos(players[i-1].zRotation) * tankMoveSpeed)
-            } else if (i==3){
-                direction = CGPoint(x:players[i-1].position.x - sin(players[i-1].zRotation) * tankMoveSpeed,y:players[i-1].position.y + cos(players[i-1].zRotation) * tankMoveSpeed)
-            } else {
-                direction = CGPoint(x:players[i-1].position.x - sin(players[i-1].zRotation) * tankMoveSpeed,y:players[i-1].position.y + cos(players[i-1].zRotation) * tankMoveSpeed)
-            }
-            
-            let moveTank = SKAction.move(to: direction, duration:0)
-            players[i-1].run(moveTank)
-        }
-    }
-    
     // fire projectile in direction player tank is facing
     func fireProjectile(player: SKSpriteNode) {
         let projectile = SKSpriteNode(imageNamed: "defaultProjectile")
@@ -485,6 +463,10 @@ class GameScene: SKScene {
         // Called before each frame is rendered
         // move all tanks forward
 //        run(SKAction.run(moveTanksForward))
+        
+        for player in players {
+            player.drive(tankMoveSpeed: tankMoveSpeed)
+        }
         
         for i in 1...numberOfPlayers {
             if (leftPressed[i-1]){
