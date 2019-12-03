@@ -35,9 +35,10 @@ class GameScene: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
+    var map = SKNode()
     let mapSetting = 1
     
-    var numberOfPlayers = 4
+    var numberOfPlayers = 2
     var players = [Player]()
     let playerSprites = ["tank", "tank", "tank", "tank"]
     
@@ -344,34 +345,11 @@ class GameScene: SKScene {
         }
     }
     
-    func boundsChecktanks(){
-        let bottomLeft = CGPoint(x:0, y:playableRect.minY)
-        let topRight = CGPoint(x: size.width, y: playableRect.maxY)
-        
-        for i in 1...numberOfPlayers {
-            
-            if players[i-1].position.x <= bottomLeft.x {
-                players[i-1].position.x = bottomLeft.x
-            }
-            if players[i-1].position.x >= topRight.x {
-                players[i-1].position.x = topRight.x
-            }
-            if players[i-1].position.y <= bottomLeft.y {
-                players[i-1].position.y = bottomLeft.y
-            }
-            if players[i-1].position.y >= topRight.y {
-                players[i-1].position.y = topRight.y
-            }
-        }
-    }
-    
     // add map background textures
     func initMap() {
         let gameScale = size.width / 1024
         let playableHeight = size.width
         let playableMargin = (size.height-playableHeight)/2.0
-        
-        let map = SKNode()
         
         addChild(map)
         map.xScale = 0.5 * gameScale
@@ -379,12 +357,21 @@ class GameScene: SKScene {
         
         map.position = CGPoint(x:0,y:playableMargin)
         
+        changeMap()
+    }
+    
+    func changeMap() {
         let tileSet = SKTileSet(named: "Grid Tile Set")!
         let tileSize = CGSize(width: 128, height: 128)
         let columns = 32
         let rows = 48
         
+        if let bottomLayerNode = map.childNode(withName: "background") as? SKTileMapNode {
+            bottomLayerNode.removeFromParent()
+        }
+        
         let bottomLayer = SKTileMapNode(tileSet: tileSet, columns: columns, rows: rows, tileSize: tileSize)
+        bottomLayer.name = "background"
         
         if (mapSetting == 1) {
             let grassTiles = tileSet.tileGroups.first { $0.name == "Grass" }
@@ -398,6 +385,47 @@ class GameScene: SKScene {
         }
 
         map.addChild(bottomLayer)
+    }
+    
+    func checkRoundOver() -> Bool {
+        var alive = 0
+        for player in players{
+            if ( player.health > 0 ){
+                alive += 1
+            }
+        }
+        
+        if ( alive > 1 ){
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    func newRound(){
+        for player in players{
+            if ( player.health > 0 ){
+                player.roundScore += 1
+                player.gameScore += 100
+            }
+        }
+        
+        if ( !checkGameOver() ) {
+            resetTanks()
+            changeMap()
+        } else {
+            
+        }
+        
+    }
+    
+    func checkGameOver() -> Bool {
+        for player in players{
+            if ( player.roundScore == 5 ){
+                return true
+            }
+        }
+        return false
     }
     
     // fire projectile in direction player tank is facing
@@ -503,6 +531,27 @@ class GameScene: SKScene {
         boundsChecktanks()
     }
     
+    func boundsChecktanks(){
+        let bottomLeft = CGPoint(x:0, y:playableRect.minY)
+        let topRight = CGPoint(x: size.width, y: playableRect.maxY)
+        
+        for i in 1...numberOfPlayers {
+            
+            if players[i-1].position.x <= bottomLeft.x {
+                players[i-1].position.x = bottomLeft.x
+            }
+            if players[i-1].position.x >= topRight.x {
+                players[i-1].position.x = topRight.x
+            }
+            if players[i-1].position.y <= bottomLeft.y {
+                players[i-1].position.y = bottomLeft.y
+            }
+            if players[i-1].position.y >= topRight.y {
+                players[i-1].position.y = topRight.y
+            }
+        }
+    }
+    
     func drawPlayableArea(){
         let shape = SKShapeNode()
         let path = CGMutablePath()
@@ -531,7 +580,9 @@ class GameScene: SKScene {
         projectile.removeFromParent()
         player.hit()
         
-        resetTanks()
+        if (checkRoundOver()){
+            newRound()
+        }
     }
     
 //    func projectileDidCollideWithShield(projectile: SKSpriteNode, shield: SKShapeNode) {
