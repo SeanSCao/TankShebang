@@ -16,6 +16,7 @@ struct PhysicsCategory {
     static let p4           : UInt32 = 0b100
     static let obstacle     : UInt32 = 0b101
     static let shot         : UInt32 = 0b110
+    static let shield         : UInt32 = 0b111
 }
 
 class GameScene: SKScene {
@@ -63,6 +64,8 @@ class GameScene: SKScene {
         for player in players {
             Timer.scheduledTimer(timeInterval: 1, target: player, selector: #selector(player.reload), userInfo: nil, repeats: true)
         }
+        
+        players[0].addShield()
         
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
@@ -413,12 +416,6 @@ class GameScene: SKScene {
         }
     }
     
-    func projectileDidCollideWithTank(projectile: SKSpriteNode, player: Player) {
-        print("Hit")
-        projectile.removeFromParent()
-        player.hit()
-    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = touch.location(in:self)
@@ -430,6 +427,7 @@ class GameScene: SKScene {
                 
                 if (rightButtons[i-1].contains(location)){
                     fireProjectile(player: players[i-1])
+//                    players[i-1].fireProjectile()
                 }
             }
         }
@@ -473,9 +471,9 @@ class GameScene: SKScene {
         // Called before each frame is rendered
         
         // move tanks forward
-//        for player in players {
-//            player.drive(tankMoveSpeed: tankMoveSpeed)
-//        }
+        for player in players {
+            player.drive(tankMoveSpeed: tankMoveSpeed)
+        }
         
         // turn tanks
         for i in 1...numberOfPlayers {
@@ -503,6 +501,18 @@ class GameScene: SKScene {
         
         addChild(shape)
         
+    }
+    
+    func projectileDidCollideWithTank(projectile: SKSpriteNode, player: Player) {
+        projectile.removeFromParent()
+        player.hit()
+    }
+    
+    func projectileDidCollideWithShield(projectile: SKSpriteNode, shield: SKShapeNode) {
+        print("Hit")
+        projectile.removeFromParent()
+        print(shield.parent)
+        shield.removeFromParent()
     }
 }
 
@@ -540,6 +550,12 @@ extension GameScene: SKPhysicsContactDelegate {
         if ((firstBody.categoryBitMask == PhysicsCategory.p4) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
             if let player = firstBody.node as? Player, let projectile = secondBody.node as? SKSpriteNode {
                 projectileDidCollideWithTank(projectile: projectile, player: player)
+            }
+        }
+        
+        if ((firstBody.categoryBitMask == PhysicsCategory.shot) && (secondBody.categoryBitMask == PhysicsCategory.shield)) {
+            if let projectile = firstBody.node as? SKSpriteNode, let shield = secondBody.node as? SKShapeNode {
+                projectileDidCollideWithShield(projectile: projectile, shield: shield)
             }
         }
     }

@@ -18,6 +18,22 @@ class Player: SKSpriteNode {
     var ammo:Int = 4
     
     
+    func addShield(){
+        if (!shield) {
+            let Circle = SKShapeNode(circleOfRadius: self.size.height) // Size of Circle
+            Circle.name = "shield"
+            Circle.position = CGPoint(x:0,y:0)  //Middle of Screen
+            Circle.strokeColor = SKColor.blue
+            Circle.glowWidth = 1.0
+//            Circle.physicsBody = SKPhysicsBody(circleOfRadius: self.size.height)
+//            Circle.physicsBody?.isDynamic = false
+//            Circle.physicsBody?.categoryBitMask = PhysicsCategory.shield
+//            Circle.physicsBody?.contactTestBitMask = PhysicsCategory.shot
+//            Circle.physicsBody?.collisionBitMask = PhysicsCategory.none
+            self.addChild(Circle)
+            shield = true
+        }
+    }
     
     // Moves tank forward in the direction it is facing
     func drive(tankMoveSpeed:CGFloat) {
@@ -30,11 +46,20 @@ class Player: SKSpriteNode {
         if (health > 0){
             self.run(moveTank)
         }
+        
     }
     
     func hit() {
-        if (!invincible){
-            health -= 1
+        
+        if (shield) {
+            if let child = self.childNode(withName: "shield") as? SKShapeNode {
+                child.removeFromParent()
+            }
+            shield = false
+        } else {
+            if (!invincible){
+                health -= 1
+            }
         }
         
         if (health == 0){
