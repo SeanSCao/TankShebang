@@ -84,10 +84,10 @@ class GameScene: SKScene {
             player.setScale(gameScale)
             
             // position for different corners of play area
-            let bottomLeftCorner = CGPoint(x: size.width * 0.05, y: playableMargin + size.width * 0.05)
-            let bottomRightCorner = CGPoint(x: size.width * 0.95, y: playableMargin + size.width * 0.05)
-            let topLeftCorner = CGPoint(x: size.width * 0.05, y: playableMargin + size.width * 0.95)
-            let topRightCorner = CGPoint(x: size.width * 0.95, y: playableMargin + size.width * 0.95)
+            let bottomLeftCorner = CGPoint(x: size.width * 0.1, y: playableMargin + size.width * 0.1)
+            let bottomRightCorner = CGPoint(x: size.width * 0.9, y: playableMargin + size.width * 0.1)
+            let topLeftCorner = CGPoint(x: size.width * 0.1, y: playableMargin + size.width * 0.9)
+            let topRightCorner = CGPoint(x: size.width * 0.9, y: playableMargin + size.width * 0.9)
             
             player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
             player.physicsBody?.isDynamic = true
@@ -115,33 +115,33 @@ class GameScene: SKScene {
                     // player 1 tank positioning
                     player.position = bottomLeftCorner
                     
-                    player.zRotation += .pi * 7/4
+                    player.zRotation += 0
                 }
                 
                 if (i==2){
                     // player 2 tank positioning
                     player.position = topRightCorner
                     
-                    player.zRotation += .pi * 3/4
+                    player.zRotation += .pi
                 }
             } else if( numberOfPlayers == 3 ){ // 3 player game
                 if (i==1){
                     // player 1 tank positioning
                     player.position = bottomLeftCorner
                     
-                    player.zRotation += .pi * 7/4
+                    player.zRotation += 0
                 }
                 
                 if (i==2){
                     // player 2 tank position
                     player.position = topLeftCorner
-                    player.zRotation += .pi * 5/4
+                    player.zRotation += .pi * 3/2
                 }
                 
                 if (i==3){
                     // player 2 tank position
                     player.position = topRightCorner
-                    player.zRotation += .pi * 3/4
+                    player.zRotation += .pi
                 }
                 
             } else { // 4 player game
@@ -149,24 +149,24 @@ class GameScene: SKScene {
                     // player 1 tank positioning
                     player.position = bottomLeftCorner
                     
-                    player.zRotation += .pi * 7/4
+                    player.zRotation += 0
                 }
                 
                 if (i==2){
                     // player 2 tank position
                     player.position = bottomRightCorner
-                    player.zRotation += .pi * 1/4
+                    player.zRotation += .pi * 1/2
                 }
                 
                 if (i==3){
                     // player 2 tank position
                     player.position = topRightCorner
-                    player.zRotation += .pi * 3/4
+                    player.zRotation += .pi
                 }
                 if (i==4){
                     // player 2 tank position
                     player.position = topLeftCorner
-                    player.zRotation += .pi * 5/4
+                    player.zRotation += .pi * 3/2
                 }
                 
             }
@@ -471,9 +471,9 @@ class GameScene: SKScene {
         // Called before each frame is rendered
         
         // move tanks forward
-        for player in players {
-            player.drive(tankMoveSpeed: tankMoveSpeed)
-        }
+//        for player in players {
+//            player.drive(tankMoveSpeed: tankMoveSpeed)
+//        }
         
         // turn tanks
         for i in 1...numberOfPlayers {
@@ -511,7 +511,6 @@ class GameScene: SKScene {
     func projectileDidCollideWithShield(projectile: SKSpriteNode, shield: SKShapeNode) {
         print("Hit")
         projectile.removeFromParent()
-        print(shield.parent)
         shield.removeFromParent()
     }
 }
