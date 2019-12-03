@@ -18,6 +18,9 @@ class Player: SKSpriteNode {
     var shield:Bool = false
     var ammo:Int = 4
     
+    var roundScore:Int = 0
+    var gameScore:Int = 0
+    
     
     func addShield(){
         if (!shield) {
@@ -89,6 +92,37 @@ class Player: SKSpriteNode {
         let seconds = 0.5
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
             self.invincible = false
+        }
+    }
+    
+    func fireProjectile() {
+        
+        print(self.zRotation)
+        print(sin(self.zRotation))
+        print(cos(self.zRotation))
+        
+        if ( self.ammo > 0 ) {
+            let projectile = SKSpriteNode(imageNamed: "defaultProjectile")
+            let direction = CGPoint(x:-1*sin(self.zRotation) * 2000,y:cos(self.zRotation) * 2000)
+            let xDirection = self.position.x - sin(self.zRotation) + (-35 * sin(self.zRotation))
+            let yDirection = self.position.y + cos(self.zRotation) + (35 * cos(self.zRotation))
+            
+            projectile.position = CGPoint(x: xDirection,y:yDirection)
+            
+            projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
+            projectile.physicsBody?.isDynamic = true
+            projectile.physicsBody?.categoryBitMask = PhysicsCategory.shot
+            projectile.physicsBody?.contactTestBitMask = PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p3 | PhysicsCategory.p4 | PhysicsCategory.obstacle
+            projectile.physicsBody?.collisionBitMask = PhysicsCategory.none
+            projectile.physicsBody?.usesPreciseCollisionDetection = true
+            
+            addChild(projectile)
+            
+            let shoot = SKAction.move(to: direction, duration: 2.0)
+            let shootDone = SKAction.removeFromParent()
+            projectile.run(SKAction.sequence([shoot, shootDone]))
+            
+            self.ammo -= 1
         }
     }
     

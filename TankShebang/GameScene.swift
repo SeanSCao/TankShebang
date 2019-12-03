@@ -49,6 +49,8 @@ class GameScene: SKScene {
     var tankTurnDirection = "left"
     let tankRotateSpeed = 0.1 //tank turning speed
     
+    var startWithShield = false
+    
     override func didMove(to view: SKView) {
         
         backgroundColor = SKColor.white
@@ -65,8 +67,6 @@ class GameScene: SKScene {
             Timer.scheduledTimer(timeInterval: 1, target: player, selector: #selector(player.reload), userInfo: nil, repeats: true)
         }
         
-        players[0].addShield()
-        
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
         
@@ -75,19 +75,11 @@ class GameScene: SKScene {
     // create sprite node for each player tank and position accordingly
     func initPlayers(){
         let gameScale = size.width / 1024
-        let playableHeight = size.width
-        let playableMargin = (size.height-playableHeight)/2.0
         
         for i in 1...numberOfPlayers {
             let player:Player = Player(imageNamed: playerSprites[i-1]) //player tank
             
             player.setScale(gameScale)
-            
-            // position for different corners of play area
-            let bottomLeftCorner = CGPoint(x: size.width * 0.1, y: playableMargin + size.width * 0.1)
-            let bottomRightCorner = CGPoint(x: size.width * 0.9, y: playableMargin + size.width * 0.1)
-            let topLeftCorner = CGPoint(x: size.width * 0.1, y: playableMargin + size.width * 0.9)
-            let topRightCorner = CGPoint(x: size.width * 0.9, y: playableMargin + size.width * 0.9)
             
             player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
             player.physicsBody?.isDynamic = true
@@ -110,69 +102,88 @@ class GameScene: SKScene {
                 player.physicsBody?.contactTestBitMask = PhysicsCategory.shot
                 player.physicsBody?.collisionBitMask = PhysicsCategory.obstacle | PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p3
             }
-            
+            players.append(player)
+        }
+        resetTanks()
+    }
+    
+    func resetTanks(){
+        let playableHeight = size.width
+        let playableMargin = (size.height-playableHeight)/2.0
+        
+        // position for different corners of play area
+        let bottomLeftCorner = CGPoint(x: size.width * 0.1, y: playableMargin + size.width * 0.1)
+        let bottomRightCorner = CGPoint(x: size.width * 0.9, y: playableMargin + size.width * 0.1)
+        let topLeftCorner = CGPoint(x: size.width * 0.1, y: playableMargin + size.width * 0.9)
+        let topRightCorner = CGPoint(x: size.width * 0.9, y: playableMargin + size.width * 0.9)
+        
+        for i in 1...numberOfPlayers {
+            players[i-1].removeFromParent()
             if (numberOfPlayers==2){ // 2 player game
                 if (i==1){
                     // player 1 tank positioning
-                    player.position = bottomLeftCorner
+                    players[i-1].position = bottomLeftCorner
                     
-                    player.zRotation += 0
+                    players[i-1].zRotation = 0
                 }
                 
                 if (i==2){
                     // player 2 tank positioning
-                    player.position = topRightCorner
+                    players[i-1].position = topRightCorner
                     
-                    player.zRotation += .pi
+                    players[i-1].zRotation = .pi
                 }
             } else if( numberOfPlayers == 3 ){ // 3 player game
                 if (i==1){
                     // player 1 tank positioning
-                    player.position = bottomLeftCorner
+                    players[i-1].position = bottomLeftCorner
                     
-                    player.zRotation += 0
+                    players[i-1].zRotation = 0
                 }
                 
                 if (i==2){
                     // player 2 tank position
-                    player.position = topLeftCorner
-                    player.zRotation += .pi * 3/2
+                    players[i-1].position = topLeftCorner
+                    players[i-1].zRotation = .pi * 3/2
                 }
                 
                 if (i==3){
                     // player 2 tank position
-                    player.position = topRightCorner
-                    player.zRotation += .pi
+                    players[i-1].position = topRightCorner
+                    players[i-1].zRotation = .pi
                 }
                 
             } else { // 4 player game
                 if (i==1){
                     // player 1 tank positioning
-                    player.position = bottomLeftCorner
+                    players[i-1].position = bottomLeftCorner
                     
-                    player.zRotation += 0
+                    players[i-1].zRotation = 0
                 }
                 
                 if (i==2){
                     // player 2 tank position
-                    player.position = bottomRightCorner
-                    player.zRotation += .pi * 1/2
+                    players[i-1].position = bottomRightCorner
+                    players[i-1].zRotation = .pi * 1/2
                 }
                 
                 if (i==3){
                     // player 2 tank position
-                    player.position = topRightCorner
-                    player.zRotation += .pi
+                    players[i-1].position = topRightCorner
+                    players[i-1].zRotation = .pi
                 }
                 if (i==4){
                     // player 2 tank position
-                    player.position = topLeftCorner
-                    player.zRotation += .pi * 3/2
+                    players[i-1].position = topLeftCorner
+                    players[i-1].zRotation = .pi * 3/2
                 }
                 
             }
-            addChild(player)
-            players.append(player)
+            players[i-1].health = 2
+            players[i-1].ammo = 4
+            players[i-1].invincible = false
+            players[i-1].shield = startWithShield
+            addChild(players[i-1])
         }
     }
     
@@ -393,7 +404,8 @@ class GameScene: SKScene {
     func fireProjectile(player: Player) {
         
         if ( player.ammo > 0 ) {
-            let projectile = SKSpriteNode(imageNamed: "defaultProjectile")
+            let projectile:Projectile = Projectile(imageNamed: "defaultProjectile")
+            projectile.owner = player
             let direction = CGPoint(x:player.position.x - sin(player.zRotation) * 2000,y:player.position.y + cos(player.zRotation) * 2000)
             let xDirection = player.position.x - sin(player.zRotation) + (-35 * sin(player.zRotation))
             let yDirection = player.position.y + cos(player.zRotation) + (35 * cos(player.zRotation))
@@ -435,7 +447,6 @@ class GameScene: SKScene {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        //        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
         for touch in touches {
             let location = touch.location(in:self)
             
@@ -450,7 +461,6 @@ class GameScene: SKScene {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        //        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
         for touch in touches {
             let location = touch.location(in:self)
             
@@ -508,19 +518,27 @@ class GameScene: SKScene {
         shape.physicsBody?.collisionBitMask = PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p3 | PhysicsCategory.p4
         
         addChild(shape)
-        
     }
     
-    func projectileDidCollideWithTank(projectile: SKSpriteNode, player: Player) {
+    func projectileDidCollideWithTank(projectile: Projectile, player: Player) {
+        if(projectile.owner == player){
+            projectile.owner.gameScore -= 10
+        } else {
+            projectile.owner.gameScore += 10
+            print(projectile.owner.gameScore)
+        }
+        
         projectile.removeFromParent()
         player.hit()
+        
+        resetTanks()
     }
     
-    func projectileDidCollideWithShield(projectile: SKSpriteNode, shield: SKShapeNode) {
-        print("Hit")
-        projectile.removeFromParent()
-        shield.removeFromParent()
-    }
+//    func projectileDidCollideWithShield(projectile: SKSpriteNode, shield: SKShapeNode) {
+//        print("Hit")
+//        projectile.removeFromParent()
+//        shield.removeFromParent()
+//    }
 }
 
 extension GameScene: SKPhysicsContactDelegate {
@@ -537,33 +555,33 @@ extension GameScene: SKPhysicsContactDelegate {
         }
         
         if ((firstBody.categoryBitMask == PhysicsCategory.p1) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
-            if let player = firstBody.node as? Player, let projectile = secondBody.node as? SKSpriteNode {
+            if let player = firstBody.node as? Player, let projectile = secondBody.node as? Projectile {
                 projectileDidCollideWithTank(projectile: projectile, player: player)
             }
         }
         
         if ((firstBody.categoryBitMask == PhysicsCategory.p2) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
-            if let player = firstBody.node as? Player, let projectile = secondBody.node as? SKSpriteNode {
+            if let player = firstBody.node as? Player, let projectile = secondBody.node as? Projectile {
                 projectileDidCollideWithTank(projectile: projectile, player: player)
             }
         }
         
         if ((firstBody.categoryBitMask == PhysicsCategory.p3) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
-            if let player = firstBody.node as? Player, let projectile = secondBody.node as? SKSpriteNode {
+            if let player = firstBody.node as? Player, let projectile = secondBody.node as? Projectile {
                 projectileDidCollideWithTank(projectile: projectile, player: player)
             }
         }
         
         if ((firstBody.categoryBitMask == PhysicsCategory.p4) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
-            if let player = firstBody.node as? Player, let projectile = secondBody.node as? SKSpriteNode {
+            if let player = firstBody.node as? Player, let projectile = secondBody.node as? Projectile {
                 projectileDidCollideWithTank(projectile: projectile, player: player)
             }
         }
         
-        if ((firstBody.categoryBitMask == PhysicsCategory.shot) && (secondBody.categoryBitMask == PhysicsCategory.shield)) {
-            if let projectile = firstBody.node as? SKSpriteNode, let shield = secondBody.node as? SKShapeNode {
-                projectileDidCollideWithShield(projectile: projectile, shield: shield)
-            }
-        }
+//        if ((firstBody.categoryBitMask == PhysicsCategory.shot) && (secondBody.categoryBitMask == PhysicsCategory.shield)) {
+//            if let projectile = firstBody.node as? SKSpriteNode, let shield = secondBody.node as? SKShapeNode {
+//                projectileDidCollideWithShield(projectile: projectile, shield: shield)
+//            }
+//        }
     }
 }
