@@ -15,6 +15,7 @@ class Player: SKSpriteNode {
     var health:Int = 2
     var invincible:Bool = false
     var shield:Bool = false
+    var ammo:Int = 4
     
     
     
@@ -55,9 +56,12 @@ class Player: SKSpriteNode {
         
         let seconds = 0.5
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
-            // Put your code which should be executed with a delay here
             self.invincible = false
         }
+    }
+    
+    @objc func reload() {
+        self.ammo += 1
     }
     
 }

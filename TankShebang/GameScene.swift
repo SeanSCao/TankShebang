@@ -60,6 +60,10 @@ class GameScene: SKScene {
         
         drawPlayableArea()
         
+        for player in players {
+            Timer.scheduledTimer(timeInterval: 1, target: player, selector: #selector(player.reload), userInfo: nil, repeats: true)
+        }
+        
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
         
@@ -383,25 +387,30 @@ class GameScene: SKScene {
     
     // fire projectile in direction player tank is facing
     func fireProjectile(player: Player) {
-        let projectile = SKSpriteNode(imageNamed: "defaultProjectile")
-        let direction = CGPoint(x:player.position.x - sin(player.zRotation) * 2000,y:player.position.y + cos(player.zRotation) * 2000)
-        let xDirection = player.position.x - sin(player.zRotation) + (-35 * sin(player.zRotation))
-        let yDirection = player.position.y + cos(player.zRotation) + (35 * cos(player.zRotation))
         
-        projectile.position = CGPoint(x: xDirection,y:yDirection)
-        
-        projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
-        projectile.physicsBody?.isDynamic = true
-        projectile.physicsBody?.categoryBitMask = PhysicsCategory.shot
-        projectile.physicsBody?.contactTestBitMask = PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p3 | PhysicsCategory.p4 | PhysicsCategory.obstacle
-        projectile.physicsBody?.collisionBitMask = PhysicsCategory.none
-        projectile.physicsBody?.usesPreciseCollisionDetection = true
-        
-        addChild(projectile)
-        
-        let shoot = SKAction.move(to: direction, duration: 2.0)
-        let shootDone = SKAction.removeFromParent()
-        projectile.run(SKAction.sequence([shoot, shootDone]))
+        if ( player.ammo > 0 ) {
+            let projectile = SKSpriteNode(imageNamed: "defaultProjectile")
+            let direction = CGPoint(x:player.position.x - sin(player.zRotation) * 2000,y:player.position.y + cos(player.zRotation) * 2000)
+            let xDirection = player.position.x - sin(player.zRotation) + (-35 * sin(player.zRotation))
+            let yDirection = player.position.y + cos(player.zRotation) + (35 * cos(player.zRotation))
+            
+            projectile.position = CGPoint(x: xDirection,y:yDirection)
+            
+            projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
+            projectile.physicsBody?.isDynamic = true
+            projectile.physicsBody?.categoryBitMask = PhysicsCategory.shot
+            projectile.physicsBody?.contactTestBitMask = PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p3 | PhysicsCategory.p4 | PhysicsCategory.obstacle
+            projectile.physicsBody?.collisionBitMask = PhysicsCategory.none
+            projectile.physicsBody?.usesPreciseCollisionDetection = true
+            
+            addChild(projectile)
+            
+            let shoot = SKAction.move(to: direction, duration: 2.0)
+            let shootDone = SKAction.removeFromParent()
+            projectile.run(SKAction.sequence([shoot, shootDone]))
+            
+            player.ammo -= 1
+        }
     }
     
     func projectileDidCollideWithTank(projectile: SKSpriteNode, player: Player) {
@@ -491,7 +500,6 @@ class GameScene: SKScene {
         shape.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
         shape.physicsBody?.contactTestBitMask = PhysicsCategory.shot
         shape.physicsBody?.collisionBitMask = PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p3 | PhysicsCategory.p4
-        
         
         addChild(shape)
         
