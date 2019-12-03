@@ -35,9 +35,12 @@ class GameScene: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
+    let mapSetting = 1
+    
     var numberOfPlayers = 4
     var players = [SKSpriteNode]()
     let playerSprites = ["tank", "tank", "tank", "tank"]
+    
     var rightButtons = [SKShapeNode]()
     var leftButtons = [SKShapeNode]()
     var leftPressed = [false, false, false, false]
@@ -48,6 +51,8 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         
         backgroundColor = SKColor.white
+        
+        initMap()
         
         initPlayers()
         
@@ -62,11 +67,14 @@ class GameScene: SKScene {
     
     // create sprite node for each player tank and position accordingly
     func initPlayers(){
+        let gameScale = size.width / 1024
         let playableHeight = size.width
         let playableMargin = (size.height-playableHeight)/2.0
         
         for i in 1...numberOfPlayers {
             let player = SKSpriteNode(imageNamed: playerSprites[i-1]) //player tank
+            
+            player.setScale(gameScale)
             
             // position for different corners of play area
             let bottomLeftCorner = CGPoint(x: size.width * 0.05, y: playableMargin + size.width * 0.05)
@@ -338,6 +346,40 @@ class GameScene: SKScene {
         }
     }
     
+    func initMap() {
+        let gameScale = size.width / 1024
+        let playableHeight = size.width
+        let playableMargin = (size.height-playableHeight)/2.0
+        
+        let map = SKNode()
+        
+        addChild(map)
+        map.xScale = 0.5 * gameScale
+        map.yScale = 0.5 * gameScale
+        
+        map.position = CGPoint(x:0,y:playableMargin)
+        
+        let tileSet = SKTileSet(named: "Grid Tile Set")!
+        let tileSize = CGSize(width: 128, height: 128)
+        let columns = 32
+        let rows = 48
+        
+        let bottomLayer = SKTileMapNode(tileSet: tileSet, columns: columns, rows: rows, tileSize: tileSize)
+        
+        if (mapSetting == 1) {
+            let grassTiles = tileSet.tileGroups.first { $0.name == "Grass" }
+            bottomLayer.fill(with: grassTiles)
+        } else if (mapSetting == 1) {
+            let dirtTiles = tileSet.tileGroups.first { $0.name == "Dirt"}
+            bottomLayer.fill(with: dirtTiles)
+        } else {
+            let dirtTiles = tileSet.tileGroups.first { $0.name == "Dirt"}
+            bottomLayer.fill(with: dirtTiles)
+        }
+
+        map.addChild(bottomLayer)
+    }
+    
     // Moves tank forward in the direction it is facing
     func moveTanksForward() {
         
@@ -383,23 +425,10 @@ class GameScene: SKScene {
         projectile.run(SKAction.sequence([shoot, shootDone]))
     }
     
-    func projectileDidCollideWithMonster(projectile: SKSpriteNode, player: SKSpriteNode) {
+    func projectileDidCollideWithTank(projectile: SKSpriteNode, player: SKSpriteNode) {
         print("Hit")
         projectile.removeFromParent()
         player.removeFromParent()
-    }
-    
-    
-    func touchDown(atPoint pos : CGPoint) {
-        
-    }
-    
-    func touchMoved(toPoint pos : CGPoint) {
-        
-    }
-    
-    func touchUp(atPoint pos : CGPoint) {
-        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -450,7 +479,6 @@ class GameScene: SKScene {
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -502,25 +530,25 @@ extension GameScene: SKPhysicsContactDelegate {
         
         if ((firstBody.categoryBitMask == PhysicsCategory.p1) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
             if let player = firstBody.node as? SKSpriteNode, let projectile = secondBody.node as? SKSpriteNode {
-                projectileDidCollideWithMonster(projectile: projectile, player: player)
+                projectileDidCollideWithTank(projectile: projectile, player: player)
             }
         }
         
         if ((firstBody.categoryBitMask == PhysicsCategory.p2) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
             if let player = firstBody.node as? SKSpriteNode, let projectile = secondBody.node as? SKSpriteNode {
-                projectileDidCollideWithMonster(projectile: projectile, player: player)
+                projectileDidCollideWithTank(projectile: projectile, player: player)
             }
         }
         
         if ((firstBody.categoryBitMask == PhysicsCategory.p3) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
             if let player = firstBody.node as? SKSpriteNode, let projectile = secondBody.node as? SKSpriteNode {
-                projectileDidCollideWithMonster(projectile: projectile, player: player)
+                projectileDidCollideWithTank(projectile: projectile, player: player)
             }
         }
         
         if ((firstBody.categoryBitMask == PhysicsCategory.p4) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
             if let player = firstBody.node as? SKSpriteNode, let projectile = secondBody.node as? SKSpriteNode {
-                projectileDidCollideWithMonster(projectile: projectile, player: player)
+                projectileDidCollideWithTank(projectile: projectile, player: player)
             }
         }
     }

@@ -17,7 +17,8 @@
 		145A1C5523724421006D8603 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 145A1C5323724421006D8603 /* LaunchScreen.storyboard */; };
 		145A1C6023724421006D8603 /* TankShebangTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145A1C5F23724421006D8603 /* TankShebangTests.swift */; };
 		145A1C6B23724421006D8603 /* TankShebangUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145A1C6A23724421006D8603 /* TankShebangUITests.swift */; };
-		1487665623905B0A003D1DD0 /* TileSet.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1487665523905B0A003D1DD0 /* TileSet.sks */; };
+		1487665A23908689003D1DD0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1487665823908689003D1DD0 /* Assets.xcassets */; };
+		14DC31582395D8DE002F548B /* Tiles.sks in Resources */ = {isa = PBXBuildFile; fileRef = 14DC31572395D8DE002F548B /* Tiles.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,7 +55,8 @@
 		145A1C6623724421006D8603 /* TankShebangUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TankShebangUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		145A1C6A23724421006D8603 /* TankShebangUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankShebangUITests.swift; sourceTree = "<group>"; };
 		145A1C6C23724421006D8603 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1487665523905B0A003D1DD0 /* TileSet.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = TileSet.sks; sourceTree = "<group>"; };
+		1487665823908689003D1DD0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		14DC31572395D8DE002F548B /* Tiles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Tiles.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 		145A1C382372441F006D8603 = {
 			isa = PBXGroup;
 			children = (
+				1487665823908689003D1DD0 /* Assets.xcassets */,
 				145A1C432372441F006D8603 /* TankShebang */,
 				145A1C5E23724421006D8603 /* TankShebangTests */,
 				145A1C6923724421006D8603 /* TankShebangUITests */,
@@ -109,12 +112,12 @@
 				145A1C462372441F006D8603 /* GameScene.sks */,
 				145A1C482372441F006D8603 /* Actions.sks */,
 				145A1C4A2372441F006D8603 /* GameScene.swift */,
-				1487665523905B0A003D1DD0 /* TileSet.sks */,
 				145A1C4C2372441F006D8603 /* GameViewController.swift */,
 				145A1C4E2372441F006D8603 /* Main.storyboard */,
 				145A1C5123724421006D8603 /* Assets.xcassets */,
 				145A1C5323724421006D8603 /* LaunchScreen.storyboard */,
 				145A1C5623724421006D8603 /* Info.plist */,
+				14DC31572395D8DE002F548B /* Tiles.sks */,
 			);
 			path = TankShebang;
 			sourceTree = "<group>";
@@ -241,10 +244,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1487665623905B0A003D1DD0 /* TileSet.sks in Resources */,
 				145A1C502372441F006D8603 /* Main.storyboard in Resources */,
+				14DC31582395D8DE002F548B /* Tiles.sks in Resources */,
 				145A1C472372441F006D8603 /* GameScene.sks in Resources */,
 				145A1C5223724421006D8603 /* Assets.xcassets in Resources */,
+				1487665A23908689003D1DD0 /* Assets.xcassets in Resources */,
 				145A1C5523724421006D8603 /* LaunchScreen.storyboard in Resources */,
 				145A1C492372441F006D8603 /* Actions.sks in Resources */,
 			);
