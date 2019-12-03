@@ -25,7 +25,6 @@ class GameScene: SKScene {
     let playableRect: CGRect
     
     override init(size: CGSize) {
-        print(size.width)
         let playableHeight = size.width
         let playableMargin = (size.height-playableHeight)/2.0
         playableRect = CGRect(x: 0, y:playableMargin, width: size.width, height:playableHeight)
@@ -47,6 +46,7 @@ class GameScene: SKScene {
     var leftPressed = [false, false, false, false]
     
     let tankMoveSpeed = CGFloat(3)
+    var tankTurnDirection = "left"
     let tankRotateSpeed = 0.1 //tank turning speed
     
     override func didMove(to view: SKView) {
@@ -91,6 +91,7 @@ class GameScene: SKScene {
             
             player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
             player.physicsBody?.isDynamic = true
+            player.physicsBody?.restitution = 1.0
             
             if(i==1) {
                 player.physicsBody?.categoryBitMask = PhysicsCategory.p1
@@ -471,15 +472,22 @@ class GameScene: SKScene {
         // Called before each frame is rendered
         
         // move tanks forward
-//        for player in players {
-//            player.drive(tankMoveSpeed: tankMoveSpeed)
-//        }
+        for player in players {
+            player.drive(tankMoveSpeed: tankMoveSpeed)
+        }
         
         // turn tanks
         for i in 1...numberOfPlayers {
-            if (leftPressed[i-1]){
-                players[i-1].zRotation += CGFloat(tankRotateSpeed)
+            if (tankTurnDirection == "left") {
+                if (leftPressed[i-1]){
+                    players[i-1].zRotation += CGFloat(tankRotateSpeed)
+                }
+            } else {
+                if (leftPressed[i-1]){
+                    players[i-1].zRotation -= CGFloat(tankRotateSpeed)
+                }
             }
+                
         }
         
         boundsChecktanks()

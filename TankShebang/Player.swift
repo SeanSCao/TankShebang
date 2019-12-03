@@ -12,6 +12,7 @@ import SpriteKit
 
 class Player: SKSpriteNode {
     
+    var directionState:String = "forward"
     var health:Int = 2
     var invincible:Bool = false
     var shield:Bool = false
@@ -25,28 +26,34 @@ class Player: SKSpriteNode {
             Circle.position = CGPoint(x:0,y:0)  //Middle of Screen
             Circle.strokeColor = SKColor.blue
             Circle.glowWidth = 1.0
-//            Circle.physicsBody = SKPhysicsBody(circleOfRadius: self.size.height)
-//            Circle.physicsBody?.isDynamic = false
-//            Circle.physicsBody?.categoryBitMask = PhysicsCategory.shield
-//            Circle.physicsBody?.contactTestBitMask = PhysicsCategory.shot
-//            Circle.physicsBody?.collisionBitMask = PhysicsCategory.none
+            //            Circle.physicsBody = SKPhysicsBody(circleOfRadius: self.size.height)
+            //            Circle.physicsBody?.isDynamic = false
+            //            Circle.physicsBody?.categoryBitMask = PhysicsCategory.shield
+            //            Circle.physicsBody?.contactTestBitMask = PhysicsCategory.shot
+            //            Circle.physicsBody?.collisionBitMask = PhysicsCategory.none
             self.addChild(Circle)
             shield = true
         }
     }
     
-    // Moves tank forward in the direction it is facing
+    // Moves tank forward forward or backward
     func drive(tankMoveSpeed:CGFloat) {
         
-        // some basic trigonometry to calculate direction tanks are moving
-        let direction = CGPoint(x:self.position.x - sin(self.zRotation) * tankMoveSpeed,y:self.position.y + cos(self.zRotation) * tankMoveSpeed)
-        
-        let moveTank = SKAction.move(to: direction, duration:0)
-        
         if (health > 0){
+            var direction: CGPoint
+            
+            // some basic trigonometry to calculate direction tanks are moving
+            if ( directionState == "forward" ) {
+                direction = CGPoint(x:self.position.x - sin(self.zRotation) * tankMoveSpeed,y:self.position.y + cos(self.zRotation) * tankMoveSpeed)
+            } else {
+                direction = CGPoint(x:self.position.x + sin(self.zRotation) * tankMoveSpeed,y:self.position.y - cos(self.zRotation) * tankMoveSpeed)
+            }
+            
+            let moveTank = SKAction.move(to: direction, duration:0)
+            
+            
             self.run(moveTank)
         }
-        
     }
     
     func hit() {
