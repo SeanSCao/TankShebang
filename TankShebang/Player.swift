@@ -13,6 +13,10 @@ import SpriteKit
 class Player: SKSpriteNode {
     
     var health:Int = 2
+    var invincible:Bool = false
+    var shield:Bool = false
+    
+    
     
     // Moves tank forward in the direction it is facing
     func drive(tankMoveSpeed:CGFloat) {
@@ -28,12 +32,32 @@ class Player: SKSpriteNode {
     }
     
     func hit() {
-        health -= 1
+        if (!invincible){
+            health -= 1
+        }
         
         if (health == 0){
             self.removeFromParent()
+        } else {
+            temporaryInvincibility()
         }
+    }
+    
+    func temporaryInvincibility() {
+        let fadeOut = SKAction.fadeAlpha(to: 0.4, duration: 0.25)
+        let fadeIn = SKAction.fadeAlpha(to: 1, duration: 0.25)
         
+        let seq:SKAction = SKAction.sequence( [ fadeOut, fadeIn ])
+        
+        self.run(seq)
+        
+        invincible = true
+        
+        let seconds = 0.5
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            // Put your code which should be executed with a delay here
+            self.invincible = false
+        }
     }
     
 }

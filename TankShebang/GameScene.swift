@@ -58,7 +58,7 @@ class GameScene: SKScene {
         
         initButtons()
         
-        debugDrawPlayableArea()
+        drawPlayableArea()
         
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
@@ -346,6 +346,7 @@ class GameScene: SKScene {
         }
     }
     
+    // add map background textures
     func initMap() {
         let gameScale = size.width / 1024
         let playableHeight = size.width
@@ -381,7 +382,7 @@ class GameScene: SKScene {
     }
     
     // fire projectile in direction player tank is facing
-    func fireProjectile(player: SKSpriteNode) {
+    func fireProjectile(player: Player) {
         let projectile = SKSpriteNode(imageNamed: "defaultProjectile")
         let direction = CGPoint(x:player.position.x - sin(player.zRotation) * 2000,y:player.position.y + cos(player.zRotation) * 2000)
         let xDirection = player.position.x - sin(player.zRotation) + (-35 * sin(player.zRotation))
@@ -403,10 +404,10 @@ class GameScene: SKScene {
         projectile.run(SKAction.sequence([shoot, shootDone]))
     }
     
-    func projectileDidCollideWithTank(projectile: SKSpriteNode, player: SKSpriteNode) {
+    func projectileDidCollideWithTank(projectile: SKSpriteNode, player: Player) {
         print("Hit")
         projectile.removeFromParent()
-        player.removeFromParent()
+        player.hit()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -461,13 +462,13 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
-        // move all tanks forward
-//        run(SKAction.run(moveTanksForward))
         
-        for player in players {
-            player.drive(tankMoveSpeed: tankMoveSpeed)
-        }
+        // move tanks forward
+//        for player in players {
+//            player.drive(tankMoveSpeed: tankMoveSpeed)
+//        }
         
+        // turn tanks
         for i in 1...numberOfPlayers {
             if (leftPressed[i-1]){
                 players[i-1].zRotation += CGFloat(tankRotateSpeed)
@@ -477,7 +478,7 @@ class GameScene: SKScene {
         boundsChecktanks()
     }
     
-    func debugDrawPlayableArea(){
+    func drawPlayableArea(){
         let shape = SKShapeNode()
         let path = CGMutablePath()
         path.addRect(playableRect)
@@ -511,25 +512,25 @@ extension GameScene: SKPhysicsContactDelegate {
         }
         
         if ((firstBody.categoryBitMask == PhysicsCategory.p1) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
-            if let player = firstBody.node as? SKSpriteNode, let projectile = secondBody.node as? SKSpriteNode {
+            if let player = firstBody.node as? Player, let projectile = secondBody.node as? SKSpriteNode {
                 projectileDidCollideWithTank(projectile: projectile, player: player)
             }
         }
         
         if ((firstBody.categoryBitMask == PhysicsCategory.p2) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
-            if let player = firstBody.node as? SKSpriteNode, let projectile = secondBody.node as? SKSpriteNode {
+            if let player = firstBody.node as? Player, let projectile = secondBody.node as? SKSpriteNode {
                 projectileDidCollideWithTank(projectile: projectile, player: player)
             }
         }
         
         if ((firstBody.categoryBitMask == PhysicsCategory.p3) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
-            if let player = firstBody.node as? SKSpriteNode, let projectile = secondBody.node as? SKSpriteNode {
+            if let player = firstBody.node as? Player, let projectile = secondBody.node as? SKSpriteNode {
                 projectileDidCollideWithTank(projectile: projectile, player: player)
             }
         }
         
         if ((firstBody.categoryBitMask == PhysicsCategory.p4) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
-            if let player = firstBody.node as? SKSpriteNode, let projectile = secondBody.node as? SKSpriteNode {
+            if let player = firstBody.node as? Player, let projectile = secondBody.node as? SKSpriteNode {
                 projectileDidCollideWithTank(projectile: projectile, player: player)
             }
         }
