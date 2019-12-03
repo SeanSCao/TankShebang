@@ -21,6 +21,9 @@ struct PhysicsCategory {
 
 class GameScene: SKScene {
     
+    let gameLayer = SKNode()
+    let pauseLayer = SKNode()
+    
     // Initialize the playable space, makes sure to fit all devices
     let playableRect: CGRect
     
@@ -52,9 +55,15 @@ class GameScene: SKScene {
     
     var startWithShield = false
     
+    var countdownLabel: SKLabelNode!
+    
     override func didMove(to view: SKView) {
         
         backgroundColor = SKColor.white
+        
+        addChild(gameLayer)
+        
+        addChild(pauseLayer)
         
         initMap()
         
@@ -63,6 +72,14 @@ class GameScene: SKScene {
         initButtons()
         
         drawPlayableArea()
+        
+        countdownLabel = SKLabelNode(fontNamed: "Arial")
+        countdownLabel.name = "countdown"
+        countdownLabel.horizontalAlignmentMode = .center
+        countdownLabel.position = CGPoint(x:size.width/2, y:size.height/2)
+        pauseLayer.addChild(countdownLabel)
+        
+        countdown()
         
         for player in players {
             Timer.scheduledTimer(timeInterval: 1, target: player, selector: #selector(player.reload), userInfo: nil, repeats: true)
@@ -184,7 +201,7 @@ class GameScene: SKScene {
             players[i-1].ammo = 4
             players[i-1].invincible = false
             players[i-1].shield = startWithShield
-            addChild(players[i-1])
+            gameLayer.addChild(players[i-1])
         }
     }
     
@@ -336,8 +353,8 @@ class GameScene: SKScene {
                 }
             }
             
-            addChild(playerLeft)
-            addChild(playerRight)
+            gameLayer.addChild(playerLeft)
+            gameLayer.addChild(playerRight)
             
             
             leftButtons.append(playerLeft)
@@ -351,7 +368,7 @@ class GameScene: SKScene {
         let playableHeight = size.width
         let playableMargin = (size.height-playableHeight)/2.0
         
-        addChild(map)
+        gameLayer.addChild(map)
         map.xScale = 0.5 * gameScale
         map.yScale = 0.5 * gameScale
         
@@ -416,7 +433,33 @@ class GameScene: SKScene {
         } else {
             
         }
-        
+    }
+    
+    func countdown() {
+        pauseGame()
+
+        var offset: Double = 0
+
+        for x in (0...3).reversed() {
+
+            run(SKAction.wait(forDuration: offset)) {
+                self.countdownLabel.text = "\(x)"
+
+                if x == 0 {
+                    //do something when counter hits 0
+                    //self.runGameOver()
+                    if let countdownNode = self.pauseLayer.childNode(withName: "countdown") as? SKLabelNode {
+                        countdownNode.removeFromParent()
+                    }
+                    self.unpauseGame()
+                    
+                }
+                else {
+                     //maybe play some sound tick file here
+                }
+            }
+            offset += 1.0
+        }
     }
     
     func checkGameOver() -> Bool {
@@ -426,6 +469,25 @@ class GameScene: SKScene {
             }
         }
         return false
+    }
+    
+    func pauseGame() {
+
+        gameLayer.isPaused = true
+        pauseLayer.isHidden = false
+        self.physicsWorld.speed = 0.0
+        gameLayer.speed = 0.0
+
+    }
+
+    func unpauseGame() {
+
+        gameLayer.isPaused = false
+        pauseLayer.isHidden = true
+        gameLayer.speed = 1.0
+        self.physicsWorld.speed = 1.0
+        // Whatever else you need to undo
+
     }
     
     // fire projectile in direction player tank is facing
@@ -447,7 +509,7 @@ class GameScene: SKScene {
             projectile.physicsBody?.collisionBitMask = PhysicsCategory.none
             projectile.physicsBody?.usesPreciseCollisionDetection = true
             
-            addChild(projectile)
+            gameLayer.addChild(projectile)
             
             let shoot = SKAction.move(to: direction, duration: 2.0)
             let shootDone = SKAction.removeFromParent()
@@ -461,14 +523,16 @@ class GameScene: SKScene {
         for touch in touches {
             let location = touch.location(in:self)
             
-            for i in 1...numberOfPlayers {
-                if (leftButtons[i-1].contains(location)){
-                    leftPressed[i-1] = true
-                }
-                
-                if (rightButtons[i-1].contains(location)){
-                    fireProjectile(player: players[i-1])
-//                    players[i-1].fireProjectile()
+            if ( !gameLayer.isPaused ) {
+                for i in 1...numberOfPlayers {
+                    if (leftButtons[i-1].contains(location)){
+                        leftPressed[i-1] = true
+                    }
+                    
+                    if (rightButtons[i-1].contains(location)){
+                        fireProjectile(player: players[i-1])
+    //                    players[i-1].fireProjectile()
+                    }
                 }
             }
         }
@@ -478,11 +542,13 @@ class GameScene: SKScene {
         for touch in touches {
             let location = touch.location(in:self)
             
-            for i in 1...numberOfPlayers {
-                if (leftButtons[i-1].contains(location)){
-                    leftPressed[i-1] = true
-                } else{
-                    leftPressed[i-1] = false
+            if ( !gameLayer.isPaused ) {
+                for i in 1...numberOfPlayers {
+                    if (leftButtons[i-1].contains(location)){
+                        leftPressed[i-1] = true
+                    } else{
+                        leftPressed[i-1] = false
+                    }
                 }
             }
         }
@@ -492,12 +558,14 @@ class GameScene: SKScene {
         for touch in touches {
             let location = touch.location(in:self)
             
-            for i in 1...numberOfPlayers {
-                if (leftButtons[i-1].contains(location)){
-                    leftPressed[i-1] = false
-                }
-                
-                if (rightButtons[i-1].contains(location)){
+            if ( !gameLayer.isPaused ) {
+                for i in 1...numberOfPlayers {
+                    if (leftButtons[i-1].contains(location)){
+                        leftPressed[i-1] = false
+                    }
+                    
+                    if (rightButtons[i-1].contains(location)){
+                    }
                 }
             }
         }
@@ -566,7 +634,7 @@ class GameScene: SKScene {
         shape.physicsBody?.contactTestBitMask = PhysicsCategory.shot
         shape.physicsBody?.collisionBitMask = PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p3 | PhysicsCategory.p4
         
-        addChild(shape)
+        gameLayer.addChild(shape)
     }
     
     func projectileDidCollideWithTank(projectile: Projectile, player: Player) {
