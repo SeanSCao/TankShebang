@@ -41,7 +41,7 @@ extension CGPoint {
 }
 
 class GameScene: SKScene {
-    
+
     let player1 = SKSpriteNode(imageNamed: "tank") //player 1 tank
     let player1Right = SKSpriteNode(imageNamed: "red") //player 1 shoot button
     let player1Left = SKSpriteNode(imageNamed: "red") //player 1 turn button
@@ -53,14 +53,18 @@ class GameScene: SKScene {
     let player2Left = SKSpriteNode(imageNamed: "red") //player 2 turn button
     var p2LeftPressed = false
     var p2RightPressed = false
-    
+    var TerrainType = "Rock"
+    var SoundType = "On"
+    var PowerupType = "On"
     let tankRotateSpeed = 0.1 //tank turning speed
     
     
     override func didMove(to view: SKView) {
-        
         backgroundColor = SKColor.white
-        
+        NSLog(TerrainType)
+        NSLog(SoundType)
+        NSLog(PowerupType)
+
         // player 1 tank and button positioning
         player1.position = CGPoint(x: size.width * 0.5, y: size.height * 0.1)
         player1Left.position = CGPoint(x: player1Left.size.width/2, y: player1Left.size.height/2)
@@ -95,6 +99,7 @@ class GameScene: SKScene {
 //        run(SKAction.repeatForever(
 //            SKAction.run(moveTanksForward)
 //        ))
+
         
     }
     
@@ -215,14 +220,9 @@ class GameScene: SKScene {
         addChild(projectile)
         
         // 6 - Get the direction of where to shoot
-        let direction = offset.normalized()
         
         // 7 - Make it shoot far enough to be guaranteed off screen
-        let shootAmount = direction * 1000
-        
-        // 8 - Add the shoot amount to the current position
-        let realDest = direc * 1000
-        
+      
         // 9 - Create the actions
         let actionMove = SKAction.move(to: direc, duration: 2.0)
         let actionMoveDone = SKAction.removeFromParent()
@@ -235,6 +235,7 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+
         // move all tanks forward
         run(SKAction.run(moveTanksForward))
         
