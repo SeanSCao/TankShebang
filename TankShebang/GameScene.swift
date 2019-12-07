@@ -39,9 +39,9 @@ class GameScene: SKScene {
     }
     
     var map = SKNode()
-    let mapSetting = 1
+    let mapSetting = 2
     
-    var numberOfPlayers = 2
+    var numberOfPlayers = 4
     var players = [Player]()
     let playerSprites = ["tank", "tank", "tank", "tank"]
     
@@ -84,6 +84,8 @@ class GameScene: SKScene {
         for player in players {
             Timer.scheduledTimer(timeInterval: 1, target: player, selector: #selector(player.reload), userInfo: nil, repeats: true)
         }
+        
+        players[0].addShield()
         
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
