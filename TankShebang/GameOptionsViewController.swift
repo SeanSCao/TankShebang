@@ -16,6 +16,10 @@ class GameOptionsViewController: UIViewController {
     let modes = ["Tank Hunter","Pilot Hunter","Deathmatch"]
     var sound = String()
     var music = String()
+    var AutoBalance = String()
+    var Powerups = String()
+    var FixedSpawn = String()
+    var ScatterShot = String()
     let kills = ["1","3","5"]
     let levels = ["Open Space","Moon","Dance"]
     var mode_start = 0

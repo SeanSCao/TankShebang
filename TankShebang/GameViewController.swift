@@ -11,11 +11,21 @@ import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
+    var Mode = String()
+    var Level = String()
+    var Kill = String()
+    var sound = String()
+    var music = String()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let scene = GameScene(size: view.bounds.size)
+        scene.mode = Mode
+        scene.level = Level
+        scene.kill = Kill
+        scene.sound = sound
+        scene.music = music
         let skView = view as! SKView
         skView.showsFPS = true
         skView.showsNodeCount = true
