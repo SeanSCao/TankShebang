@@ -36,6 +36,7 @@ class GameViewController: UIViewController {
         scene.Powerups = Powerups
         scene.FixedSpawn = FixedSpawn
         scene.ScatterShot = ScatterShot
+        scene.num_players = num_players
         let skView = view as! SKView
         skView.showsFPS = true
         skView.showsNodeCount = true

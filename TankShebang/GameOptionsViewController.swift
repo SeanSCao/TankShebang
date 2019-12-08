@@ -68,6 +68,12 @@ class GameOptionsViewController: UIViewController {
             game_view.Level = level
             game_view.Kill = kill
             game_view.num_players = num_players
+            game_view.music = music
+            game_view.sound = sound
+            game_view.AutoBalance = AutoBalance
+            game_view.Powerups = Powerups
+            game_view.FixedSpawn = FixedSpawn
+            game_view.ScatterShot = ScatterShot
             
         }
         

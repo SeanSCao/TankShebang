@@ -30,6 +30,7 @@ class GameScene: SKScene {
     var Powerups = String()
     var FixedSpawn = String()
     var ScatterShot = String()
+    var num_players
     
     // Initialize the playable space, makes sure to fit all devices
     let playableRect: CGRect
