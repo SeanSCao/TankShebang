@@ -43,7 +43,7 @@ class GameScene: SKScene {
     
     var numberOfPlayers = 4
     var players = [Player]()
-    let playerSprites = ["tank", "tank", "tank", "tank"]
+    let playerSprites = ["Black0", "Red1", "Blue2", "Green3"]
     
     var rightButtons = [SKShapeNode]()
     var leftButtons = [SKShapeNode]()
@@ -94,7 +94,7 @@ class GameScene: SKScene {
     
     // create sprite node for each player tank and position accordingly
     func initPlayers(){
-        let gameScale = size.width / 1024
+        let gameScale = 0.6 * size.width / 1024
         
         for i in 1...numberOfPlayers {
             let player:Player = Player(imageNamed: playerSprites[i-1]) //player tank
@@ -492,35 +492,6 @@ class GameScene: SKScene {
 
     }
     
-    // fire projectile in direction player tank is facing
-    func fireProjectile(player: Player) {
-        
-        if ( player.ammo > 0 ) {
-            let projectile:Projectile = Projectile(imageNamed: "defaultProjectile")
-            projectile.owner = player
-            let direction = CGPoint(x:player.position.x - sin(player.zRotation) * 2000,y:player.position.y + cos(player.zRotation) * 2000)
-            let xDirection = player.position.x - sin(player.zRotation) + (-35 * sin(player.zRotation))
-            let yDirection = player.position.y + cos(player.zRotation) + (35 * cos(player.zRotation))
-            
-            projectile.position = CGPoint(x: xDirection,y:yDirection)
-            
-            projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
-            projectile.physicsBody?.isDynamic = true
-            projectile.physicsBody?.categoryBitMask = PhysicsCategory.shot
-            projectile.physicsBody?.contactTestBitMask = PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p3 | PhysicsCategory.p4 | PhysicsCategory.obstacle
-            projectile.physicsBody?.collisionBitMask = PhysicsCategory.none
-            projectile.physicsBody?.usesPreciseCollisionDetection = true
-            
-            gameLayer.addChild(projectile)
-            
-            let shoot = SKAction.move(to: direction, duration: 2.0)
-            let shootDone = SKAction.removeFromParent()
-            projectile.run(SKAction.sequence([shoot, shootDone]))
-            
-            player.ammo -= 1
-        }
-    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = touch.location(in:self)
@@ -532,8 +503,8 @@ class GameScene: SKScene {
                     }
                     
                     if (rightButtons[i-1].contains(location)){
-                        fireProjectile(player: players[i-1])
-    //                    players[i-1].fireProjectile()
+//                        fireProjectile(player: players[i-1])
+                        players[i-1].fireProjectile()
                     }
                 }
             }

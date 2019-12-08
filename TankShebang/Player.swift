@@ -87,7 +87,7 @@ class Player: SKSpriteNode {
         
         self.run(seq)
         
-        invincible = true
+        invincible = true/Users/sean/Downloads
         
         let seconds = 0.5
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
@@ -95,36 +95,34 @@ class Player: SKSpriteNode {
         }
     }
     
-//    func fireProjectile() {
-//
-//        print(self.zRotation)
-//        print(sin(self.zRotation))
-//        print(cos(self.zRotation))
-//
-//        if ( self.ammo > 0 ) {
-//            let projectile = SKSpriteNode(imageNamed: "defaultProjectile")
-//            let direction = CGPoint(x:-1*sin(self.zRotation) * 2000,y:cos(self.zRotation) * 2000)
-//            let xDirection = self.position.x - sin(self.zRotation) + (-35 * sin(self.zRotation))
-//            let yDirection = self.position.y + cos(self.zRotation) + (35 * cos(self.zRotation))
-//
-//            projectile.position = CGPoint(x: xDirection,y:yDirection)
-//
-//            projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
-//            projectile.physicsBody?.isDynamic = true
-//            projectile.physicsBody?.categoryBitMask = PhysicsCategory.shot
-//            projectile.physicsBody?.contactTestBitMask = PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p3 | PhysicsCategory.p4 | PhysicsCategory.obstacle
-//            projectile.physicsBody?.collisionBitMask = PhysicsCategory.none
-//            projectile.physicsBody?.usesPreciseCollisionDetection = true
-//
-//            addChild(projectile)
-//
-//            let shoot = SKAction.move(to: direction, duration: 2.0)
-//            let shootDone = SKAction.removeFromParent()
-//            projectile.run(SKAction.sequence([shoot, shootDone]))
-//
-//            self.ammo -= 1
-//        }
-//    }
+    func fireProjectile() {
+
+        if ( self.ammo > 0 ) {
+            let projectile:Projectile = Projectile(imageNamed: "defaultProjectile")
+            projectile.setScale(0.1)
+            projectile.owner = self
+            let direction = CGPoint(x:self.position.x - sin(self.zRotation) * 2000,y:self.position.y + cos(self.zRotation) * 2000)
+            let xDirection = self.position.x - sin(self.zRotation) + (-40 * sin(self.zRotation))
+            let yDirection = self.position.y + cos(self.zRotation) + (40 * cos(self.zRotation))
+
+            projectile.position = CGPoint(x: xDirection,y:yDirection)
+
+            projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
+            projectile.physicsBody?.isDynamic = true
+            projectile.physicsBody?.categoryBitMask = PhysicsCategory.shot
+            projectile.physicsBody?.contactTestBitMask = PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p3 | PhysicsCategory.p4 | PhysicsCategory.obstacle
+            projectile.physicsBody?.collisionBitMask = PhysicsCategory.none
+            projectile.physicsBody?.usesPreciseCollisionDetection = true
+
+            self.parent?.addChild(projectile)
+
+            let shoot = SKAction.move(to: direction, duration: 2.0)
+            let shootDone = SKAction.removeFromParent()
+            projectile.run(SKAction.sequence([shoot, shootDone]))
+
+            self.ammo -= 1
+        }
+    }
     
     @objc func reload() {
         self.ammo += 1
