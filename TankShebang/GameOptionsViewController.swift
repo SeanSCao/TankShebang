@@ -20,6 +20,7 @@ class GameOptionsViewController: UIViewController {
     var Powerups = String()
     var FixedSpawn = String()
     var ScatterShot = String()
+    var num_players = 0
     let kills = ["1","3","5"]
     let levels = ["Open Space","Moon","Dance"]
     var mode_start = 0
@@ -66,6 +67,7 @@ class GameOptionsViewController: UIViewController {
             game_view.Mode = mode
             game_view.Level = level
             game_view.Kill = kill
+            game_view.num_players = num_players
             
         }
         

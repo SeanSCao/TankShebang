@@ -16,6 +16,19 @@ var Music = String()
 
         // Do any additional setup after loading the view.
     }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "options"){
+        }
+        if(segue.identifier == "select"){
+            var game_options = segue.destination as! PlayerSelectViewController
+            
+            game_options.Music = Music
+            game_options.Sound = Sound
+        }
+        
+        
+        
+    }
     
 
     /*

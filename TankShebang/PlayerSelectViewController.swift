@@ -10,6 +10,92 @@ import UIKit
 
 class PlayerSelectViewController: UIViewController {
 
+    @IBOutlet weak var tank1: UIImageView!
+    
+    @IBOutlet weak var tank2: UIImageView!
+    
+    @IBOutlet weak var tank3: UIImageView!
+    
+    
+    @IBOutlet weak var tank4: UIImageView!
+    
+    
+    @IBOutlet weak var player1: UIButton!
+    
+    @IBOutlet weak var player2: UIButton!
+    
+    @IBOutlet weak var player3: UIButton!
+    
+    @IBOutlet weak var player4: UIButton!
+    var player1status = "Off"
+    var player2status = "Off"
+    var player3status = "Off"
+    var player4status = "Off"
+    var num_players = 0
+    var Music = String()
+    var Sound = String()
+    
+    @IBAction func touchplayer1(_ sender: Any) {
+        if(player1status == "Off"){
+           player1status = "On"
+            num_players += 1
+            tank1.image = UIImage(named:"tank-1.png")
+            print("Running")
+        }
+        if(player1status == "On"){
+            player1status = "Off"
+            tank1.image = nil
+            num_players -= 1
+        }
+        
+    }
+    
+    @IBAction func touchplayer2(_ sender: Any) {
+        if(player2status == "Off"){
+            player2status = "On"
+            num_players += 1
+            tank2.image = UIImage(named:"tank-1.png")
+        }
+        if(player2status == "On"){
+            player2status = "Off"
+            num_players -= 1
+            tank2.image = nil
+        }
+    }
+    
+    @IBAction func touchplayer3(_ sender: Any) {
+        if(player2status == "Off"){
+            player2status = "On"
+            num_players += 1
+            tank2.image = UIImage(named:"tank-1.png")
+        }
+        if(player2status == "On"){
+            player2status = "Off"
+            num_players -= 1
+            tank2.image = nil
+        }
+    }
+    
+    @IBAction func touchplayer4(_ sender: Any) {
+        if(player1status == "Off"){
+            player1status = "On"
+            num_players += 1
+            tank1.image = UIImage(named:"tank-1.png")
+        }
+        if(player1status == "On"){
+            player1status = "Off"
+            num_players -= 1
+            tank1.image = nil
+        }
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        var game_options = segue.destination as! GameOptionsViewController
+        game_options.num_players = num_players
+        game_options.music = Music
+        game_options.sound = Sound
+        
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 

@@ -23,6 +23,13 @@ class GameScene: SKScene {
     var kill = String()
     var sound = String()
     var music = String()
+    var TerrainType = "Rock"
+    var SoundType = "On"
+    var PowerupType = "On"
+    var AutoBalance = String()
+    var Powerups = String()
+    var FixedSpawn = String()
+    var ScatterShot = String()
     
     // Initialize the playable space, makes sure to fit all devices
     let playableRect: CGRect
@@ -51,7 +58,7 @@ class GameScene: SKScene {
     
     let tankMoveSpeed = CGFloat(3)
     var tankTurnDirection = "left"
-    let tankRotateSpeed = 0.1 //tank turning speed
+    let tankRotateSpeed = 0.35 //tank turning speed
     
     var startWithShield = false
     

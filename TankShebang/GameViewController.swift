@@ -16,6 +16,12 @@ class GameViewController: UIViewController {
     var Kill = String()
     var sound = String()
     var music = String()
+    var AutoBalance = String()
+    var Powerups = String()
+    var FixedSpawn = String()
+    var ScatterShot = String()
+    var num_players = 0
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +32,10 @@ class GameViewController: UIViewController {
         scene.kill = Kill
         scene.sound = sound
         scene.music = music
+        scene.AutoBalance = AutoBalance
+        scene.Powerups = Powerups
+        scene.FixedSpawn = FixedSpawn
+        scene.ScatterShot = ScatterShot
         let skView = view as! SKView
         skView.showsFPS = true
         skView.showsNodeCount = true
