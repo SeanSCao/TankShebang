@@ -18,7 +18,7 @@ class Player: SKSpriteNode {
     var invincible:Bool = false
     var shield:Bool = false
     var ammo:Int = 4
-    var powerup:String = "Laser"
+    var powerup:String = "Bubble"
     
     var roundScore:Int = 0
     var gameScore:Int = 0
@@ -153,7 +153,10 @@ class Player: SKSpriteNode {
         if ( !self.powerup.isEmpty ){
             if (self.powerup == "Laser"){
                 fireLaser();
+            } else if (self.powerup == "Bubble"){
+                fireBubble();
             }
+            self.powerup = ""
         } else if ( self.ammo > 0 ) {
             let projectile:Projectile = Projectile(imageNamed: "DefaultProjectile")
             projectile.owner = self
@@ -205,6 +208,29 @@ class Player: SKSpriteNode {
         self.parent?.addChild(projectile)
 
         let shoot = SKAction.move(to: direction, duration: 1.0)
+        let shootDone = SKAction.removeFromParent()
+        projectile.run(SKAction.sequence([shoot, shootDone]))
+    }
+    
+    func fireBubble(){
+        let projectile:Projectile = Projectile(imageNamed: "Bubble")
+        projectile.owner = self
+        let direction = CGPoint(x:self.position.x - sin(self.zRotation) * 2000,y:self.position.y + cos(self.zRotation) * 2000)
+        let xDirection = self.position.x - sin(self.zRotation) + (-100 * sin(self.zRotation))
+        let yDirection = self.position.y + cos(self.zRotation) + (100 * cos(self.zRotation))
+
+        projectile.position = CGPoint(x: xDirection,y:yDirection)
+
+        projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
+        projectile.physicsBody?.isDynamic = true
+        projectile.physicsBody?.categoryBitMask = PhysicsCategory.projectile
+        projectile.physicsBody?.contactTestBitMask = PhysicsCategory.player | PhysicsCategory.obstacle
+        projectile.physicsBody?.collisionBitMask = PhysicsCategory.none
+        projectile.physicsBody?.usesPreciseCollisionDetection = true
+
+        self.parent?.addChild(projectile)
+
+        let shoot = SKAction.move(to: direction, duration: 2.0)
         let shootDone = SKAction.removeFromParent()
         projectile.run(SKAction.sequence([shoot, shootDone]))
     }

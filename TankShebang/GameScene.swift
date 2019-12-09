@@ -412,8 +412,8 @@ class GameScene: SKScene {
     }
     
     func spawnPowerTile() {
-        let tilesArr = ["Direction", "LandmineTile", "LaserTile", "Reverse", "RocketTile", "ShieldTile", "Bubble"]
-        let gameScale = 0.6 * size.width / 1024
+        let tilesArr = ["Direction", "LandmineTile", "LaserTile", "Reverse", "RocketTile", "ShieldTile", "BubbleTile"]
+        let gameScale = 0.4 * size.width / 1024
         let playableMargin = (size.height-size.width)/2.0
         let playableHeight = playableMargin + size.width
         let randTile = Int.random(in: 0...tilesArr.count-1)
@@ -707,11 +707,14 @@ extension GameScene: SKPhysicsContactDelegate {
             if let player = firstBody.node as? Player, let pickupTile = secondBody.node as? SKSpriteNode {
                 if (pickupTile.name == "Direction" ) {
                     tankDriveForward = !tankDriveForward
-                }
-                if (pickupTile.name == "Reverse" ) {
+                } else if (pickupTile.name == "Reverse" ) {
                     tankTurnLeft = !tankTurnLeft
-                } else {
-                    player.powerup = pickupTile.name ?? ""
+                } else if (pickupTile.name == "ShieldTile") {
+                    player.addShield()
+                }
+                else {
+                    let powerUpString = String(pickupTile.name?.dropLast(4) ?? "")
+                    player.powerup = powerUpString
                 }
                 pickupTile.removeFromParent()
             }
