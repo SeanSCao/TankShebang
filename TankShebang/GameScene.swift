@@ -76,11 +76,6 @@ class GameScene: SKScene {
         
         drawPlayableArea()
         
-        countdownLabel = SKLabelNode(fontNamed: "Arial")
-        countdownLabel.name = "countdown"
-        countdownLabel.horizontalAlignmentMode = .center
-        countdownLabel.position = CGPoint(x:size.width/2, y:size.height/2)
-        pauseLayer.addChild(countdownLabel)
         
         countdown()
         
@@ -484,6 +479,12 @@ class GameScene: SKScene {
     }
     
     func countdown() {
+        countdownLabel = SKLabelNode(fontNamed: "Arial")
+        countdownLabel.name = "countdown"
+        countdownLabel.horizontalAlignmentMode = .center
+        countdownLabel.position = CGPoint(x:size.width/2, y:size.height/2)
+        pauseLayer.addChild(countdownLabel)
+        
         pauseGame()
         
         var offset: Double = 0

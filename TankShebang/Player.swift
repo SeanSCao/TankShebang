@@ -18,7 +18,7 @@ class Player: SKSpriteNode {
     var invincible:Bool = false
     var shield:Bool = false
     var ammo:Int = 4
-    var powerup:String = "Rocket"
+    var powerup:String = ""
     
     var gameScale:CGFloat = 1
     var roundScore:Int = 0
@@ -75,7 +75,7 @@ class Player: SKSpriteNode {
         } else if (projectile.name == "Rocket") {
             projectile.activateRocket()
         } else if (shield) {
-            if let shieldNode = self.childNode(withName: "shield") as? SKShapeNode {
+            if let shieldNode = self.childNode(withName: "shield") as? SKSpriteNode {
                 shieldNode.removeFromParent()
             }
             shield = false
@@ -119,7 +119,7 @@ class Player: SKSpriteNode {
         
         // Calculate damage
         if (shield) {
-            if let shieldNode = self.childNode(withName: "shield") as? SKShapeNode {
+            if let shieldNode = self.childNode(withName: "shield") as? SKSpriteNode {
                 shieldNode.removeFromParent()
             }
             shield = false
