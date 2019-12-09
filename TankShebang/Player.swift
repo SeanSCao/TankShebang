@@ -27,17 +27,22 @@ class Player: SKSpriteNode {
     
     func addShield(){
         if (!shield) {
-            let Circle = SKShapeNode(circleOfRadius: self.size.height) // Size of Circle
-            Circle.name = "shield"
-            Circle.position = CGPoint(x:0,y:0)  //Middle of Screen
-            Circle.strokeColor = SKColor.blue
-            Circle.glowWidth = 1.0
+//            let Circle = SKShapeNode(circleOfRadius: self.size.height) // Size of Circle
+//            Circle.name = "shield"
+//            Circle.position = CGPoint(x:0,y:0)  //Middle of Screen
+//            Circle.strokeColor = SKColor.blue
+//            Circle.glowWidth = 1.0
             //            Circle.physicsBody = SKPhysicsBody(circleOfRadius: self.size.height)
             //            Circle.physicsBody?.isDynamic = false
             //            Circle.physicsBody?.categoryBitMask = PhysicsCategory.shield
             //            Circle.physicsBody?.contactTestBitMask = PhysicsCategory.shot
             //            Circle.physicsBody?.collisionBitMask = PhysicsCategory.none
-            self.addChild(Circle)
+//            self.addChild(Circle)
+            
+            let shieldSprite = SKSpriteNode(imageNamed: "Shield")
+            shieldSprite.name = "shield"
+            shieldSprite.position = CGPoint(x:0,y:0)
+            self.addChild(shieldSprite)
             shield = true
         }
     }
