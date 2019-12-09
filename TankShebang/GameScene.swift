@@ -15,6 +15,8 @@ struct PhysicsCategory {
     static let projectile           : UInt32 = 0b11
     static let shield               : UInt32 = 0b100
     static let laser                : UInt32 = 0b101
+    static let explosion            : UInt32 = 0b110
+    static let pickupTile           : UInt32 = 0b111
 }
 
 class GameScene: SKScene {
@@ -43,13 +45,14 @@ class GameScene: SKScene {
     var players = [Player]()
     let playerColors = ["Black", "Red", "Blue", "Green"]
     let colorsDict:[String:SKColor] = ["Black":SKColor.black, "Red": SKColor(red: 194/255.0, green: 39/255.0, blue: 14/255.0, alpha: 1), "Blue":SKColor(red: 13/255.0, green: 80/255.0, blue: 194/255.0, alpha: 1), "Green":SKColor(red: 90/255.0, green: 194/255.0, blue: 15/255.0, alpha: 1)]
-
+    
     var rightButtons = [SKShapeNode]()
     var leftButtons = [SKShapeNode]()
     var leftPressed = [false, false, false, false]
     
     let tankMoveSpeed = CGFloat(3) //tank driving speed
-    var tankTurnDirection = "left" //tank turning direction
+    var tankTurnLeft = true //tank turning direction
+    var tankDriveForward = true // tank driving direction
     let tankRotateSpeed = 0.1 //tank turning speed
     
     var startWithShield = false
@@ -83,6 +86,7 @@ class GameScene: SKScene {
         for player in players {
             Timer.scheduledTimer(timeInterval: 1, target: player, selector: #selector(player.reload), userInfo: nil, repeats: true)
         }
+    run(SKAction.repeatForever(SKAction.sequence([SKAction.run(spawnPowerTile), SKAction.wait(forDuration: 3.0)])))
         
         players[0].addShield()
         
@@ -403,8 +407,33 @@ class GameScene: SKScene {
             let dirtTiles = tileSet.tileGroups.first { $0.name == "Dirt"}
             bottomLayer.fill(with: dirtTiles)
         }
-
+        
         map.addChild(bottomLayer)
+    }
+    
+    func spawnPowerTile() {
+        let tilesArr = ["Direction", "LandmineTile", "LaserTile", "Reverse", "RocketTile", "ShieldTile", "Bubble"]
+        let gameScale = 0.6 * size.width / 1024
+        let playableMargin = (size.height-size.width)/2.0
+        let playableHeight = playableMargin + size.width
+        let randTile = Int.random(in: 0...tilesArr.count-1)
+        let randX = Int.random(in: 0...Int(size.width))
+        let randY = Int.random(in: Int(playableMargin)...Int(playableHeight))
+        
+        let tile = SKSpriteNode(imageNamed: tilesArr[randTile])
+        tile.setScale(gameScale)
+        tile.name = tilesArr[randTile]
+        tile.position = CGPoint(x: randX, y: randY)
+        tile.physicsBody?.contactTestBitMask = PhysicsCategory.player
+        tile.physicsBody?.collisionBitMask = PhysicsCategory.obstacle
+        
+        tile.physicsBody = SKPhysicsBody(circleOfRadius: tile.size.height/2)
+        tile.physicsBody?.isDynamic = true
+        tile.physicsBody?.categoryBitMask = PhysicsCategory.pickupTile
+        
+        
+        gameLayer.addChild(tile)
+        
     }
     
     func checkRoundOver() -> Bool {
@@ -450,14 +479,14 @@ class GameScene: SKScene {
     
     func countdown() {
         pauseGame()
-
+        
         var offset: Double = 0
-
+        
         for x in (0...3).reversed() {
-
+            
             run(SKAction.wait(forDuration: offset)) {
                 self.countdownLabel.text = "\(x)"
-
+                
                 if x == 0 {
                     //do something when counter hits 0
                     //self.runGameOver()
@@ -468,7 +497,7 @@ class GameScene: SKScene {
                     
                 }
                 else {
-                     //maybe play some sound tick file here
+                    //maybe play some sound tick file here
                 }
             }
             offset += 1.0
@@ -485,16 +514,16 @@ class GameScene: SKScene {
     }
     
     func pauseGame() {
-
+        
         gameLayer.isPaused = true
         pauseLayer.isHidden = false
         self.physicsWorld.speed = 0.0
         gameLayer.speed = 0.0
-
+        
     }
-
+    
     func unpauseGame() {
-
+        
         gameLayer.isPaused = false
         pauseLayer.isHidden = true
         gameLayer.speed = 1.0
@@ -561,12 +590,12 @@ class GameScene: SKScene {
         
         // move tanks forward
         for player in players {
-            player.drive(tankMoveSpeed: tankMoveSpeed)
+            player.drive(tankDriveForward: tankDriveForward, tankMoveSpeed: tankMoveSpeed)
         }
         
         // turn tanks
         for i in 1...numberOfPlayers {
-            if (tankTurnDirection == "left") {
+            if (tankTurnLeft) {
                 if (leftPressed[i-1]){
                     players[i-1].zRotation += CGFloat(tankRotateSpeed)
                 }
@@ -627,11 +656,20 @@ class GameScene: SKScene {
         }
     }
     
-//    func projectileDidCollideWithShield(projectile: SKSpriteNode, shield: SKShapeNode) {
-//        print("Hit")
-//        projectile.removeFromParent()
-//        shield.removeFromParent()
-//    }
+    func explosionDidCollideWithTank(explosion: SKShapeNode, player: Player) {
+        
+        player.explode(explosion: explosion)
+        
+        if (checkRoundOver()){
+            newRound()
+        }
+    }
+    
+    //    func projectileDidCollideWithShield(projectile: SKSpriteNode, shield: SKShapeNode) {
+    //        print("Hit")
+    //        projectile.removeFromParent()
+    //        shield.removeFromParent()
+    //    }
 }
 
 extension GameScene: SKPhysicsContactDelegate {
@@ -659,14 +697,34 @@ extension GameScene: SKPhysicsContactDelegate {
             }
         }
         
+        if ((firstBody.categoryBitMask == PhysicsCategory.player) && (secondBody.categoryBitMask == PhysicsCategory.explosion)) {
+            if let player = firstBody.node as? Player, let explosion = secondBody.node as? SKShapeNode {
+                explosionDidCollideWithTank(explosion: explosion, player: player)
+            }
+        }
+        
+        if ((firstBody.categoryBitMask == PhysicsCategory.player) && (secondBody.categoryBitMask == PhysicsCategory.pickupTile)) {
+            if let player = firstBody.node as? Player, let pickupTile = secondBody.node as? SKSpriteNode {
+                if (pickupTile.name == "Direction" ) {
+                    tankDriveForward = !tankDriveForward
+                }
+                if (pickupTile.name == "Reverse" ) {
+                    tankTurnLeft = !tankTurnLeft
+                } else {
+                    player.powerup = pickupTile.name ?? ""
+                }
+                pickupTile.removeFromParent()
+            }
+        }
+        
         if ((firstBody.categoryBitMask == PhysicsCategory.obstacle) && (secondBody.categoryBitMask == PhysicsCategory.projectile)) {
             secondBody.node?.removeFromParent()
         }
         
-//        if ((firstBody.categoryBitMask == PhysicsCategory.shot) && (secondBody.categoryBitMask == PhysicsCategory.shield)) {
-//            if let projectile = firstBody.node as? SKSpriteNode, let shield = secondBody.node as? SKShapeNode {
-//                projectileDidCollideWithShield(projectile: projectile, shield: shield)
-//            }
-//        }
+        //        if ((firstBody.categoryBitMask == PhysicsCategory.shot) && (secondBody.categoryBitMask == PhysicsCategory.shield)) {
+        //            if let projectile = firstBody.node as? SKSpriteNode, let shield = secondBody.node as? SKShapeNode {
+        //                projectileDidCollideWithShield(projectile: projectile, shield: shield)
+        //            }
+        //        }
     }
 }

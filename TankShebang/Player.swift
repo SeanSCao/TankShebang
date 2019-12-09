@@ -42,13 +42,13 @@ class Player: SKSpriteNode {
     }
     
     // Moves tank forward forward or backward
-    func drive(tankMoveSpeed:CGFloat) {
+    func drive(tankDriveForward:Bool, tankMoveSpeed:CGFloat) {
         
         if (health > 0){
             var direction: CGPoint
             
             // some basic trigonometry to calculate direction tanks are moving
-            if ( directionState == "forward" ) {
+            if ( tankDriveForward ) {
                 direction = CGPoint(x:self.position.x - sin(self.zRotation) * tankMoveSpeed,y:self.position.y + cos(self.zRotation) * tankMoveSpeed)
             } else {
                 direction = CGPoint(x:self.position.x + sin(self.zRotation) * tankMoveSpeed,y:self.position.y - cos(self.zRotation) * tankMoveSpeed)
@@ -63,13 +63,54 @@ class Player: SKSpriteNode {
     
     func hit(projectile: Projectile) {
         
-        // Calculate score
-        if(projectile.owner == self){
-            projectile.owner.gameScore -= 10
+        
+        
+        // Calculate damage
+        if (projectile.name == "explosive"){
+            projectile.removeFromParent()
+            
+        } else if (shield) {
+            if let shieldNode = self.childNode(withName: "shield") as? SKShapeNode {
+                shieldNode.removeFromParent()
+            }
+            shield = false
+            if(projectile.owner == self){
+                projectile.owner.gameScore -= 10
+            } else {
+                projectile.owner.gameScore += 10
+                print(projectile.owner.gameScore)
+            }
         } else {
-            projectile.owner.gameScore += 10
-            print(projectile.owner.gameScore)
+            if (!invincible){
+                if (projectile.isLaser){
+                    health = 0
+                    projectile.owner.gameScore += 25
+                } else {
+                    health -= 1
+                    if(projectile.owner == self){
+                        projectile.owner.gameScore -= 10
+                    } else {
+                        projectile.owner.gameScore += 10
+                        print(projectile.owner.gameScore)
+                    }
+                }
+            }
         }
+        
+        // Remove projectile from parent
+        if (!projectile.isLaser){
+            projectile.removeFromParent()
+        }
+        
+        // Calculate dead or not
+        if (health == 0){
+            self.removeFromParent()
+        } else {
+            temporaryInvincibility()
+        }
+    }
+    
+    func explode(explosion: SKShapeNode) {
         
         // Calculate damage
         if (shield) {
@@ -79,17 +120,8 @@ class Player: SKSpriteNode {
             shield = false
         } else {
             if (!invincible){
-                if (projectile.isLaser){
-                    health = 0
-                } else {
-                    health -= 1
-                }
+                health = 0
             }
-        }
-        
-        // Remove projectile from parent
-        if (!projectile.isLaser){
-            projectile.removeFromParent()
         }
         
         // Calculate dead or not
