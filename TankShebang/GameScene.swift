@@ -1,35 +1,29 @@
+//  GameScene.swift
+//  TankShebang
+//
+//  Created by Sean Cao on 11/5/19.
+//  Copyright © 2019 Sean Cao, Robert Beit, Aryan Aru Agarwal. All rights reserved.
 
 import SpriteKit
 import GameplayKit
 
 struct PhysicsCategory {
-    static let none         : UInt32 = 0
-    static let all          : UInt32 = UInt32.max
-    static let p1           : UInt32 = 0b1
-    static let p2           : UInt32 = 0b10
-    static let p3           : UInt32 = 0b11
-    static let p4           : UInt32 = 0b100
-    static let obstacle     : UInt32 = 0b101
-    static let shot         : UInt32 = 0b110
-    static let shield         : UInt32 = 0b111
+    static let none                 : UInt32 = 0
+    static let all                  : UInt32 = UInt32.max
+    static let player               : UInt32 = 0b1
+    static let obstacle             : UInt32 = 0b10
+    static let projectile           : UInt32 = 0b11
+    static let shield               : UInt32 = 0b100
+    static let laser                : UInt32 = 0b101
+    static let explosion            : UInt32 = 0b110
+    static let pickupTile           : UInt32 = 0b111
+    static let landmine             : UInt32 = 0b1000
 }
 
 class GameScene: SKScene {
     
     let gameLayer = SKNode()
     let pauseLayer = SKNode()
-    var mode = String()
-    var level = String()
-    var kill = String()
-    var sound = String()
-    var music = String()
-    var TerrainType = "Rock"
-    var SoundType = "On"
-    var PowerupType = "On"
-    var AutoBalance = String()
-    var Powerups = String()
-    var FixedSpawn = String()
-    var ScatterShot = String()
     
     // Initialize the playable space, makes sure to fit all devices
     let playableRect: CGRect
@@ -46,19 +40,21 @@ class GameScene: SKScene {
     }
     
     var map = SKNode()
-    let mapSetting = 1
+    let mapSetting = 2
     
-    var numberOfPlayers = 2
+    var numberOfPlayers = 4
     var players = [Player]()
-    let playerSprites = ["tank", "tank", "tank", "tank"]
+    let playerColors = ["Black", "Red", "Blue", "Green"]
+    let colorsDict:[String:SKColor] = ["Black":SKColor.black, "Red": SKColor(red: 194/255.0, green: 39/255.0, blue: 14/255.0, alpha: 1), "Blue":SKColor(red: 13/255.0, green: 80/255.0, blue: 194/255.0, alpha: 1), "Green":SKColor(red: 90/255.0, green: 194/255.0, blue: 15/255.0, alpha: 1)]
     
     var rightButtons = [SKShapeNode]()
     var leftButtons = [SKShapeNode]()
     var leftPressed = [false, false, false, false]
     
-    let tankMoveSpeed = CGFloat(3)
-    var tankTurnDirection = "left"
-    let tankRotateSpeed = 0.35 //tank turning speed
+    let tankMoveSpeed = CGFloat(3) //tank driving speed
+    var tankTurnLeft = true //tank turning direction
+    var tankDriveForward = true // tank driving direction
+    let tankRotateSpeed = 0.1 //tank turning speed
     
     var startWithShield = false
     
@@ -91,6 +87,9 @@ class GameScene: SKScene {
         for player in players {
             Timer.scheduledTimer(timeInterval: 1, target: player, selector: #selector(player.reload), userInfo: nil, repeats: true)
         }
+    run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 3.0), SKAction.run(spawnPowerTile)])))
+        
+        players[0].addShield()
         
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
@@ -102,30 +101,34 @@ class GameScene: SKScene {
         let gameScale = size.width / 1024
         
         for i in 1...numberOfPlayers {
-            let player:Player = Player(imageNamed: playerSprites[i-1]) //player tank
+            let spriteFile = playerColors[i-1] + "4"
+            let player:Player = Player(imageNamed: spriteFile) //player tank
+            player.colorString = playerColors[i-1]
+            player.zPosition = 100
             
-            player.setScale(gameScale)
+            player.gameScale = gameScale
+            player.setScale(0.6*gameScale)
             
             player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
             player.physicsBody?.isDynamic = true
             player.physicsBody?.restitution = 1.0
             
             if(i==1) {
-                player.physicsBody?.categoryBitMask = PhysicsCategory.p1
-                player.physicsBody?.contactTestBitMask = PhysicsCategory.shot
-                player.physicsBody?.collisionBitMask = PhysicsCategory.obstacle | PhysicsCategory.p2 | PhysicsCategory.p4 | PhysicsCategory.p4
+                player.physicsBody?.categoryBitMask = PhysicsCategory.player
+                player.physicsBody?.contactTestBitMask = PhysicsCategory.projectile | PhysicsCategory.laser
+                player.physicsBody?.collisionBitMask = PhysicsCategory.obstacle | PhysicsCategory.player
             } else if(i==2) {
-                player.physicsBody?.categoryBitMask = PhysicsCategory.p2
-                player.physicsBody?.contactTestBitMask = PhysicsCategory.shot
-                player.physicsBody?.collisionBitMask = PhysicsCategory.obstacle | PhysicsCategory.p1 | PhysicsCategory.p3 | PhysicsCategory.p4
+                player.physicsBody?.categoryBitMask = PhysicsCategory.player
+                player.physicsBody?.contactTestBitMask = PhysicsCategory.projectile | PhysicsCategory.laser
+                player.physicsBody?.collisionBitMask = PhysicsCategory.obstacle | PhysicsCategory.player
             } else if(i==3) {
-                player.physicsBody?.categoryBitMask = PhysicsCategory.p3
-                player.physicsBody?.contactTestBitMask = PhysicsCategory.shot
-                player.physicsBody?.collisionBitMask = PhysicsCategory.obstacle | PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p4
+                player.physicsBody?.categoryBitMask = PhysicsCategory.player
+                player.physicsBody?.contactTestBitMask = PhysicsCategory.projectile | PhysicsCategory.laser
+                player.physicsBody?.collisionBitMask = PhysicsCategory.obstacle | PhysicsCategory.player
             } else {
-                player.physicsBody?.categoryBitMask = PhysicsCategory.p4
-                player.physicsBody?.contactTestBitMask = PhysicsCategory.shot
-                player.physicsBody?.collisionBitMask = PhysicsCategory.obstacle | PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p3
+                player.physicsBody?.categoryBitMask = PhysicsCategory.player
+                player.physicsBody?.contactTestBitMask = PhysicsCategory.projectile | PhysicsCategory.laser
+                player.physicsBody?.collisionBitMask = PhysicsCategory.obstacle | PhysicsCategory.player
             }
             players.append(player)
         }
@@ -255,8 +258,8 @@ class GameScene: SKScene {
                 playerRight = createTriangle()
                 if (i==1){
                     // player 1 button positioning
-                    playerLeft.fillColor = SKColor.black
-                    playerRight.fillColor = SKColor.black
+                    playerLeft.fillColor = colorsDict[playerColors[i-1]]!
+                    playerRight.fillColor = colorsDict[playerColors[i-1]]!
                     playerLeft.position = CGPoint(x:0, y:0)
                     playerRight.position = CGPoint(x:size.width, y:0)
                     playerRight.zRotation += .pi/2
@@ -265,8 +268,8 @@ class GameScene: SKScene {
                     playerLeft.alpha = 0.6
                 } else if (i==2){
                     // player 2 button positioning
-                    playerLeft.fillColor = SKColor.red
-                    playerRight.fillColor = SKColor.red
+                    playerLeft.fillColor = colorsDict[playerColors[i-1]]!
+                    playerRight.fillColor = colorsDict[playerColors[i-1]]!
                     playerLeft.position = CGPoint(x:size.width, y:size.height)
                     playerRight.position = CGPoint(x:0, y:size.height)
                     playerLeft.zRotation += .pi
@@ -280,8 +283,8 @@ class GameScene: SKScene {
                     // player 1 button positioning
                     playerLeft = createTriangle()
                     playerRight = createTriangle()
-                    playerLeft.fillColor = SKColor.black
-                    playerRight.fillColor = SKColor.black
+                    playerLeft.fillColor = colorsDict[playerColors[i-1]]!
+                    playerRight.fillColor = colorsDict[playerColors[i-1]]!
                     playerLeft.position = CGPoint(x:0, y:0)
                     playerRight.position = CGPoint(x:size.width, y:0)
                     playerRight.zRotation += .pi/2
@@ -292,8 +295,8 @@ class GameScene: SKScene {
                     // player 2 button positioning
                     playerLeft = createSmallLeftTriangle()
                     playerRight = createSmallRightTriangle()
-                    playerLeft.fillColor = SKColor.red
-                    playerRight.fillColor = SKColor.red
+                    playerLeft.fillColor = colorsDict[playerColors[i-1]]!
+                    playerRight.fillColor = colorsDict[playerColors[i-1]]!
                     playerLeft.position = CGPoint(x:0, y:size.height)
                     playerRight.position = CGPoint(x:0, y:size.height)
                     playerLeft.zRotation += .pi * 3/2
@@ -304,8 +307,8 @@ class GameScene: SKScene {
                 } else {
                     playerLeft = createSmallLeftTriangle()
                     playerRight = createSmallRightTriangle()
-                    playerLeft.fillColor = SKColor.blue
-                    playerRight.fillColor = SKColor.blue
+                    playerLeft.fillColor = colorsDict[playerColors[i-1]]!
+                    playerRight.fillColor = colorsDict[playerColors[i-1]]!
                     playerLeft.position = CGPoint(x:size.width, y:size.height)
                     playerRight.position = CGPoint(x:size.width, y:size.height)
                     playerLeft.zRotation += .pi * 2/2
@@ -319,8 +322,8 @@ class GameScene: SKScene {
                 playerRight = createSmallRightTriangle()
                 if (i==1){
                     // player 1 button positioning
-                    playerLeft.fillColor = SKColor.black
-                    playerRight.fillColor = SKColor.black
+                    playerLeft.fillColor = colorsDict[playerColors[i-1]]!
+                    playerRight.fillColor = colorsDict[playerColors[i-1]]!
                     playerLeft.position = CGPoint(x:0, y:0)
                     playerRight.position = CGPoint(x:0, y:0)
                     
@@ -328,8 +331,8 @@ class GameScene: SKScene {
                     playerLeft.alpha = 0.6
                 } else if (i==2) {
                     // player 2 button positioning
-                    playerLeft.fillColor = SKColor.red
-                    playerRight.fillColor = SKColor.red
+                    playerLeft.fillColor = colorsDict[playerColors[i-1]]!
+                    playerRight.fillColor = colorsDict[playerColors[i-1]]!
                     playerLeft.position = CGPoint(x:size.width, y:0)
                     playerRight.position = CGPoint(x:size.width, y:0)
                     playerLeft.zRotation += .pi * 1/2
@@ -338,8 +341,8 @@ class GameScene: SKScene {
                     playerRight.alpha = 0.6
                     playerLeft.alpha = 0.6
                 } else if (i==3){
-                    playerLeft.fillColor = SKColor.blue
-                    playerRight.fillColor = SKColor.blue
+                    playerLeft.fillColor = colorsDict[playerColors[i-1]]!
+                    playerRight.fillColor = colorsDict[playerColors[i-1]]!
                     playerLeft.position = CGPoint(x:size.width, y:size.height)
                     playerRight.position = CGPoint(x:size.width, y:size.height)
                     playerLeft.zRotation += .pi
@@ -348,8 +351,8 @@ class GameScene: SKScene {
                     playerRight.alpha = 0.6
                     playerLeft.alpha = 0.6
                 } else {
-                    playerLeft.fillColor = SKColor.green
-                    playerRight.fillColor = SKColor.green
+                    playerLeft.fillColor = colorsDict[playerColors[i-1]]!
+                    playerRight.fillColor = colorsDict[playerColors[i-1]]!
                     playerLeft.position = CGPoint(x:0, y:size.height)
                     playerRight.position = CGPoint(x:0, y:size.height)
                     playerLeft.zRotation += .pi * 3/2
@@ -411,6 +414,31 @@ class GameScene: SKScene {
         map.addChild(bottomLayer)
     }
     
+    func spawnPowerTile() {
+        let tilesArr = ["Direction", "LandmineTile", "LaserTile", "Reverse", "RocketTile", "ShieldTile", "BubbleTile"]
+        let gameScale = 0.3 * size.width / 1024
+        let playableMargin = (size.height-size.width)/2.0
+        let playableHeight = playableMargin + size.width
+        let randTile = Int.random(in: 0...tilesArr.count-1)
+        let randX = Int.random(in: 0...Int(size.width))
+        let randY = Int.random(in: Int(playableMargin)...Int(playableHeight))
+        
+        let tile = SKSpriteNode(imageNamed: tilesArr[randTile])
+        tile.setScale(gameScale)
+        tile.name = tilesArr[randTile]
+        tile.position = CGPoint(x: randX, y: randY)
+        tile.physicsBody?.contactTestBitMask = PhysicsCategory.player
+        tile.physicsBody?.collisionBitMask = PhysicsCategory.obstacle
+        
+        tile.physicsBody = SKPhysicsBody(circleOfRadius: tile.size.height/2)
+        tile.physicsBody?.isDynamic = false
+        tile.physicsBody?.categoryBitMask = PhysicsCategory.pickupTile
+        
+        
+        gameLayer.addChild(tile)
+        
+    }
+    
     func checkRoundOver() -> Bool {
         var alive = 0
         for player in players{
@@ -435,10 +463,23 @@ class GameScene: SKScene {
         }
         
         if ( !checkGameOver() ) {
+            removeElements()
             resetTanks()
             changeMap()
+            countdown()
         } else {
             
+        }
+    }
+    
+    func removeElements(){
+        for child in gameLayer.children{
+            if let projectile = child as? Projectile {
+                projectile.removeFromParent()
+            }
+            if child.physicsBody?.categoryBitMask == PhysicsCategory.pickupTile{
+                child.removeFromParent()
+            }
         }
     }
     
@@ -493,36 +534,7 @@ class GameScene: SKScene {
         pauseLayer.isHidden = true
         gameLayer.speed = 1.0
         self.physicsWorld.speed = 1.0
-        // Whatever else you need to undo
-    }
-    
-    // fire projectile in direction player tank is facing
-    func fireProjectile(player: Player) {
         
-        if ( player.ammo > 0 ) {
-            let projectile:Projectile = Projectile(imageNamed: "defaultProjectile")
-            projectile.owner = player
-            let direction = CGPoint(x:player.position.x - sin(player.zRotation) * 2000,y:player.position.y + cos(player.zRotation) * 2000)
-            let xDirection = player.position.x - sin(player.zRotation) + (-35 * sin(player.zRotation))
-            let yDirection = player.position.y + cos(player.zRotation) + (35 * cos(player.zRotation))
-            
-            projectile.position = CGPoint(x: xDirection,y:yDirection)
-            
-            projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
-            projectile.physicsBody?.isDynamic = true
-            projectile.physicsBody?.categoryBitMask = PhysicsCategory.shot
-            projectile.physicsBody?.contactTestBitMask = PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p3 | PhysicsCategory.p4 | PhysicsCategory.obstacle
-            projectile.physicsBody?.collisionBitMask = PhysicsCategory.none
-            projectile.physicsBody?.usesPreciseCollisionDetection = true
-            
-            gameLayer.addChild(projectile)
-            
-            let shoot = SKAction.move(to: direction, duration: 2.0)
-            let shootDone = SKAction.removeFromParent()
-            projectile.run(SKAction.sequence([shoot, shootDone]))
-            
-            player.ammo -= 1
-        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -536,8 +548,7 @@ class GameScene: SKScene {
                     }
                     
                     if (rightButtons[i-1].contains(location)){
-                        fireProjectile(player: players[i-1])
-                        //                    players[i-1].fireProjectile()
+                        players[i-1].fireProjectile()
                     }
                 }
             }
@@ -585,12 +596,12 @@ class GameScene: SKScene {
         
         // move tanks forward
         for player in players {
-            player.drive(tankMoveSpeed: tankMoveSpeed)
+            player.drive(tankDriveForward: tankDriveForward, tankMoveSpeed: tankMoveSpeed)
         }
         
         // turn tanks
         for i in 1...numberOfPlayers {
-            if (tankTurnDirection == "left") {
+            if (tankTurnLeft) {
                 if (leftPressed[i-1]){
                     players[i-1].zRotation += CGFloat(tankRotateSpeed)
                 }
@@ -599,7 +610,16 @@ class GameScene: SKScene {
                     players[i-1].zRotation -= CGFloat(tankRotateSpeed)
                 }
             }
-            
+        }
+        
+        for child in gameLayer.children{
+            if child.physicsBody?.categoryBitMask == PhysicsCategory.pickupTile{
+                if (tankTurnLeft) {
+                    child.zRotation += 0.03
+                } else {
+                    child.zRotation -= 0.03
+                }
+            }
         }
         
         boundsChecktanks()
@@ -637,23 +657,25 @@ class GameScene: SKScene {
         shape.physicsBody = SKPhysicsBody(edgeLoopFrom: playableRect)
         shape.physicsBody?.isDynamic = true
         shape.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
-        shape.physicsBody?.contactTestBitMask = PhysicsCategory.shot
-        shape.physicsBody?.collisionBitMask = PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p3 | PhysicsCategory.p4
+        shape.physicsBody?.contactTestBitMask = PhysicsCategory.projectile
+        shape.physicsBody?.collisionBitMask = PhysicsCategory.player
         
         gameLayer.addChild(shape)
     }
     
     func projectileDidCollideWithTank(projectile: Projectile, player: Player) {
-        if(projectile.owner == player){
-            projectile.owner.gameScore -= 10
-        } else {
-            projectile.owner.gameScore += 10
-            print(projectile.owner.gameScore)
+        
+        player.hit(projectile: projectile)
+        
+        if (checkRoundOver()){
+            newRound()
         }
+    }
+    
+    func explosionDidCollideWithTank(explosion: SKSpriteNode, player: Player) {
         
-        projectile.removeFromParent()
-        player.hit()
-        
+        player.explode(explosion: explosion)
+
         if (checkRoundOver()){
             newRound()
         }
@@ -679,27 +701,56 @@ extension GameScene: SKPhysicsContactDelegate {
             secondBody = contact.bodyA
         }
         
-        if ((firstBody.categoryBitMask == PhysicsCategory.p1) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
+        if ((firstBody.categoryBitMask == PhysicsCategory.player) && (secondBody.categoryBitMask == PhysicsCategory.projectile)) {
             if let player = firstBody.node as? Player, let projectile = secondBody.node as? Projectile {
                 projectileDidCollideWithTank(projectile: projectile, player: player)
             }
         }
         
-        if ((firstBody.categoryBitMask == PhysicsCategory.p2) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
+        if ((firstBody.categoryBitMask == PhysicsCategory.player) && (secondBody.categoryBitMask == PhysicsCategory.laser)) {
             if let player = firstBody.node as? Player, let projectile = secondBody.node as? Projectile {
                 projectileDidCollideWithTank(projectile: projectile, player: player)
             }
         }
         
-        if ((firstBody.categoryBitMask == PhysicsCategory.p3) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
-            if let player = firstBody.node as? Player, let projectile = secondBody.node as? Projectile {
-                projectileDidCollideWithTank(projectile: projectile, player: player)
+        if ((firstBody.categoryBitMask == PhysicsCategory.player) && (secondBody.categoryBitMask == PhysicsCategory.landmine)) {
+            if let player = firstBody.node as? Player, let mine = secondBody.node as? Projectile {
+                if (mine.owner != player){
+                    mine.activateMine()
+                }
             }
         }
         
-        if ((firstBody.categoryBitMask == PhysicsCategory.p4) && (secondBody.categoryBitMask == PhysicsCategory.shot)) {
-            if let player = firstBody.node as? Player, let projectile = secondBody.node as? Projectile {
-                projectileDidCollideWithTank(projectile: projectile, player: player)
+        if ((firstBody.categoryBitMask == PhysicsCategory.player) && (secondBody.categoryBitMask == PhysicsCategory.explosion)) {
+            if let player = firstBody.node as? Player, let explosion = secondBody.node as? SKSpriteNode {
+                explosionDidCollideWithTank(explosion: explosion, player: player)
+            }
+        }
+        
+        if ((firstBody.categoryBitMask == PhysicsCategory.player) && (secondBody.categoryBitMask == PhysicsCategory.pickupTile)) {
+            if let player = firstBody.node as? Player, let pickupTile = secondBody.node as? SKSpriteNode {
+                if (pickupTile.name == "Direction" ) {
+                    tankDriveForward = !tankDriveForward
+                } else if (pickupTile.name == "Reverse" ) {
+                    tankTurnLeft = !tankTurnLeft
+                } else if (pickupTile.name == "ShieldTile") {
+                    player.addShield()
+                }
+                else {
+                    let powerUpString = String(pickupTile.name?.dropLast(4) ?? "")
+                    player.powerup = powerUpString
+                }
+                pickupTile.removeFromParent()
+            }
+        }
+        
+        if ((firstBody.categoryBitMask == PhysicsCategory.obstacle) && (secondBody.categoryBitMask == PhysicsCategory.projectile)) {
+            if let projectile = secondBody.node as? Projectile {
+                if (projectile.name=="Rocket"){
+                    projectile.activateRocket()
+                } else {
+                    projectile.removeFromParent()
+                }
             }
         }
         

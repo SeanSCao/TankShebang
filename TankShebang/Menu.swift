@@ -12,7 +12,6 @@ class Menu: SKScene {
     var startButton:SKSpriteNode!
     var optionsButton:SKSpriteNode!
     var TerrainButton:SKSpriteNode!
-    var PowerUpButton:SKSpriteNode!
     var SoundButton:SKSpriteNode!
     var counter: Int = 0
     var counter2: Int = 0
@@ -20,7 +19,6 @@ class Menu: SKScene {
     var player: AVAudioPlayer?
 
     override func didMove(to view: SKView){
-        playSound()
 
     }
     
@@ -68,9 +66,9 @@ class Menu: SKScene {
                     }
 
 
-                    Start.TerrainType = label!.text!
-                    Start.PowerupType = label2!.text!
-                    Start.SoundType = label3!.text!
+                  //  Start.TerrainType = label!.text!
+                   // Start.PowerupType = label2!.text!
+                  //  Start.SoundType = label3!.text!
                     self.view?.presentScene(Start, transition: reveal)
 
                     let gameScene = GameScene(size: view!.bounds.size)
@@ -78,16 +76,13 @@ class Menu: SKScene {
 
                     
                     } else if node.name == "Sound" {
-                    playSound()
                     if let label2 = self.childNode(withName: "Label2") as? SKLabelNode {
                         if counter2 % 2 == 0 {
                         label2.text = "On"
-                            playSound()
 
                             counter2+=1
                         } else {
                                                       label2.text = "Off"
-                            playSound()
 
                                 counter2+=1
 
@@ -149,28 +144,6 @@ class Menu: SKScene {
 
 }
 
-     func playSound() {
-            guard let url = Bundle.main.url(forResource: "Music", withExtension: "mp3") else { return }
 
-            do {
-                try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
-                try AVAudioSession.sharedInstance().setActive(true)
-
-                /* The following line is required for the player to work on iOS 11. Change the file type accordingly*/
-                player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
-
-                /* iOS 10 and earlier require the following line:
-                player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileTypeMPEGLayer3) */
-
-                guard let player = player else { return }
-
-                player.play()
-
-            } catch let error {
-                print(error.localizedDescription)
-            }
-        
-    
-}
 
 }
