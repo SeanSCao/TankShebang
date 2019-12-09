@@ -12,11 +12,13 @@ import SpriteKit
 
 class Player: SKSpriteNode {
     
+    var colorString:String = ""
     var directionState:String = "forward"
     var health:Int = 2
     var invincible:Bool = false
     var shield:Bool = false
     var ammo:Int = 4
+    var powerup:String = "Laser"
     
     var roundScore:Int = 0
     var gameScore:Int = 0
@@ -59,8 +61,17 @@ class Player: SKSpriteNode {
         }
     }
     
-    func hit() {
+    func hit(projectile: Projectile) {
         
+        // Calculate score
+        if(projectile.owner == self){
+            projectile.owner.gameScore -= 10
+        } else {
+            projectile.owner.gameScore += 10
+            print(projectile.owner.gameScore)
+        }
+        
+        // Calculate damage
         if (shield) {
             if let shieldNode = self.childNode(withName: "shield") as? SKShapeNode {
                 shieldNode.removeFromParent()
@@ -68,10 +79,20 @@ class Player: SKSpriteNode {
             shield = false
         } else {
             if (!invincible){
-                health -= 1
+                if (projectile.isLaser){
+                    health = 0
+                } else {
+                    health -= 1
+                }
             }
         }
         
+        // Remove projectile from parent
+        if (!projectile.isLaser){
+            projectile.removeFromParent()
+        }
+        
+        // Calculate dead or not
         if (health == 0){
             self.removeFromParent()
         } else {
@@ -87,7 +108,7 @@ class Player: SKSpriteNode {
         
         self.run(seq)
         
-        invincible = true/Users/sean/Downloads
+        invincible = true
         
         let seconds = 0.5
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
@@ -97,9 +118,12 @@ class Player: SKSpriteNode {
     
     func fireProjectile() {
 
-        if ( self.ammo > 0 ) {
-            let projectile:Projectile = Projectile(imageNamed: "defaultProjectile")
-            projectile.setScale(0.1)
+        if ( !self.powerup.isEmpty ){
+            if (self.powerup == "Laser"){
+                fireLaser();
+            }
+        } else if ( self.ammo > 0 ) {
+            let projectile:Projectile = Projectile(imageNamed: "DefaultProjectile")
             projectile.owner = self
             let direction = CGPoint(x:self.position.x - sin(self.zRotation) * 2000,y:self.position.y + cos(self.zRotation) * 2000)
             let xDirection = self.position.x - sin(self.zRotation) + (-40 * sin(self.zRotation))
@@ -109,8 +133,8 @@ class Player: SKSpriteNode {
 
             projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
             projectile.physicsBody?.isDynamic = true
-            projectile.physicsBody?.categoryBitMask = PhysicsCategory.shot
-            projectile.physicsBody?.contactTestBitMask = PhysicsCategory.p1 | PhysicsCategory.p2 | PhysicsCategory.p3 | PhysicsCategory.p4 | PhysicsCategory.obstacle
+            projectile.physicsBody?.categoryBitMask = PhysicsCategory.projectile
+            projectile.physicsBody?.contactTestBitMask = PhysicsCategory.player | PhysicsCategory.obstacle
             projectile.physicsBody?.collisionBitMask = PhysicsCategory.none
             projectile.physicsBody?.usesPreciseCollisionDetection = true
 
@@ -121,11 +145,45 @@ class Player: SKSpriteNode {
             projectile.run(SKAction.sequence([shoot, shootDone]))
 
             self.ammo -= 1
+            let spriteFile = self.colorString + String(ammo)
+            self.texture = SKTexture(imageNamed: spriteFile)
         }
     }
     
+    func fireLaser() {
+        let projectile:Projectile = Projectile(imageNamed: "Laser")
+        projectile.owner = self
+        projectile.isLaser = true
+        
+        projectile.setScale(0.5)
+        projectile.zRotation = self.zRotation
+        let direction = CGPoint(x:self.position.x - sin(self.zRotation) * 2000,y:self.position.y + cos(self.zRotation) * 2000)
+        let xDirection = self.position.x - sin(self.zRotation) + (-100 * sin(self.zRotation))
+        let yDirection = self.position.y + cos(self.zRotation) + (100 * cos(self.zRotation))
+
+        projectile.position = CGPoint(x: xDirection,y:yDirection)
+
+        projectile.physicsBody = SKPhysicsBody(rectangleOf: projectile.size)
+        projectile.physicsBody?.isDynamic = true
+        projectile.physicsBody?.categoryBitMask = PhysicsCategory.laser
+        projectile.physicsBody?.contactTestBitMask = PhysicsCategory.player
+        projectile.physicsBody?.collisionBitMask = PhysicsCategory.none
+        projectile.physicsBody?.usesPreciseCollisionDetection = true
+
+        self.parent?.addChild(projectile)
+
+        let shoot = SKAction.move(to: direction, duration: 1.0)
+        let shootDone = SKAction.removeFromParent()
+        projectile.run(SKAction.sequence([shoot, shootDone]))
+    }
+    
     @objc func reload() {
-        self.ammo += 1
+        if (self.ammo < 4) {
+            self.ammo += 1
+            let spriteFile = self.colorString + String(ammo)
+            self.texture = SKTexture(imageNamed: spriteFile)
+        }
+        
     }
     
 }

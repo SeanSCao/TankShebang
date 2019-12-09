@@ -13,5 +13,6 @@ import SpriteKit
 class Projectile: SKSpriteNode {
     
     var owner:Player = Player()
+    var isLaser:Bool = false
     
 }
