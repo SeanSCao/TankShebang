@@ -21,6 +21,8 @@
 		145A1C6B23724421006D8603 /* TankShebangUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145A1C6A23724421006D8603 /* TankShebangUITests.swift */; };
 		1487665A23908689003D1DD0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1487665823908689003D1DD0 /* Assets.xcassets */; };
 		14DC31582395D8DE002F548B /* Tiles.sks in Resources */ = {isa = PBXBuildFile; fileRef = 14DC31572395D8DE002F548B /* Tiles.sks */; };
+		72D26FEC239EAF0800D9F9AF /* Start.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D26FEB239EAF0800D9F9AF /* Start.swift */; };
+		72D26FEE239EAF1200D9F9AF /* Start.sks in Resources */ = {isa = PBXBuildFile; fileRef = 72D26FED239EAF1200D9F9AF /* Start.sks */; };
 		72DB840B239E83D200B8486A /* Menu.sks in Resources */ = {isa = PBXBuildFile; fileRef = 72DB8409239E83D200B8486A /* Menu.sks */; };
 		72DB840C239E83D200B8486A /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DB840A239E83D200B8486A /* Menu.swift */; };
 /* End PBXBuildFile section */
@@ -63,6 +65,8 @@
 		145A1C6C23724421006D8603 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1487665823908689003D1DD0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		14DC31572395D8DE002F548B /* Tiles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Tiles.sks; sourceTree = "<group>"; };
+		72D26FEB239EAF0800D9F9AF /* Start.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Start.swift; sourceTree = "<group>"; };
+		72D26FED239EAF1200D9F9AF /* Start.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Start.sks; sourceTree = "<group>"; };
 		72DB8409239E83D200B8486A /* Menu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Menu.sks; sourceTree = "<group>"; };
 		72DB840A239E83D200B8486A /* Menu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -130,6 +134,8 @@
 				145A1C5323724421006D8603 /* LaunchScreen.storyboard */,
 				145A1C5623724421006D8603 /* Info.plist */,
 				14DC31572395D8DE002F548B /* Tiles.sks */,
+				72D26FEB239EAF0800D9F9AF /* Start.swift */,
+				72D26FED239EAF1200D9F9AF /* Start.sks */,
 			);
 			path = TankShebang;
 			sourceTree = "<group>";
@@ -264,6 +270,7 @@
 				1487665A23908689003D1DD0 /* Assets.xcassets in Resources */,
 				145A1C5523724421006D8603 /* LaunchScreen.storyboard in Resources */,
 				145A1C492372441F006D8603 /* Actions.sks in Resources */,
+				72D26FEE239EAF1200D9F9AF /* Start.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,6 +297,7 @@
 			files = (
 				72DB840C239E83D200B8486A /* Menu.swift in Sources */,
 				141D18182396E6AD0016E03F /* Projectile.swift in Sources */,
+				72D26FEC239EAF0800D9F9AF /* Start.swift in Sources */,
 				141D181623961B170016E03F /* Player.swift in Sources */,
 				145A1C4B2372441F006D8603 /* GameScene.swift in Sources */,
 				145A1C4D2372441F006D8603 /* GameViewController.swift in Sources */,
