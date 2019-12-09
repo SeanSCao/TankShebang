@@ -15,23 +15,23 @@ class Projectile: SKSpriteNode {
     var owner:Player = Player()
     var isLaser:Bool = false
     
-    func explode(radius:CGFloat){
-        let Circle = SKShapeNode(circleOfRadius: radius) // Size of Circle
-        Circle.position = CGPoint(x:self.position.x,y:self.position.y)
-        Circle.strokeColor = SKColor.white
-        Circle.fillColor = SKColor.white
-        Circle.physicsBody = SKPhysicsBody(circleOfRadius: self.size.height)
-        Circle.physicsBody?.isDynamic = false
-        Circle.physicsBody?.categoryBitMask = PhysicsCategory.explosion
-        Circle.physicsBody?.contactTestBitMask = PhysicsCategory.player
-        Circle.physicsBody?.collisionBitMask = PhysicsCategory.none
-        self.parent?.addChild(Circle)
+    func explode(radius:CGFloat, position: CGPoint){
+        self.texture = SKTexture(imageNamed: "Explosion")
+        self.zPosition = 101
+        self.setScale(6)
+        self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width/2)
+        self.physicsBody?.isDynamic = true
+        self.physicsBody?.categoryBitMask = PhysicsCategory.explosion
+        self.physicsBody?.contactTestBitMask = PhysicsCategory.player
+        self.physicsBody?.collisionBitMask = PhysicsCategory.none
+        
     }
     
     func activateMine(){
         let rotateAction = SKAction.rotate(toAngle: 10 * .pi, duration: 1)
         let removeAction = SKAction.removeFromParent()
-        let explodeAction = SKAction.run({self.explode(radius:50)})
-        self.run(SKAction.sequence([rotateAction, removeAction, explodeAction]))
+        let explodeAction = SKAction.run({self.explode(radius:50, position:CGPoint(x:0,y:0))})
+        let fadeAction = SKAction.fadeOut(withDuration: 0.5)
+        self.run(SKAction.sequence([rotateAction, explodeAction, SKAction.wait(forDuration: 0.25), fadeAction, removeAction]))
     }
 }

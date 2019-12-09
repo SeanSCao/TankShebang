@@ -18,8 +18,9 @@ class Player: SKSpriteNode {
     var invincible:Bool = false
     var shield:Bool = false
     var ammo:Int = 4
-    var powerup:String = "Bubble"
+    var powerup:String = "Landmine"
     
+    var gameScale:CGFloat = 1
     var roundScore:Int = 0
     var gameScore:Int = 0
     
@@ -63,12 +64,9 @@ class Player: SKSpriteNode {
     
     func hit(projectile: Projectile) {
         
-        
-        
         // Calculate damage
-        if (projectile.name == "explosive"){
-            projectile.removeFromParent()
-            
+        if (projectile.name == "Landmine" && projectile.owner != self){
+            projectile.activateMine()
         } else if (shield) {
             if let shieldNode = self.childNode(withName: "shield") as? SKShapeNode {
                 shieldNode.removeFromParent()
@@ -110,7 +108,7 @@ class Player: SKSpriteNode {
         }
     }
     
-    func explode(explosion: SKShapeNode) {
+    func explode(explosion: SKSpriteNode) {
         
         // Calculate damage
         if (shield) {
@@ -149,12 +147,13 @@ class Player: SKSpriteNode {
     }
     
     func fireProjectile() {
-
         if ( !self.powerup.isEmpty ){
             if (self.powerup == "Laser"){
-                fireLaser();
+                fireLaser()
             } else if (self.powerup == "Bubble"){
-                fireBubble();
+                fireBubble()
+            } else if (self.powerup == "Landmine"){
+                dropMine()
             }
             self.powerup = ""
         } else if ( self.ammo > 0 ) {
@@ -190,7 +189,7 @@ class Player: SKSpriteNode {
         projectile.owner = self
         projectile.isLaser = true
         
-        projectile.setScale(0.5)
+        projectile.setScale(0.5*gameScale)
         projectile.zRotation = self.zRotation
         let direction = CGPoint(x:self.position.x - sin(self.zRotation) * 2000,y:self.position.y + cos(self.zRotation) * 2000)
         let xDirection = self.position.x - sin(self.zRotation) + (-100 * sin(self.zRotation))
@@ -233,6 +232,25 @@ class Player: SKSpriteNode {
         let shoot = SKAction.move(to: direction, duration: 2.0)
         let shootDone = SKAction.removeFromParent()
         projectile.run(SKAction.sequence([shoot, shootDone]))
+    }
+    
+    func dropMine(){
+        let projectile:Projectile = Projectile(imageNamed: "Landmine")
+        projectile.owner = self
+        projectile.name = "Landmine"
+        
+        projectile.setScale(gameScale)
+
+        projectile.position = CGPoint(x: self.position.x,y:self.position.y)
+
+        projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
+        projectile.physicsBody?.isDynamic = true
+        projectile.physicsBody?.categoryBitMask = PhysicsCategory.landmine
+        projectile.physicsBody?.contactTestBitMask = PhysicsCategory.player
+        projectile.physicsBody?.collisionBitMask = PhysicsCategory.none
+        projectile.physicsBody?.usesPreciseCollisionDetection = true
+
+        self.parent?.addChild(projectile)
     }
     
     @objc func reload() {

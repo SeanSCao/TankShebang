@@ -17,6 +17,7 @@ struct PhysicsCategory {
     static let laser                : UInt32 = 0b101
     static let explosion            : UInt32 = 0b110
     static let pickupTile           : UInt32 = 0b111
+    static let landmine             : UInt32 = 0b1000
 }
 
 class GameScene: SKScene {
@@ -86,7 +87,7 @@ class GameScene: SKScene {
         for player in players {
             Timer.scheduledTimer(timeInterval: 1, target: player, selector: #selector(player.reload), userInfo: nil, repeats: true)
         }
-    run(SKAction.repeatForever(SKAction.sequence([SKAction.run(spawnPowerTile), SKAction.wait(forDuration: 3.0)])))
+    run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 3.0), SKAction.run(spawnPowerTile)])))
         
         players[0].addShield()
         
@@ -97,14 +98,16 @@ class GameScene: SKScene {
     
     // create sprite node for each player tank and position accordingly
     func initPlayers(){
-        let gameScale = 0.6 * size.width / 1024
+        let gameScale = size.width / 1024
         
         for i in 1...numberOfPlayers {
             let spriteFile = playerColors[i-1] + "4"
             let player:Player = Player(imageNamed: spriteFile) //player tank
             player.colorString = playerColors[i-1]
+            player.zPosition = 100
             
-            player.setScale(gameScale)
+            player.gameScale = gameScale
+            player.setScale(0.6*gameScale)
             
             player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
             player.physicsBody?.isDynamic = true
@@ -428,7 +431,7 @@ class GameScene: SKScene {
         tile.physicsBody?.collisionBitMask = PhysicsCategory.obstacle
         
         tile.physicsBody = SKPhysicsBody(circleOfRadius: tile.size.height/2)
-        tile.physicsBody?.isDynamic = true
+        tile.physicsBody?.isDynamic = false
         tile.physicsBody?.categoryBitMask = PhysicsCategory.pickupTile
         
         
@@ -669,10 +672,10 @@ class GameScene: SKScene {
         }
     }
     
-    func explosionDidCollideWithTank(explosion: SKShapeNode, player: Player) {
+    func explosionDidCollideWithTank(explosion: SKSpriteNode, player: Player) {
         
         player.explode(explosion: explosion)
-        
+
         if (checkRoundOver()){
             newRound()
         }
@@ -710,8 +713,16 @@ extension GameScene: SKPhysicsContactDelegate {
             }
         }
         
+        if ((firstBody.categoryBitMask == PhysicsCategory.player) && (secondBody.categoryBitMask == PhysicsCategory.landmine)) {
+            if let player = firstBody.node as? Player, let mine = secondBody.node as? Projectile {
+                if (mine.owner != player){
+                    mine.activateMine()
+                }
+            }
+        }
+        
         if ((firstBody.categoryBitMask == PhysicsCategory.player) && (secondBody.categoryBitMask == PhysicsCategory.explosion)) {
-            if let player = firstBody.node as? Player, let explosion = secondBody.node as? SKShapeNode {
+            if let player = firstBody.node as? Player, let explosion = secondBody.node as? SKSpriteNode {
                 explosionDidCollideWithTank(explosion: explosion, player: player)
             }
         }
