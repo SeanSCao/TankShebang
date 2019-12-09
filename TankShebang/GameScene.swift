@@ -413,7 +413,7 @@ class GameScene: SKScene {
     
     func spawnPowerTile() {
         let tilesArr = ["Direction", "LandmineTile", "LaserTile", "Reverse", "RocketTile", "ShieldTile", "BubbleTile"]
-        let gameScale = 0.4 * size.width / 1024
+        let gameScale = 0.3 * size.width / 1024
         let playableMargin = (size.height-size.width)/2.0
         let playableHeight = playableMargin + size.width
         let randTile = Int.random(in: 0...tilesArr.count-1)
@@ -460,7 +460,7 @@ class GameScene: SKScene {
         }
         
         if ( !checkGameOver() ) {
-            removeProjectiles()
+            removeElements()
             resetTanks()
             changeMap()
             countdown()
@@ -469,10 +469,13 @@ class GameScene: SKScene {
         }
     }
     
-    func removeProjectiles(){
+    func removeElements(){
         for child in gameLayer.children{
             if let projectile = child as? Projectile {
                 projectile.removeFromParent()
+            }
+            if child.physicsBody?.categoryBitMask == PhysicsCategory.pickupTile{
+                child.removeFromParent()
             }
         }
     }
@@ -602,6 +605,16 @@ class GameScene: SKScene {
             } else {
                 if (leftPressed[i-1]){
                     players[i-1].zRotation -= CGFloat(tankRotateSpeed)
+                }
+            }
+        }
+        
+        for child in gameLayer.children{
+            if child.physicsBody?.categoryBitMask == PhysicsCategory.pickupTile{
+                if (tankTurnLeft) {
+                    child.zRotation += 0.03
+                } else {
+                    child.zRotation -= 0.03
                 }
             }
         }
