@@ -745,7 +745,13 @@ extension GameScene: SKPhysicsContactDelegate {
         }
         
         if ((firstBody.categoryBitMask == PhysicsCategory.obstacle) && (secondBody.categoryBitMask == PhysicsCategory.projectile)) {
-            secondBody.node?.removeFromParent()
+            if let projectile = secondBody.node as? Projectile {
+                if (projectile.name=="Rocket"){
+                    projectile.activateRocket()
+                } else {
+                    projectile.removeFromParent()
+                }
+            }
         }
         
         //        if ((firstBody.categoryBitMask == PhysicsCategory.shot) && (secondBody.categoryBitMask == PhysicsCategory.shield)) {

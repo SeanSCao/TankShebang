@@ -18,7 +18,7 @@ class Player: SKSpriteNode {
     var invincible:Bool = false
     var shield:Bool = false
     var ammo:Int = 4
-    var powerup:String = "Landmine"
+    var powerup:String = "Rocket"
     
     var gameScale:CGFloat = 1
     var roundScore:Int = 0
@@ -67,6 +67,8 @@ class Player: SKSpriteNode {
         // Calculate damage
         if (projectile.name == "Landmine" && projectile.owner != self){
             projectile.activateMine()
+        } else if (projectile.name == "Rocket") {
+            projectile.activateRocket()
         } else if (shield) {
             if let shieldNode = self.childNode(withName: "shield") as? SKShapeNode {
                 shieldNode.removeFromParent()
@@ -96,7 +98,7 @@ class Player: SKSpriteNode {
         }
         
         // Remove projectile from parent
-        if (!projectile.isLaser){
+        if (!projectile.isLaser && projectile.name != "Rocket"){
             projectile.removeFromParent()
         }
         
@@ -154,6 +156,8 @@ class Player: SKSpriteNode {
                 fireBubble()
             } else if (self.powerup == "Landmine"){
                 dropMine()
+            } else if (self.powerup == "Rocket"){
+                fireRocket()
             }
             self.powerup = ""
         } else if ( self.ammo > 0 ) {
@@ -217,6 +221,32 @@ class Player: SKSpriteNode {
         let direction = CGPoint(x:self.position.x - sin(self.zRotation) * 2000,y:self.position.y + cos(self.zRotation) * 2000)
         let xDirection = self.position.x - sin(self.zRotation) + (-100 * sin(self.zRotation))
         let yDirection = self.position.y + cos(self.zRotation) + (100 * cos(self.zRotation))
+
+        projectile.position = CGPoint(x: xDirection,y:yDirection)
+
+        projectile.physicsBody = SKPhysicsBody(circleOfRadius: projectile.size.width/2)
+        projectile.physicsBody?.isDynamic = true
+        projectile.physicsBody?.categoryBitMask = PhysicsCategory.projectile
+        projectile.physicsBody?.contactTestBitMask = PhysicsCategory.player | PhysicsCategory.obstacle
+        projectile.physicsBody?.collisionBitMask = PhysicsCategory.none
+        projectile.physicsBody?.usesPreciseCollisionDetection = true
+
+        self.parent?.addChild(projectile)
+
+        let shoot = SKAction.move(to: direction, duration: 2.0)
+        let shootDone = SKAction.removeFromParent()
+        projectile.run(SKAction.sequence([shoot, shootDone]))
+    }
+    
+    func fireRocket(){
+        let projectile:Projectile = Projectile(imageNamed: "Rocket")
+        projectile.owner = self
+        projectile.name = "Rocket"
+        projectile.zRotation = self.zRotation
+        projectile.setScale(0.5*gameScale)
+        let direction = CGPoint(x:self.position.x - sin(self.zRotation) * 2000,y:self.position.y + cos(self.zRotation) * 2000)
+        let xDirection = self.position.x - sin(self.zRotation) + (-60 * sin(self.zRotation))
+        let yDirection = self.position.y + cos(self.zRotation) + (60 * cos(self.zRotation))
 
         projectile.position = CGPoint(x: xDirection,y:yDirection)
 

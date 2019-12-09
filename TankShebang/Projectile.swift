@@ -15,10 +15,11 @@ class Projectile: SKSpriteNode {
     var owner:Player = Player()
     var isLaser:Bool = false
     
-    func explode(radius:CGFloat, position: CGPoint){
+    func explode(scale:CGFloat, position: CGPoint){
         self.texture = SKTexture(imageNamed: "Explosion")
+        self.size = self.texture!.size()
         self.zPosition = 101
-        self.setScale(6)
+        self.setScale(scale)
         self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width/2)
         self.physicsBody?.isDynamic = true
         self.physicsBody?.categoryBitMask = PhysicsCategory.explosion
@@ -30,8 +31,16 @@ class Projectile: SKSpriteNode {
     func activateMine(){
         let rotateAction = SKAction.rotate(toAngle: 10 * .pi, duration: 1)
         let removeAction = SKAction.removeFromParent()
-        let explodeAction = SKAction.run({self.explode(radius:50, position:CGPoint(x:0,y:0))})
+        let explodeAction = SKAction.run({self.explode(scale: 2, position:CGPoint(x:0,y:0))})
         let fadeAction = SKAction.fadeOut(withDuration: 0.5)
         self.run(SKAction.sequence([rotateAction, explodeAction, SKAction.wait(forDuration: 0.25), fadeAction, removeAction]))
+    }
+    
+    func activateRocket(){
+        self.removeAllActions()
+        let removeAction = SKAction.removeFromParent()
+        let explodeAction = SKAction.run({self.explode(scale: 0.5, position:CGPoint(x:0,y:0))})
+        let fadeAction = SKAction.fadeOut(withDuration: 0.5)
+        self.run(SKAction.sequence([explodeAction, SKAction.wait(forDuration: 0.25), fadeAction, removeAction]))
     }
 }
