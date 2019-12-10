@@ -18,7 +18,7 @@ class GameOptionsViewController: UIViewController {
     var ScatterShot = String()
     let modes = ["Tank Hunter","Pilot Hunter","Deathmatch"]
     let kills = ["1","3","5"]
-    let terrains = ["Ice","Rock","Grass"]
+    let terrains = ["Dirt","Grass"]
     var mode_start = 0
     var kill_start = 0
     var level_start = 0
@@ -55,7 +55,7 @@ class GameOptionsViewController: UIViewController {
     
     @IBAction func touchterrain(_ sender: Any) {
         level_start += 1
-        if(level_start > 2){
+        if(level_start > 1){
             level_start = 0
         }
         TerrainButton.setTitle(terrains[level_start], for: .normal)
@@ -63,7 +63,7 @@ class GameOptionsViewController: UIViewController {
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "Game"){
-            var game_view = segue.destination as! GameViewController
+            let game_view = segue.destination as! GameViewController
             game_view.Mode = mode
             game_view.Terrain = terrain
             game_view.Kill = kill

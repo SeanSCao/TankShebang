@@ -74,6 +74,8 @@ class GameScene: SKScene {
         
         backgroundColor = SKColor.white
         
+        pauseLayer.zPosition = 200
+        
         addChild(gameLayer)
         
         addChild(pauseLayer)
@@ -94,7 +96,7 @@ class GameScene: SKScene {
             gameLayer.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 3.0), SKAction.run(spawnPowerTile)])))
         }
         
-        if (MUSIC){
+        if (self.MUSIC){
             gameLayer.addChild(backgroundSound)
             self.backgroundSound.run(SKAction.changeVolume(to: Float(0.5), duration: 0))
             self.backgroundSound.run(SKAction.stop())
@@ -231,7 +233,12 @@ class GameScene: SKScene {
             } else {
                 players[i-1].removeShield()
             }
-            players[i-1].powerup = ""
+            let powerups = ["Rocket", "Laser", "Landmine", "Bubble"]
+            if (self.STARTPOWERUPS) {
+                players[i-1].powerup = powerups[Int.random(in:1...3)]
+            } else {
+                players[i-1].powerup = ""
+            }
             gameLayer.addChild(players[i-1])
         }
     }
@@ -441,6 +448,7 @@ class GameScene: SKScene {
         } else {
             for _ in 1...25 {
                 let rock = SKSpriteNode(imageNamed: "Rock")
+                rock.name = "obstacle"
                 rock.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
                 rock.physicsBody?.contactTestBitMask = PhysicsCategory.projectile
                 rock.physicsBody?.collisionBitMask = PhysicsCategory.player | PhysicsCategory.pickupTile
@@ -504,6 +512,11 @@ class GameScene: SKScene {
             }
         }
         
+        gameLayer.removeAllActions()
+        for player in players{
+            player.removeAllActions()
+        }
+        
         if ( !checkGameOver() ) {
             run(SKAction.wait(forDuration: 1)){
                 self.initScoreboard()
@@ -523,6 +536,10 @@ class GameScene: SKScene {
     
     func gameOver() {
         self.backgroundSound.run(SKAction.stop())
+        gameLayer.removeAllActions()
+        for player in players{
+            player.removeAllActions()
+        }
         run(SKAction.wait(forDuration: 1)){
             self.backgroundSound.run(SKAction.stop())
             var winner:Player = self.players[0]
@@ -637,6 +654,9 @@ class GameScene: SKScene {
                 projectile.removeFromParent()
             }
             if child.physicsBody?.categoryBitMask == PhysicsCategory.pickupTile{
+                child.removeFromParent()
+            }
+            if child.name == "obstacle" {
                 child.removeFromParent()
             }
         }
@@ -776,9 +796,12 @@ class GameScene: SKScene {
         
         // move tanks forward
         if (self.isPausedFix == false){
-            print(self.gameLayer.isPaused)
             for player in players {
                 player.drive(tankDriveForward: tankDriveForward, tankMoveSpeed: tankMoveSpeed)
+            }
+        } else {
+            for player in players {
+                player.removeAllActions()
             }
         }
         
@@ -856,7 +879,6 @@ class GameScene: SKScene {
     }
     
     func explosionDidCollideWithTank(explosion: Projectile, player: Player) {
-        print("explode")
         player.explode(explosion: explosion)
 
         if (checkRoundOver()){
