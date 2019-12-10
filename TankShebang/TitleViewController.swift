@@ -13,7 +13,7 @@ class TitleViewController: UIViewController {
     var Sound = String()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "PlayerSelect"){
-            var game_options = segue.destination as! PlayerSelectViewController
+            let game_options = segue.destination as! PlayerSelectViewController
             game_options.Music = Music
             game_options.Sound = Sound
             
