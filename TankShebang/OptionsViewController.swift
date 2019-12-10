@@ -15,8 +15,8 @@ class OptionsViewController: UIViewController {
     
     @IBOutlet weak var MusicButton: UIButton!
     
-    var sound = String()
-    var music = String()
+    var sound = "On"
+    var music = "On"
     
     
     
@@ -46,7 +46,7 @@ class OptionsViewController: UIViewController {
         
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let titleview = segue.destination as! TitleViewController
+        var titleview = segue.destination as! TitleViewController
         titleview.Sound = sound
         titleview.Music = music
         
