@@ -17,7 +17,7 @@ class Player: SKSpriteNode {
     var invincible:Bool = false
     var shield:Bool = false
     var ammo:Int = 4
-    var powerup:String = ""
+    var powerup:String = "Rocket"
     
     var gameScale:CGFloat = 1
     var roundScore:Int = 0
@@ -80,6 +80,23 @@ class Player: SKSpriteNode {
             projectile.activateMine()
         } else if (projectile.name == "Rocket") {
             projectile.activateRocket()
+            if (shield) {
+                removeShield()
+                if(projectile.owner == self){
+                    projectile.owner.gameScore -= 10
+                } else {
+                    projectile.owner.gameScore += 10
+                    print(projectile.owner.gameScore)
+                }
+            } else {
+                health = 0
+                if(projectile.owner == self){
+                    projectile.owner.gameScore -= 25
+                } else {
+                    projectile.owner.gameScore += 25
+                    print(projectile.owner.gameScore)
+                }
+            }
         } else if (shield) {
             removeShield()
             if(projectile.owner == self){
@@ -119,14 +136,19 @@ class Player: SKSpriteNode {
         
         // Calculate dead or not
         if (health == 0){
+            if(projectile.owner == self){
+                projectile.owner.gameScore -= 25
+            } else {
+                projectile.owner.gameScore += 25
+            }
             self.removeFromParent()
         } else {
             temporaryInvincibility()
         }
     }
     
-    func explode(explosion: SKSpriteNode) {
-        
+    func explode(explosion: Projectile) {
+        print("player explode")
         // Calculate damage
         if (shield) {
             removeShield()
@@ -146,6 +168,11 @@ class Player: SKSpriteNode {
         
         // Calculate dead or not
         if (health == 0){
+            if(explosion.owner == self){
+                explosion.owner.gameScore -= 25
+            } else {
+                explosion.owner.gameScore += 25
+            }
             self.removeFromParent()
         } else {
             temporaryInvincibility()

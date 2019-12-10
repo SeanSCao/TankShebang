@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		141D181623961B170016E03F /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141D181523961B170016E03F /* Player.swift */; };
 		141D18182396E6AD0016E03F /* Projectile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141D18172396E6AD0016E03F /* Projectile.swift */; };
-		1441A459239F199300C6B1EF /* iPadLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1441A458239F199300C6B1EF /* iPadLaunchScreen.storyboard */; };
 		145A1C452372441F006D8603 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145A1C442372441F006D8603 /* AppDelegate.swift */; };
 		145A1C472372441F006D8603 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 145A1C462372441F006D8603 /* GameScene.sks */; };
 		145A1C492372441F006D8603 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 145A1C482372441F006D8603 /* Actions.sks */; };
@@ -44,7 +43,6 @@
 /* Begin PBXFileReference section */
 		141D181523961B170016E03F /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		141D18172396E6AD0016E03F /* Projectile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Projectile.swift; sourceTree = "<group>"; };
-		1441A458239F199300C6B1EF /* iPadLaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = iPadLaunchScreen.storyboard; sourceTree = "<group>"; };
 		145A1C412372441F006D8603 /* TankShebang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TankShebang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		145A1C442372441F006D8603 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		145A1C462372441F006D8603 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -124,7 +122,6 @@
 				145A1C4E2372441F006D8603 /* Main.storyboard */,
 				145A1C5123724421006D8603 /* Assets.xcassets */,
 				145A1C5323724421006D8603 /* LaunchScreen.storyboard */,
-				1441A458239F199300C6B1EF /* iPadLaunchScreen.storyboard */,
 				145A1C5623724421006D8603 /* Info.plist */,
 				14DC31572395D8DE002F548B /* Tiles.sks */,
 			);
@@ -256,7 +253,6 @@
 				145A1C502372441F006D8603 /* Main.storyboard in Resources */,
 				14DC31582395D8DE002F548B /* Tiles.sks in Resources */,
 				145A1C472372441F006D8603 /* GameScene.sks in Resources */,
-				1441A459239F199300C6B1EF /* iPadLaunchScreen.storyboard in Resources */,
 				145A1C5223724421006D8603 /* Assets.xcassets in Resources */,
 				1487665A23908689003D1DD0 /* Assets.xcassets in Resources */,
 				145A1C5523724421006D8603 /* LaunchScreen.storyboard in Resources */,

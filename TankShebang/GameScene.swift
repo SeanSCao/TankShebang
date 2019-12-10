@@ -97,6 +97,7 @@ class GameScene: SKScene {
         for i in 1...numberOfPlayers {
             let spriteFile = playerColors[i-1] + "4"
             let player:Player = Player(imageNamed: spriteFile) //player tank
+            player.name = "Player " + String(i)
             player.colorString = playerColors[i-1]
             player.zPosition = 100
             
@@ -211,7 +212,7 @@ class GameScene: SKScene {
             } else {
                 players[i-1].removeShield()
             }
-            players[i-1].powerup = ""
+            players[i-1].powerup = "Rocket"
             gameLayer.addChild(players[i-1])
         }
     }
@@ -474,7 +475,27 @@ class GameScene: SKScene {
             }
             
         } else {
-            
+            gameOver()
+        }
+    }
+    
+    func gameOver() {
+        run(SKAction.wait(forDuration: 1)){
+            var winner:Player = self.players[0]
+            for player in self.players{
+                if ( player.gameScore > winner.gameScore ){
+                    winner = player
+                }
+            }
+            self.initScoreboard()
+            self.removeElements()
+            self.leftPressed = [false, false, false, false]
+            self.pauseGame()
+            self.countdownLabel = SKLabelNode(fontNamed: "Avenir")
+            self.countdownLabel.text = winner.name! + " Wins"
+            self.countdownLabel.horizontalAlignmentMode = .center
+            self.countdownLabel.position = CGPoint(x:self.size.width/2, y:self.size.height/2-45)
+            self.pauseLayer.addChild(self.countdownLabel)
         }
     }
     
@@ -556,7 +577,7 @@ class GameScene: SKScene {
     
     func checkGameOver() -> Bool {
         for player in players{
-            if ( player.roundScore > 1000 ){
+            if ( player.gameScore > 1000 ){
                 return true
             }
         }
@@ -716,8 +737,8 @@ class GameScene: SKScene {
         }
     }
     
-    func explosionDidCollideWithTank(explosion: SKSpriteNode, player: Player) {
-        
+    func explosionDidCollideWithTank(explosion: Projectile, player: Player) {
+        print("explode")
         player.explode(explosion: explosion)
 
         if (checkRoundOver()){
@@ -766,7 +787,7 @@ extension GameScene: SKPhysicsContactDelegate {
         }
         
         if ((firstBody.categoryBitMask == PhysicsCategory.player) && (secondBody.categoryBitMask == PhysicsCategory.explosion)) {
-            if let player = firstBody.node as? Player, let explosion = secondBody.node as? SKSpriteNode {
+            if let player = firstBody.node as? Player, let explosion = secondBody.node as? Projectile {
                 explosionDidCollideWithTank(explosion: explosion, player: player)
             }
         }
