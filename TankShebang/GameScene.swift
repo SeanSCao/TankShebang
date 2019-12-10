@@ -40,7 +40,7 @@ class GameScene: SKScene {
     }
     
     var map = SKNode()
-    let mapSetting = 2
+    var mapSetting = 2
     
     var numberOfPlayers = 4
     var players = [Player]()
