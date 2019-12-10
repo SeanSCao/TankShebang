@@ -98,6 +98,7 @@ class GameScene: SKScene {
         }
         
         if (self.MUSIC){
+            backgroundSound.name = "bgSound"
             gameLayer.addChild(backgroundSound)
             self.backgroundSound.run(SKAction.changeVolume(to: Float(0.5), duration: 0))
             self.backgroundSound.run(SKAction.stop())
@@ -445,7 +446,72 @@ class GameScene: SKScene {
         map.addChild(bottomLayer)
         
         if (mapSetting==1){
-            
+            for i in 1...10 {
+                let bottomBush = SKSpriteNode(imageNamed: "Bush")
+                bottomBush.name = "obstacle"
+                bottomBush.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
+                bottomBush.physicsBody?.contactTestBitMask = PhysicsCategory.projectile
+                bottomBush.physicsBody?.collisionBitMask = PhysicsCategory.player | PhysicsCategory.pickupTile
+                bottomBush.physicsBody = SKPhysicsBody(rectangleOf: bottomBush.size)
+                bottomBush.physicsBody?.isDynamic = false
+                bottomBush.setScale(0.3)
+                
+                var X = size.width/2
+                var Y = CGFloat(i) * bottomBush.size.height/2 + playableMargin
+                bottomBush.position = CGPoint(x:CGFloat(X),y:CGFloat(Y))
+                gameLayer.addChild(bottomBush)
+                
+                let topBush = SKSpriteNode(imageNamed: "Bush")
+                topBush.name = "obstacle"
+                topBush.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
+                topBush.physicsBody?.contactTestBitMask = PhysicsCategory.projectile
+                topBush.physicsBody?.collisionBitMask = PhysicsCategory.player | PhysicsCategory.pickupTile
+                topBush.physicsBody = SKPhysicsBody(rectangleOf: topBush.size)
+                topBush.physicsBody?.isDynamic = false
+                topBush.setScale(0.3)
+                X = size.width/2
+                Y = size.height - playableMargin - (CGFloat(i) * topBush.size.height/2)
+                topBush.position = CGPoint(x:CGFloat(X),y:CGFloat(Y))
+                gameLayer.addChild(topBush)
+                
+                let leftBush = SKSpriteNode(imageNamed: "Bush")
+                leftBush.name = "obstacle"
+                leftBush.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
+                leftBush.physicsBody?.contactTestBitMask = PhysicsCategory.projectile
+                leftBush.physicsBody?.collisionBitMask = PhysicsCategory.player | PhysicsCategory.pickupTile
+                leftBush.physicsBody = SKPhysicsBody(rectangleOf: leftBush.size)
+                leftBush.physicsBody?.isDynamic = false
+                leftBush.setScale(0.3)
+                X = CGFloat(i) * leftBush.size.height/2
+                Y = size.height/2
+                leftBush.position = CGPoint(x:CGFloat(X),y:CGFloat(Y))
+                gameLayer.addChild(leftBush)
+                
+                let rightBush = SKSpriteNode(imageNamed: "Bush")
+                rightBush.name = "obstacle"
+                rightBush.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
+                rightBush.physicsBody?.contactTestBitMask = PhysicsCategory.projectile
+                rightBush.physicsBody?.collisionBitMask = PhysicsCategory.player | PhysicsCategory.pickupTile
+                rightBush.physicsBody = SKPhysicsBody(rectangleOf: rightBush.size)
+                rightBush.physicsBody?.isDynamic = false
+                rightBush.setScale(0.3)
+                X = size.width -  (CGFloat(i) * rightBush.size.height/2)
+                Y = size.height/2
+                rightBush.position = CGPoint(x:CGFloat(X),y:CGFloat(Y))
+                gameLayer.addChild(rightBush)
+            }
+            let bush = SKSpriteNode(imageNamed: "Bush")
+            bush.name = "obstacle"
+            bush.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
+            bush.physicsBody?.contactTestBitMask = PhysicsCategory.projectile
+            bush.physicsBody?.collisionBitMask = PhysicsCategory.player | PhysicsCategory.pickupTile
+            bush.physicsBody = SKPhysicsBody(rectangleOf: bush.size)
+            bush.physicsBody?.isDynamic = false
+            bush.setScale(0.3)
+            let X = size.width/2
+            let Y = size.height/2
+            bush.position = CGPoint(x:CGFloat(X),y:CGFloat(Y))
+            gameLayer.addChild(bush)
         } else {
             for _ in 1...25 {
                 let rock = SKSpriteNode(imageNamed: "Rock")
@@ -454,7 +520,7 @@ class GameScene: SKScene {
                 rock.physicsBody?.contactTestBitMask = PhysicsCategory.projectile
                 rock.physicsBody?.collisionBitMask = PhysicsCategory.player | PhysicsCategory.pickupTile
                 rock.physicsBody = SKPhysicsBody(rectangleOf: rock.size)
-                rock.physicsBody?.isDynamic = false
+                rock.physicsBody?.isDynamic = true
                 
                 let randX = Int.random(in: 100...Int(size.width-100))
                 let randY = Int.random(in: Int(playableMargin)+100...Int(playableMargin)+Int(size.width)-100)
@@ -750,6 +816,11 @@ class GameScene: SKScene {
                     resetGame()
                 }
                 if (menuButton.contains(location)){
+                    for child in gameLayer.children {
+                        if child.name == "bgSound"{
+                            child.removeFromParent()
+                        }
+                    }
                     self.viewController?.dismiss(animated: true, completion: nil)
                 }
             }
