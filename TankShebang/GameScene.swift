@@ -400,6 +400,8 @@ class GameScene: SKScene {
     }
     
     func changeMap() {
+        let playableHeight = size.width
+        let playableMargin = (size.height-playableHeight)/2.0
         let tileSet = SKTileSet(named: "Grid Tile Set")!
         let tileSize = CGSize(width: 128, height: 128)
         let columns = 32
@@ -424,6 +426,25 @@ class GameScene: SKScene {
         }
         
         map.addChild(bottomLayer)
+        
+        if (mapSetting==1){
+            
+        } else {
+            for _ in 1...25 {
+                let rock = SKSpriteNode(imageNamed: "Rock")
+                rock.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
+                rock.physicsBody?.contactTestBitMask = PhysicsCategory.projectile
+                rock.physicsBody?.collisionBitMask = PhysicsCategory.player | PhysicsCategory.pickupTile
+                rock.physicsBody = SKPhysicsBody(rectangleOf: rock.size)
+                rock.physicsBody?.isDynamic = false
+                
+                let randX = Int.random(in: 100...Int(size.width-100))
+                let randY = Int.random(in: Int(playableMargin)+100...Int(playableMargin)+Int(size.width)-100)
+                rock.position = CGPoint(x:CGFloat(randX),y:CGFloat(randY))
+                rock.setScale(0.3)
+                gameLayer.addChild(rock)
+            }
+        }
     }
     
     func spawnPowerTile() {

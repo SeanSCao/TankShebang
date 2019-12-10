@@ -19,17 +19,17 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         
         let scene = GameScene(size: view.bounds.size)
-        scene.mode = Mode
-        scene.terrain = Terrain
-        scene.kill = Kill
-        scene.sound = sound
-        scene.music = music
-        scene.AutoBalance = AutoBalance
-        scene.Powerups = Powerups
-        scene.FixedSpawn = FixedSpawn
-        scene.ScatterShot = ScatterShot
-        scene.numberOfPlayers = num_players
-        scene.num_players = num_players
+//        scene.mode = Mode
+//        scene.terrain = Terrain
+//        scene.kill = Kill
+//        scene.sound = sound
+//        scene.music = music
+//        scene.AutoBalance = AutoBalance
+//        scene.Powerups = Powerups
+//        scene.FixedSpawn = FixedSpawn
+//        scene.ScatterShot = ScatterShot
+//        scene.numberOfPlayers = num_players
+//        scene.num_players = num_players
         let skView = view as! SKView
         skView.showsFPS = true
         skView.showsNodeCount = true
