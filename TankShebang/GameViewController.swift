@@ -59,6 +59,7 @@ class GameViewController: UIViewController {
             scene.mapSetting = 2
             
         }
+        scene.viewController = self
         
         scene.numberOfPlayers = num_players
         let skView = view as! SKView

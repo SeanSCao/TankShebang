@@ -21,6 +21,7 @@ struct PhysicsCategory {
 }
 
 class GameScene: SKScene {
+    var viewController: UIViewController?
     
     let gameLayer = SKNode()
     let pauseLayer = SKNode()
@@ -749,7 +750,7 @@ class GameScene: SKScene {
                     resetGame()
                 }
                 if (menuButton.contains(location)){
-                    
+                    self.viewController?.dismiss(animated: true, completion: nil)
                 }
             }
         }
