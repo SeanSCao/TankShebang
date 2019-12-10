@@ -18,10 +18,10 @@ class AdvancedOptionsViewController: UIViewController {
     @IBOutlet weak var FixedSpawnButton: UIButton!
     
     @IBOutlet weak var ScatterShotButton: UIButton!
-    var auto = "On"
-    var power = "On"
-    var spawn = "On"
-    var scatter = "On"
+    var auto = "Off"
+    var power = "Off"
+    var spawn = "Off"
+    var scatter = "Off"
     
     @IBAction func TouchAutoBalance(_ sender: Any) {
         if(auto == "Off"){

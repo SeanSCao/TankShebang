@@ -335,7 +335,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="0.57810515169999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
-                                <state key="normal" title="Grass">
+                                <state key="normal" title="Dirt">
                                     <color key="titleColor" red="0.045392324150000003" green="0.12331404560000001" blue="0.34664498729999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
@@ -390,7 +390,7 @@
                                     <constraint firstAttribute="height" constant="53" id="DF8-Yh-Mvh"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="21"/>
-                                <state key="normal" title="On">
+                                <state key="normal" title="Off">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -403,7 +403,7 @@
                                     <constraint firstAttribute="height" constant="53" id="W0c-o5-tCD"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="21"/>
-                                <state key="normal" title="On">
+                                <state key="normal" title="Off">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -416,7 +416,7 @@
                                     <constraint firstAttribute="height" constant="53" id="Hb6-o8-YFR"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="21"/>
-                                <state key="normal" title="On">
+                                <state key="normal" title="Off">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -487,8 +487,9 @@
         <image name="Icon" width="1024" height="1024"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="eLC-QD-cVM"/>
         <segue reference="DSP-nt-3db"/>
         <segue reference="cN2-0s-A3z"/>
-        <segue reference="85E-72-W4E"/>
+        <segue reference="pAO-YA-LcC"/>
     </inferredMetricsTieBreakers>
 </document>
