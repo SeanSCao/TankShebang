@@ -76,15 +76,14 @@ class GameScene: SKScene {
         
         drawPlayableArea()
         
-        
-        countdown()
+//        scoreboard()
+        countdown(length:3)
         
         for player in players {
             Timer.scheduledTimer(timeInterval: 1, target: player, selector: #selector(player.reload), userInfo: nil, repeats: true)
         }
-    run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 3.0), SKAction.run(spawnPowerTile)])))
+        gameLayer.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 3.0), SKAction.run(spawnPowerTile)])))
         
-        players[0].addShield()
         
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
@@ -205,7 +204,12 @@ class GameScene: SKScene {
             players[i-1].health = 2
             players[i-1].ammo = 4
             players[i-1].invincible = false
-            players[i-1].shield = startWithShield
+            if (startWithShield ) {
+                players[i-1].addShield()
+            } else {
+                players[i-1].removeShield()
+            }
+            players[i-1].powerup = ""
             gameLayer.addChild(players[i-1])
         }
     }
@@ -398,7 +402,7 @@ class GameScene: SKScene {
         if (mapSetting == 1) {
             let grassTiles = tileSet.tileGroups.first { $0.name == "Grass" }
             bottomLayer.fill(with: grassTiles)
-        } else if (mapSetting == 1) {
+        } else if (mapSetting == 2) {
             let dirtTiles = tileSet.tileGroups.first { $0.name == "Dirt"}
             bottomLayer.fill(with: dirtTiles)
         } else {
@@ -458,13 +462,46 @@ class GameScene: SKScene {
         }
         
         if ( !checkGameOver() ) {
+            scoreboard()
             removeElements()
             resetTanks()
             changeMap()
-            countdown()
+            countdown(length:5)
         } else {
             
         }
+    }
+    
+    func scoreboard(){
+        for i in 1 ... numberOfPlayers {
+            let box = SKShapeNode()
+            box.name = "scoreboard"
+            box.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 128, height: 128), cornerRadius: 16).cgPath
+            let xPosition = CGFloat(CGFloat(i) * size.width / CGFloat(numberOfPlayers+1) - 64)
+            box.position = CGPoint(x: xPosition, y: frame.midY)
+            box.fillColor = colorsDict[playerColors[i-1]] ?? SKColor.white
+            box.strokeColor = SKColor.black
+            box.lineWidth = 1
+            pauseLayer.addChild(box)
+            
+            let tankFile = playerColors[i-1] + "0"
+            let tank = SKSpriteNode(imageNamed: tankFile)
+            tank.setScale(0.4)
+            tank.position = CGPoint(x:64, y:90)
+            tank.zPosition = 101
+            box.addChild(tank)
+            
+            let scoreLabel = SKLabelNode(fontNamed: "Avenir")
+            scoreLabel.name = "score"
+            scoreLabel.horizontalAlignmentMode = .center
+            scoreLabel.position = CGPoint(x:64, y:10)
+            scoreLabel.text = String(players[i-1].gameScore)
+            box.addChild(scoreLabel)
+        }
+//        run(SKAction.wait(forDuration: 5))
+//        countdown(length:3)
+        
+//        run(SKAction.sequence([SKAction.wait(forDuration: 5.0), SKAction.run({self.countdown(length:3)})]))
     }
     
     func removeElements(){
@@ -478,21 +515,21 @@ class GameScene: SKScene {
         }
     }
     
-    func countdown() {
-        countdownLabel = SKLabelNode(fontNamed: "Arial")
+    func countdown(length:Int) {
+        countdownLabel = SKLabelNode(fontNamed: "Avenir")
         countdownLabel.name = "countdown"
         countdownLabel.horizontalAlignmentMode = .center
-        countdownLabel.position = CGPoint(x:size.width/2, y:size.height/2)
+        countdownLabel.position = CGPoint(x:size.width/2, y:size.height/2-45)
         pauseLayer.addChild(countdownLabel)
         
         pauseGame()
         
         var offset: Double = 0
         
-        for x in (0...3).reversed() {
+        for x in (0...length).reversed() {
             
             run(SKAction.wait(forDuration: offset)) {
-                self.countdownLabel.text = "\(x)"
+                self.countdownLabel.text = "New Round In: \(x)"
                 
                 if x == 0 {
                     //do something when counter hits 0

@@ -47,6 +47,13 @@ class Player: SKSpriteNode {
         }
     }
     
+    func removeShield() {
+        if let shieldNode = self.childNode(withName: "shield") as? SKSpriteNode {
+            shieldNode.removeFromParent()
+        }
+        shield = false
+    }
+    
     // Moves tank forward forward or backward
     func drive(tankDriveForward:Bool, tankMoveSpeed:CGFloat) {
         
@@ -75,10 +82,7 @@ class Player: SKSpriteNode {
         } else if (projectile.name == "Rocket") {
             projectile.activateRocket()
         } else if (shield) {
-            if let shieldNode = self.childNode(withName: "shield") as? SKSpriteNode {
-                shieldNode.removeFromParent()
-            }
-            shield = false
+            removeShield()
             if(projectile.owner == self){
                 projectile.owner.gameScore -= 10
             } else {
@@ -119,10 +123,7 @@ class Player: SKSpriteNode {
         
         // Calculate damage
         if (shield) {
-            if let shieldNode = self.childNode(withName: "shield") as? SKSpriteNode {
-                shieldNode.removeFromParent()
-            }
-            shield = false
+            removeShield()
         } else {
             if (!invincible){
                 health = 0
