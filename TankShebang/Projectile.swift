@@ -14,6 +14,7 @@ class Projectile: SKSpriteNode {
     
     var owner:Player = Player()
     var isLaser:Bool = false
+    var SFX:Bool = true
     
     func explode(scale:CGFloat, position: CGPoint){
         self.texture = SKTexture(imageNamed: "Explosion")
@@ -26,10 +27,12 @@ class Projectile: SKSpriteNode {
         self.physicsBody?.contactTestBitMask = PhysicsCategory.player
         self.physicsBody?.collisionBitMask = PhysicsCategory.none
         
-        let sound = SKAudioNode(fileNamed: "explosion.mp3")
-        sound.autoplayLooped = false
-        self.addChild(sound)
-        self.run(SKAction.run {sound.run(SKAction.play())})
+        if (self.SFX) {
+            let sound = SKAudioNode(fileNamed: "explosion.mp3")
+            sound.autoplayLooped = false
+            self.addChild(sound)
+            self.run(SKAction.run {sound.run(SKAction.play())})
+        }
     }
     
     func activateMine(){

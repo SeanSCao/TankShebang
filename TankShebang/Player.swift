@@ -12,6 +12,8 @@ import SpriteKit
 
 class Player: SKSpriteNode {
     
+    var SFX:Bool = true
+    
     var colorString:String = ""
     var health:Int = 2
     var invincible:Bool = false
@@ -25,17 +27,6 @@ class Player: SKSpriteNode {
     
     func addShield(){
         if (!shield) {
-//            let Circle = SKShapeNode(circleOfRadius: self.size.height) // Size of Circle
-//            Circle.name = "shield"
-//            Circle.position = CGPoint(x:0,y:0)  //Middle of Screen
-//            Circle.strokeColor = SKColor.blue
-//            Circle.glowWidth = 1.0
-            //            Circle.physicsBody = SKPhysicsBody(circleOfRadius: self.size.height)
-            //            Circle.physicsBody?.isDynamic = false
-            //            Circle.physicsBody?.categoryBitMask = PhysicsCategory.shield
-            //            Circle.physicsBody?.contactTestBitMask = PhysicsCategory.shot
-            //            Circle.physicsBody?.collisionBitMask = PhysicsCategory.none
-//            self.addChild(Circle)
             
             let shieldSprite = SKSpriteNode(imageNamed: "Shield")
             shieldSprite.name = "shield"
@@ -43,11 +34,12 @@ class Player: SKSpriteNode {
             self.addChild(shieldSprite)
             shield = true
             
-            let sound = SKAudioNode(fileNamed: "reverse.mp3")
-            sound.autoplayLooped = false
-            self.addChild(sound)
-            self.run(SKAction.run {sound.run(SKAction.play())})
-
+            if (self.SFX){
+                let sound = SKAudioNode(fileNamed: "reverse.mp3")
+                sound.autoplayLooped = false
+                self.addChild(sound)
+                self.run(SKAction.run {sound.run(SKAction.play())})
+            }
             
         }
     }
@@ -132,10 +124,12 @@ class Player: SKSpriteNode {
                     }
                     self.texture = SKTexture(imageNamed: spriteFile)
                     
-                    let sound = SKAudioNode(fileNamed: "hit.mp3")
-                    sound.autoplayLooped = false
-                    self.addChild(sound)
-                    self.run(SKAction.run {sound.run(SKAction.play())})
+                    if (self.SFX) {
+                        let sound = SKAudioNode(fileNamed: "hit.mp3")
+                        sound.autoplayLooped = false
+                        self.addChild(sound)
+                        self.run(SKAction.run {sound.run(SKAction.play())})
+                    }
                 }
             }
         }
@@ -184,10 +178,13 @@ class Player: SKSpriteNode {
             } else {
                 explosion.owner.gameScore += 25
             }
-            let sound = SKAudioNode(fileNamed: "explosion.mp3")
-            sound.autoplayLooped = false
-            self.addChild(sound)
-            self.run(SKAction.run {sound.run(SKAction.play())})
+            if (self.SFX) {
+                let sound = SKAudioNode(fileNamed: "explosion.mp3")
+                sound.autoplayLooped = false
+                self.addChild(sound)
+                self.run(SKAction.run {sound.run(SKAction.play())})
+            }
+            
             self.removeFromParent()
         } else {
             temporaryInvincibility()
@@ -225,6 +222,7 @@ class Player: SKSpriteNode {
         } else if ( self.ammo > 0 ) {
             let projectile:Projectile = Projectile(imageNamed: "DefaultProjectile")
             projectile.owner = self
+            projectile.SFX = self.SFX
             let direction = CGPoint(x:self.position.x - sin(self.zRotation) * 2000,y:self.position.y + cos(self.zRotation) * 2000)
             let xDirection = self.position.x - sin(self.zRotation) + (-40 * sin(self.zRotation))
             let yDirection = self.position.y + cos(self.zRotation) + (40 * cos(self.zRotation))
@@ -254,10 +252,13 @@ class Player: SKSpriteNode {
             }
             self.texture = SKTexture(imageNamed: spriteFile)
             
-            let sound = SKAudioNode(fileNamed: "shoot.mp3")
-            sound.autoplayLooped = false
-            self.addChild(sound)
-            self.run(SKAction.run {sound.run(SKAction.play())})
+            if (self.SFX) {
+                let sound = SKAudioNode(fileNamed: "shoot.mp3")
+                sound.autoplayLooped = false
+                self.addChild(sound)
+                self.run(SKAction.run {sound.run(SKAction.play())})
+            }
+            
         }
     }
     
@@ -265,6 +266,7 @@ class Player: SKSpriteNode {
         let projectile:Projectile = Projectile(imageNamed: "Laser")
         projectile.owner = self
         projectile.isLaser = true
+        projectile.SFX = self.SFX
         
         projectile.setScale(0.5*gameScale)
         projectile.zRotation = self.zRotation
@@ -287,15 +289,19 @@ class Player: SKSpriteNode {
         let shootDone = SKAction.removeFromParent()
         projectile.run(SKAction.sequence([shoot, shootDone]))
         
-        let sound = SKAudioNode(fileNamed: "laser.mp3")
-        sound.autoplayLooped = false
-        self.addChild(sound)
-        self.run(SKAction.run {sound.run(SKAction.play())})
+        if (self.SFX) {
+            let sound = SKAudioNode(fileNamed: "laser.mp3")
+            sound.autoplayLooped = false
+            self.addChild(sound)
+            self.run(SKAction.run {sound.run(SKAction.play())})
+        }
+        
     }
     
     func fireBubble(){
         let projectile:Projectile = Projectile(imageNamed: "Bubble")
         projectile.owner = self
+        projectile.SFX = self.SFX
         let direction = CGPoint(x:self.position.x - sin(self.zRotation) * 2000,y:self.position.y + cos(self.zRotation) * 2000)
         let xDirection = self.position.x - sin(self.zRotation) + (-100 * sin(self.zRotation))
         let yDirection = self.position.y + cos(self.zRotation) + (100 * cos(self.zRotation))
@@ -315,15 +321,19 @@ class Player: SKSpriteNode {
         let shootDone = SKAction.removeFromParent()
         projectile.run(SKAction.sequence([shoot, shootDone]))
         
-        let sound = SKAudioNode(fileNamed: "shoot.mp3")
-        sound.autoplayLooped = false
-        self.addChild(sound)
-        self.run(SKAction.run {sound.run(SKAction.play())})
+        if (self.SFX) {
+            let sound = SKAudioNode(fileNamed: "shoot.mp3")
+            sound.autoplayLooped = false
+            self.addChild(sound)
+            self.run(SKAction.run {sound.run(SKAction.play())})
+        }
+        
     }
     
     func fireRocket(){
         let projectile:Projectile = Projectile(imageNamed: "Rocket")
         projectile.owner = self
+        projectile.SFX = self.SFX
         projectile.name = "Rocket"
         projectile.zRotation = self.zRotation
         projectile.setScale(0.5*gameScale)
@@ -346,16 +356,20 @@ class Player: SKSpriteNode {
         let shootDone = SKAction.removeFromParent()
         projectile.run(SKAction.sequence([shoot, shootDone]))
         
-        let sound = SKAudioNode(fileNamed: "rocket.mp3")
-        sound.autoplayLooped = false
-        self.addChild(sound)
-        self.run(SKAction.run {sound.run(SKAction.play())})
+        if (self.SFX) {
+            let sound = SKAudioNode(fileNamed: "rocket.mp3")
+            sound.autoplayLooped = false
+            self.addChild(sound)
+            self.run(SKAction.run {sound.run(SKAction.play())})
+        }
+        
     }
     
     func dropMine(){
         let projectile:Projectile = Projectile(imageNamed: "Landmine")
         projectile.owner = self
         projectile.name = "Landmine"
+        projectile.SFX = self.SFX
         
         projectile.setScale(gameScale)
 

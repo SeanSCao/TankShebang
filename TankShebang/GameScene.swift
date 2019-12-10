@@ -90,11 +90,15 @@ class GameScene: SKScene {
         
         countdown(length:3)
         
-        gameLayer.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 3.0), SKAction.run(spawnPowerTile)])))
+        if (POWERUPS){
+            gameLayer.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 3.0), SKAction.run(spawnPowerTile)])))
+        }
         
-        gameLayer.addChild(backgroundSound)
-        self.backgroundSound.run(SKAction.changeVolume(to: Float(0.5), duration: 0))
-        self.backgroundSound.run(SKAction.stop())
+        if (MUSIC){
+            gameLayer.addChild(backgroundSound)
+            self.backgroundSound.run(SKAction.changeVolume(to: Float(0.5), duration: 0))
+            self.backgroundSound.run(SKAction.stop())
+        }
         
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
@@ -108,6 +112,7 @@ class GameScene: SKScene {
         for i in 1...numberOfPlayers {
             let spriteFile = playerColors[i-1] + "4"
             let player:Player = Player(imageNamed: spriteFile) //player tank
+            player.SFX = self.SFX
             player.name = "Player " + String(i)
             player.colorString = playerColors[i-1]
             player.zPosition = 100
@@ -555,13 +560,15 @@ class GameScene: SKScene {
             self.pauseLayer.addChild(self.menuButton)
             winner.removeFromParent()
             
-            let sound = SKAudioNode(fileNamed: "gameover.mp3")
-            sound.autoplayLooped = false
-            self.addChild(sound)
-            self.run(SKAction.run {
-                sound.run(SKAction.play())
-                self.backgroundSound.run(SKAction.stop())
-            })
+            if (self.SFX) {
+                let sound = SKAudioNode(fileNamed: "gameover.mp3")
+                sound.autoplayLooped = false
+                self.addChild(sound)
+                self.run(SKAction.run {
+                    sound.run(SKAction.play())
+                    self.backgroundSound.run(SKAction.stop())
+                })
+            }
         }
     }
     
@@ -663,10 +670,12 @@ class GameScene: SKScene {
                     self.unpauseGame()
                 }
                 else {
-                    let sound = SKAudioNode(fileNamed: "menu.mp3")
-                    sound.autoplayLooped = false
-                    self.addChild(sound)
-                    self.run(SKAction.run {sound.run(SKAction.play())})
+                    if (self.SFX){
+                        let sound = SKAudioNode(fileNamed: "menu.mp3")
+                        sound.autoplayLooped = false
+                        self.addChild(sound)
+                        self.run(SKAction.run {sound.run(SKAction.play())})
+                    }
                 }
             }
             offset += 1.0
@@ -854,12 +863,6 @@ class GameScene: SKScene {
             newRound()
         }
     }
-    
-    //    func projectileDidCollideWithShield(projectile: SKSpriteNode, shield: SKShapeNode) {
-    //        print("Hit")
-    //        projectile.removeFromParent()
-    //        shield.removeFromParent()
-    //    }
 }
 
 extension GameScene: SKPhysicsContactDelegate {
@@ -905,15 +908,20 @@ extension GameScene: SKPhysicsContactDelegate {
             if let player = firstBody.node as? Player, let pickupTile = secondBody.node as? SKSpriteNode {
                 if (pickupTile.name == "Direction" ) {
                     tankDriveForward = !tankDriveForward
-                    let sound = SKAudioNode(fileNamed: "reverse.mp3")
-                    sound.autoplayLooped = false
-                    self.addChild(sound)
-                    self.run(SKAction.run {sound.run(SKAction.play())})
+                    if (self.SFX) {
+                        let sound = SKAudioNode(fileNamed: "reverse.mp3")
+                        sound.autoplayLooped = false
+                        self.addChild(sound)
+                        self.run(SKAction.run {sound.run(SKAction.play())})
+                    }
+                    
                 } else if (pickupTile.name == "Reverse" ) {
-                    let sound = SKAudioNode(fileNamed: "reverse.mp3")
-                    sound.autoplayLooped = false
-                    self.addChild(sound)
-                    self.run(SKAction.run {sound.run(SKAction.play())})
+                    if (self.SFX) {
+                        let sound = SKAudioNode(fileNamed: "reverse.mp3")
+                        sound.autoplayLooped = false
+                        self.addChild(sound)
+                        self.run(SKAction.run {sound.run(SKAction.play())})
+                    }
                     tankTurnLeft = !tankTurnLeft
                 } else if (pickupTile.name == "ShieldTile") {
                     player.addShield()
@@ -936,11 +944,5 @@ extension GameScene: SKPhysicsContactDelegate {
                 }
             }
         }
-        
-        //        if ((firstBody.categoryBitMask == PhysicsCategory.shot) && (secondBody.categoryBitMask == PhysicsCategory.shield)) {
-        //            if let projectile = firstBody.node as? SKSpriteNode, let shield = secondBody.node as? SKShapeNode {
-        //                projectileDidCollideWithShield(projectile: projectile, shield: shield)
-        //            }
-        //        }
     }
 }
