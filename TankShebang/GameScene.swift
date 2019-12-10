@@ -71,7 +71,7 @@ class GameScene: SKScene {
     var MUSIC = true
     var POWERUPS = true
     var STARTPOWERUPS = true
-    var gameOverScore = 500
+    var gameOverScore = 150
     
     override func didMove(to view: SKView) {
         
@@ -83,6 +83,37 @@ class GameScene: SKScene {
         
         addChild(pauseLayer)
         
+        startGame()
+        
+//        initMap()
+//
+//        initPlayers()
+//
+//        initButtons()
+//
+//        drawPlayableArea()
+//
+//        self.gameLayer.isPaused = true
+//
+//        countdown(length:3)
+//
+//        if (POWERUPS){
+//            gameLayer.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 3.0), SKAction.run(spawnPowerTile)])))
+//        }
+        
+        if (self.MUSIC){
+            backgroundSound.name = "bgSound"
+//            gameLayer.addChild(backgroundSound)
+//            self.backgroundSound.run(SKAction.changeVolume(to: Float(0.5), duration: 0))
+//            self.backgroundSound.run(SKAction.stop())
+        }
+        
+        physicsWorld.gravity = .zero
+        physicsWorld.contactDelegate = self
+        
+    }
+    
+    func startGame(){
         initMap()
         
         initPlayers()
@@ -98,17 +129,6 @@ class GameScene: SKScene {
         if (POWERUPS){
             gameLayer.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 3.0), SKAction.run(spawnPowerTile)])))
         }
-        
-        if (self.MUSIC){
-            backgroundSound.name = "bgSound"
-            gameLayer.addChild(backgroundSound)
-            self.backgroundSound.run(SKAction.changeVolume(to: Float(0.5), duration: 0))
-            self.backgroundSound.run(SKAction.stop())
-        }
-        
-        physicsWorld.gravity = .zero
-        physicsWorld.contactDelegate = self
-        
     }
     
     // create sprite node for each player tank and position accordingly
@@ -604,13 +624,17 @@ class GameScene: SKScene {
     }
     
     func gameOver() {
-        self.backgroundSound.run(SKAction.stop())
+//        self.backgroundSound.removeFromParent()
+        for child in gameLayer.children{
+            if child.name == "bgSound"{
+                child.removeFromParent()
+            }
+        }
         gameLayer.removeAllActions()
         for player in players{
             player.removeAllActions()
         }
         run(SKAction.wait(forDuration: 1)){
-            self.backgroundSound.run(SKAction.stop())
             var winner:Player = self.players[0]
             for player in self.players{
                 if ( player.gameScore > winner.gameScore ){
@@ -652,14 +676,12 @@ class GameScene: SKScene {
                 self.addChild(sound)
                 self.run(SKAction.run {
                     sound.run(SKAction.play())
-                    self.backgroundSound.run(SKAction.stop())
                 })
             }
         }
     }
     
     func pauseMenu() {
-        self.backgroundSound.run(SKAction.stop())
         self.pauseGame()
         self.leftPressed = [false, false, false, false]
         self.countdownLabel = SKLabelNode(fontNamed: "Avenir")
@@ -689,33 +711,39 @@ class GameScene: SKScene {
     
     func resetGame() {
         players.removeAll()
-        initPlayers()
-        for player in players{
-            player.gameScore = 0
-            player.roundScore = 0
-        }
-        for child in self.pauseLayer.children {
-            if (child.name=="scoreboard"){
-                child.removeFromParent()
-            }
-            if (child.name=="menu"){
-                child.removeFromParent()
-            }
-            if (child.name=="restart"){
-                child.removeFromParent()
-            }
-            if (child.name=="winner"){
-                child.removeFromParent()
-            }
-        }
+        gameLayer.removeAllChildren()
+        pauseLayer.removeAllChildren()
+        gameLayer.removeAllActions()
+        pauseLayer.removeAllActions()
+//        initPlayers()
+//        for player in players{
+//            player.gameScore = 0
+//            player.roundScore = 0
+//        }
+//        for child in self.pauseLayer.children {
+//            if (child.name=="scoreboard"){
+//                child.removeFromParent()
+//            }
+//            if (child.name=="menu"){
+//                child.removeFromParent()
+//            }
+//            if (child.name=="restart"){
+//                child.removeFromParent()
+//            }
+//            if (child.name=="winner"){
+//                child.removeFromParent()
+//            }
+//        }
         self.tankTurnLeft = true
         self.tankDriveForward = true
-        self.unpauseGame()
+//        self.unpauseGame()
         self.removeElements()
         self.leftPressed = [false, false, false, false]
 //        self.resetTanks()
-        self.changeMap()
-        self.countdown(length:3)
+//        self.changeMap()
+//        self.countdown(length:3)
+        
+        startGame()
     }
     
     func initScoreboard(){
@@ -755,6 +783,9 @@ class GameScene: SKScene {
                 child.removeFromParent()
             }
             if child.name == "obstacle" {
+                child.removeFromParent()
+            }
+            if child.name == "bgSound"{
                 child.removeFromParent()
             }
         }
@@ -810,7 +841,12 @@ class GameScene: SKScene {
     }
     
     func pauseGame() {
-        self.backgroundSound.run(SKAction.pause())
+//        self.backgroundSound.removeFromParent()
+        for child in gameLayer.children{
+            if child.name == "bgSound"{
+                child.removeFromParent()
+            }
+        }
         gameLayer.isPaused = true
         pauseLayer.isHidden = false
         self.physicsWorld.speed = 0.0
@@ -819,12 +855,18 @@ class GameScene: SKScene {
     }
     
     func unpauseGame() {
-        self.backgroundSound.run(SKAction.play())
         gameLayer.isPaused = false
         pauseLayer.isHidden = true
         gameLayer.speed = 1.0
         self.physicsWorld.speed = 1.0
         self.isPausedFix = false
+        
+        if (self.MUSIC){
+            let bgSound = SKAudioNode(fileNamed: "background.mp3")
+            bgSound.name = "bgSound"
+            self.gameLayer.addChild(bgSound)
+            bgSound.run(SKAction.changeVolume(to: Float(0.5), duration: 0))
+        }
         
         for child in pauseLayer.children {
             child.removeFromParent()
@@ -850,12 +892,16 @@ class GameScene: SKScene {
                 }
             }
             if(!pauseLayer.isHidden){
-                if (restartButton.contains(location)){
-                    resetGame()
+                if ( !checkGameOver() ){
+                    if (playButton.contains(location)){
+                        unpauseGame()
+                    }
+                } else {
+                    if (restartButton.contains(location)){
+                        resetGame()
+                    }
                 }
-                if (playButton.contains(location)){
-                    unpauseGame()
-                }
+                
                 if (menuButton.contains(location)){
                     for child in gameLayer.children {
                         if child.name == "bgSound"{
