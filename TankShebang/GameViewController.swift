@@ -33,6 +33,32 @@ class GameViewController: UIViewController {
         else{
             scene.startWithShield = false
         }
+        if(ScatterShot == "On"){
+            scene.STARTPOWERUPS = true
+        }
+        else{
+           scene.STARTPOWERUPS = false
+        }
+        if(Powerups == "On"){
+            scene.POWERUPS = true
+        }
+        else{
+            scene.POWERUPS = false
+
+            
+        }
+        if(music == "On"){
+            scene.MUSIC = true
+        }
+        else{
+            scene.MUSIC = false
+        }
+        if(sound == "On"){
+           scene.SFX = true
+        }
+        else{
+           scene.SFX = false
+        }
         if(Terrain  == "Grass"){
             scene.mapSetting = 1
         }
