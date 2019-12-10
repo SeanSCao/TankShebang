@@ -56,7 +56,7 @@ class PlayerSelectViewController: UIViewController {
         if(player2status == "Off"){
             
             num_players += 1
-            tank2.image = UIImage(named:"Blue0")
+            tank2.image = UIImage(named:"Red0")
             player2status = "On"
         }
         else{
@@ -71,7 +71,7 @@ class PlayerSelectViewController: UIViewController {
         if(player3status == "Off"){
             
             num_players += 1
-            tank3.image = UIImage(named:"Green0")
+            tank3.image = UIImage(named:"Blue0")
             player3status = "On"
         }
         else{
@@ -86,7 +86,7 @@ class PlayerSelectViewController: UIViewController {
         if(player4status == "Off"){
             
             num_players += 1
-            tank4.image = UIImage(named:"Red0")
+            tank4.image = UIImage(named:"Green0")
             player4status = "On"
         }
         else{
@@ -98,7 +98,7 @@ class PlayerSelectViewController: UIViewController {
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "gameoptions"){
-            var game_options = segue.destination as! GameOptionsViewController
+            let game_options = segue.destination as! GameOptionsViewController
             game_options.num_players = num_players
             game_options.Music = Music
             game_options.Sound = Sound
