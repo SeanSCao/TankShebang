@@ -58,6 +58,7 @@ class GameScene: SKScene {
     var countdownLabel: SKLabelNode!
     var restartButton = SKSpriteNode()
     var menuButton = SKSpriteNode()
+    var playButton = SKSpriteNode()
     
     let backgroundSound = SKAudioNode(fileNamed: "background.mp3")
     
@@ -70,6 +71,7 @@ class GameScene: SKScene {
     var MUSIC = true
     var POWERUPS = true
     var STARTPOWERUPS = true
+    var gameOverScore = 500
     
     override func didMove(to view: SKView) {
         
@@ -656,6 +658,35 @@ class GameScene: SKScene {
         }
     }
     
+    func pauseMenu() {
+        self.backgroundSound.run(SKAction.stop())
+        self.pauseGame()
+        self.leftPressed = [false, false, false, false]
+        self.countdownLabel = SKLabelNode(fontNamed: "Avenir")
+        self.countdownLabel.name = "paused"
+        self.countdownLabel.text = "Paused"
+        self.countdownLabel.horizontalAlignmentMode = .center
+        self.countdownLabel.position = CGPoint(x:self.size.width/2, y:self.size.height/2-45)
+        self.pauseLayer.addChild(self.countdownLabel)
+        
+        if let button = self.pauseLayer.childNode(withName: "play") as? SKSpriteNode {
+            button.removeFromParent()
+        }
+        if let button = self.pauseLayer.childNode(withName: "menu") as? SKSpriteNode {
+            button.removeFromParent()
+        }
+        self.playButton = SKSpriteNode(imageNamed: "Play")
+        self.playButton.position = CGPoint(x:self.size.width/2-50, y:self.size.height/3)
+        self.playButton.setScale(0.25)
+        self.playButton.name = "play"
+        self.pauseLayer.addChild(self.playButton)
+        self.menuButton = SKSpriteNode(imageNamed: "Menu")
+        self.menuButton.position = CGPoint(x:self.size.width/2+50, y:self.size.height/3)
+        self.menuButton.setScale(0.25)
+        self.menuButton.name = "menu"
+        self.pauseLayer.addChild(self.menuButton)
+    }
+    
     func resetGame() {
         players.removeAll()
         initPlayers()
@@ -771,7 +802,7 @@ class GameScene: SKScene {
     
     func checkGameOver() -> Bool {
         for player in players{
-            if ( player.gameScore > 200 ){
+            if ( player.gameScore > self.gameOverScore ){
                 return true
             }
         }
@@ -794,12 +825,16 @@ class GameScene: SKScene {
         gameLayer.speed = 1.0
         self.physicsWorld.speed = 1.0
         self.isPausedFix = false
+        
+        for child in pauseLayer.children {
+            child.removeFromParent()
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = touch.location(in:self)
-            
+            let playableMargin = (size.height-size.width)/2.0
             if ( !self.isPausedFix ) {
                 for i in 1...numberOfPlayers {
                     if (leftButtons[i-1].contains(location)){
@@ -810,10 +845,16 @@ class GameScene: SKScene {
                         players[i-1].fireProjectile()
                     }
                 }
+                if (location.y > playableMargin && location.y < size.height - playableMargin){
+                    pauseMenu()
+                }
             }
             if(!pauseLayer.isHidden){
                 if (restartButton.contains(location)){
                     resetGame()
+                }
+                if (playButton.contains(location)){
+                    unpauseGame()
                 }
                 if (menuButton.contains(location)){
                     for child in gameLayer.children {
