@@ -11,6 +11,7 @@ class GameViewController: UIViewController {
     var AutoBalance = String()
     var Powerups = String()
     var FixedSpawn = String()
+    
     var ScatterShot = String()
     var num_players = 0
     
@@ -19,17 +20,23 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         
         let scene = GameScene(size: view.bounds.size)
-//        scene.mode = Mode
-//        scene.terrain = Terrain
-//        scene.kill = Kill
-//        scene.sound = sound
-//        scene.music = music
-//        scene.AutoBalance = AutoBalance
-//        scene.Powerups = Powerups
-//        scene.FixedSpawn = FixedSpawn
-//        scene.ScatterShot = ScatterShot
-//        scene.numberOfPlayers = num_players
-//        scene.num_players = num_players
+        scene.mode = Mode
+        scene.terrain = Terrain
+        scene.kill = Kill
+        scene.sound = sound
+        scene.music = music
+        scene.AutoBalance = AutoBalance
+        scene.Powerups = Powerups
+        if(FixedSpawn == "On"){
+            scene.startWithShield = true
+        }
+        else{
+            scene.startWithShield = false
+        }
+        
+        scene.ScatterShot = ScatterShot
+        scene.numberOfPlayers = num_players
+        scene.num_players = num_players
         let skView = view as! SKView
         skView.showsFPS = true
         skView.showsNodeCount = true
