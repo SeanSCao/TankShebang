@@ -66,6 +66,11 @@ class GameScene: SKScene {
     
     var isPausedFix = true
     
+    var SFX = true
+    var MUSIC = true
+    var POWERUPS = true
+    var STARTPOWERUPS = true
+    
     override func didMove(to view: SKView) {
         
         backgroundColor = SKColor.white
