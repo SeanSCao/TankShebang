@@ -64,7 +64,7 @@ class AdvancedOptionsViewController: UIViewController {
         ScatterShotButton.setTitle(scatter, for: .normal)
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        var game_options = segue.destination as! GameOptionsViewController
+        let game_options = segue.destination as! GameOptionsViewController
         game_options.AutoBalance = auto
         game_options.Powerups = power
         game_options.FixedSpawn = spawn

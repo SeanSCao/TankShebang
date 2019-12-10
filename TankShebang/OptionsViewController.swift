@@ -46,7 +46,7 @@ class OptionsViewController: UIViewController {
         
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        var titleview = segue.destination as! TitleViewController
+        let titleview = segue.destination as! TitleViewController
         titleview.Sound = sound
         titleview.Music = music
         
