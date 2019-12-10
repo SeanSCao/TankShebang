@@ -13,7 +13,6 @@ import SpriteKit
 class Player: SKSpriteNode {
     
     var colorString:String = ""
-    var directionState:String = "forward"
     var health:Int = 2
     var invincible:Bool = false
     var shield:Bool = false
@@ -102,6 +101,13 @@ class Player: SKSpriteNode {
                         projectile.owner.gameScore += 10
                         print(projectile.owner.gameScore)
                     }
+                    var spriteFile:String = ""
+                    if (self.health == 2){
+                        spriteFile = self.colorString + String(ammo)
+                    } else {
+                        spriteFile = self.colorString + "D" + String(ammo)
+                    }
+                    self.texture = SKTexture(imageNamed: spriteFile)
                 }
             }
         }
@@ -129,6 +135,14 @@ class Player: SKSpriteNode {
                 health = 0
             }
         }
+        
+        var spriteFile:String = ""
+        if (self.health == 2){
+            spriteFile = self.colorString + String(ammo)
+        } else {
+            spriteFile = self.colorString + "D" + String(ammo)
+        }
+        self.texture = SKTexture(imageNamed: spriteFile)
         
         // Calculate dead or not
         if (health == 0){
@@ -189,7 +203,13 @@ class Player: SKSpriteNode {
             projectile.run(SKAction.sequence([shoot, shootDone]))
 
             self.ammo -= 1
-            let spriteFile = self.colorString + String(ammo)
+            
+            var spriteFile:String = ""
+            if (self.health == 2){
+                spriteFile = self.colorString + String(ammo)
+            } else {
+                spriteFile = self.colorString + "D" + String(ammo)
+            }
             self.texture = SKTexture(imageNamed: spriteFile)
         }
     }
@@ -292,7 +312,12 @@ class Player: SKSpriteNode {
     @objc func reload() {
         if (self.ammo < 4) {
             self.ammo += 1
-            let spriteFile = self.colorString + String(ammo)
+            var spriteFile:String = ""
+            if (self.health == 2){
+                spriteFile = self.colorString + String(ammo)
+            } else {
+                spriteFile = self.colorString + "D" + String(ammo)
+            }
             self.texture = SKTexture(imageNamed: spriteFile)
         }
         

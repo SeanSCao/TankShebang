@@ -204,6 +204,8 @@ class GameScene: SKScene {
             players[i-1].health = 2
             players[i-1].ammo = 4
             players[i-1].invincible = false
+            let spriteFile:String = players[i-1].colorString + "4"
+            players[i-1].texture = SKTexture(imageNamed: spriteFile)
             if (startWithShield ) {
                 players[i-1].addShield()
             } else {
@@ -462,17 +464,21 @@ class GameScene: SKScene {
         }
         
         if ( !checkGameOver() ) {
-            scoreboard()
-            removeElements()
-            resetTanks()
-            changeMap()
-            countdown(length:5)
+            run(SKAction.wait(forDuration: 1)){
+                self.initScoreboard()
+                self.removeElements()
+                self.leftPressed = [false, false, false, false]
+                self.resetTanks()
+                self.changeMap()
+                self.countdown(length:5)
+            }
+            
         } else {
             
         }
     }
     
-    func scoreboard(){
+    func initScoreboard(){
         for i in 1 ... numberOfPlayers {
             let box = SKShapeNode()
             box.name = "scoreboard"
@@ -498,10 +504,6 @@ class GameScene: SKScene {
             scoreLabel.text = String(players[i-1].gameScore)
             box.addChild(scoreLabel)
         }
-//        run(SKAction.wait(forDuration: 5))
-//        countdown(length:3)
-        
-//        run(SKAction.sequence([SKAction.wait(forDuration: 5.0), SKAction.run({self.countdown(length:3)})]))
     }
     
     func removeElements(){
@@ -537,8 +539,12 @@ class GameScene: SKScene {
                     if let countdownNode = self.pauseLayer.childNode(withName: "countdown") as? SKLabelNode {
                         countdownNode.removeFromParent()
                     }
+                    for child in self.pauseLayer.children{
+                        if child.name == "scoreboard" {
+                            child.removeFromParent()
+                        }
+                    }
                     self.unpauseGame()
-                    
                 }
                 else {
                     //maybe play some sound tick file here
@@ -550,7 +556,7 @@ class GameScene: SKScene {
     
     func checkGameOver() -> Bool {
         for player in players{
-            if ( player.roundScore == 5 ){
+            if ( player.roundScore > 1000 ){
                 return true
             }
         }
