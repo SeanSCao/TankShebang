@@ -40,9 +40,7 @@ class GameScene: SKScene {
     }
     
     var map = SKNode()
-    var mapSetting = 2
     
-    var numberOfPlayers = 4
     var players = [Player]()
     let playerColors = ["Black", "Red", "Blue", "Green"]
     let colorsDict:[String:SKColor] = ["Black":SKColor.black, "Red": SKColor(red: 194/255.0, green: 39/255.0, blue: 14/255.0, alpha: 1), "Blue":SKColor(red: 13/255.0, green: 80/255.0, blue: 194/255.0, alpha: 1), "Green":SKColor(red: 90/255.0, green: 194/255.0, blue: 15/255.0, alpha: 1)]
@@ -56,8 +54,6 @@ class GameScene: SKScene {
     var tankDriveForward = true // tank driving direction
     let tankRotateSpeed = 0.1 //tank turning speed
     
-    var startWithShield = false
-    
     var countdownLabel: SKLabelNode!
     var restartButton = SKSpriteNode()
     var menuButton = SKSpriteNode()
@@ -66,6 +62,9 @@ class GameScene: SKScene {
     
     var isPausedFix = true
     
+    var mapSetting = 2
+    var numberOfPlayers = 4
+    var startWithShield = false
     var SFX = true
     var MUSIC = true
     var POWERUPS = true
