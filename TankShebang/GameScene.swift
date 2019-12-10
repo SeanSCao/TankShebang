@@ -62,6 +62,10 @@ class GameScene: SKScene {
     var restartButton = SKSpriteNode()
     var menuButton = SKSpriteNode()
     
+    let backgroundSound = SKAudioNode(fileNamed: "background.mp3")
+    
+    var isPausedFix = true
+    
     override func didMove(to view: SKView) {
         
         backgroundColor = SKColor.white
@@ -78,11 +82,15 @@ class GameScene: SKScene {
         
         drawPlayableArea()
         
-//        scoreboard()
+        self.gameLayer.isPaused = true
+        
         countdown(length:3)
         
         gameLayer.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 3.0), SKAction.run(spawnPowerTile)])))
         
+        gameLayer.addChild(backgroundSound)
+        self.backgroundSound.run(SKAction.changeVolume(to: Float(0.5), duration: 0))
+        self.backgroundSound.run(SKAction.stop())
         
         physicsWorld.gravity = .zero
         physicsWorld.contactDelegate = self
@@ -484,7 +492,9 @@ class GameScene: SKScene {
     }
     
     func gameOver() {
+        self.backgroundSound.run(SKAction.stop())
         run(SKAction.wait(forDuration: 1)){
+            self.backgroundSound.run(SKAction.stop())
             var winner:Player = self.players[0]
             for player in self.players{
                 if ( player.gameScore > winner.gameScore ){
@@ -519,6 +529,14 @@ class GameScene: SKScene {
             self.menuButton.name = "menu"
             self.pauseLayer.addChild(self.menuButton)
             winner.removeFromParent()
+            
+            let sound = SKAudioNode(fileNamed: "gameover.mp3")
+            sound.autoplayLooped = false
+            self.addChild(sound)
+            self.run(SKAction.run {
+                sound.run(SKAction.play())
+                self.backgroundSound.run(SKAction.stop())
+            })
         }
     }
     
@@ -599,7 +617,7 @@ class GameScene: SKScene {
         countdownLabel.position = CGPoint(x:size.width/2, y:size.height/2-45)
         pauseLayer.addChild(countdownLabel)
         
-        pauseGame()
+        self.pauseGame()
         
         var offset: Double = 0
         
@@ -609,8 +627,6 @@ class GameScene: SKScene {
                 self.countdownLabel.text = "New Round In: \(x)"
                 
                 if x == 0 {
-                    //do something when counter hits 0
-                    //self.runGameOver()
                     if let countdownNode = self.pauseLayer.childNode(withName: "countdown") as? SKLabelNode {
                         countdownNode.removeFromParent()
                     }
@@ -622,7 +638,10 @@ class GameScene: SKScene {
                     self.unpauseGame()
                 }
                 else {
-                    //maybe play some sound tick file here
+                    let sound = SKAudioNode(fileNamed: "menu.mp3")
+                    sound.autoplayLooped = false
+                    self.addChild(sound)
+                    self.run(SKAction.run {sound.run(SKAction.play())})
                 }
             }
             offset += 1.0
@@ -639,28 +658,28 @@ class GameScene: SKScene {
     }
     
     func pauseGame() {
-        
+        self.backgroundSound.run(SKAction.pause())
         gameLayer.isPaused = true
         pauseLayer.isHidden = false
         self.physicsWorld.speed = 0.0
         gameLayer.speed = 0.0
-        
+        self.isPausedFix = true
     }
     
     func unpauseGame() {
-        
+        self.backgroundSound.run(SKAction.play())
         gameLayer.isPaused = false
         pauseLayer.isHidden = true
         gameLayer.speed = 1.0
         self.physicsWorld.speed = 1.0
-        
+        self.isPausedFix = false
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = touch.location(in:self)
             
-            if ( !gameLayer.isPaused ) {
+            if ( !self.isPausedFix ) {
                 for i in 1...numberOfPlayers {
                     if (leftButtons[i-1].contains(location)){
                         leftPressed[i-1] = true
@@ -686,7 +705,7 @@ class GameScene: SKScene {
         for touch in touches {
             let location = touch.location(in:self)
             
-            if ( !gameLayer.isPaused ) {
+            if ( !self.isPausedFix ) {
                 for i in 1...numberOfPlayers {
                     if (leftButtons[i-1].contains(location)){
                         leftPressed[i-1] = true
@@ -722,7 +741,8 @@ class GameScene: SKScene {
         // Called before each frame is rendered
         
         // move tanks forward
-        if (!gameLayer.isPaused){
+        if (self.isPausedFix == false){
+            print(self.gameLayer.isPaused)
             for player in players {
                 player.drive(tankDriveForward: tankDriveForward, tankMoveSpeed: tankMoveSpeed)
             }
@@ -860,7 +880,15 @@ extension GameScene: SKPhysicsContactDelegate {
             if let player = firstBody.node as? Player, let pickupTile = secondBody.node as? SKSpriteNode {
                 if (pickupTile.name == "Direction" ) {
                     tankDriveForward = !tankDriveForward
+                    let sound = SKAudioNode(fileNamed: "reverse.mp3")
+                    sound.autoplayLooped = false
+                    self.addChild(sound)
+                    self.run(SKAction.run {sound.run(SKAction.play())})
                 } else if (pickupTile.name == "Reverse" ) {
+                    let sound = SKAudioNode(fileNamed: "reverse.mp3")
+                    sound.autoplayLooped = false
+                    self.addChild(sound)
+                    self.run(SKAction.run {sound.run(SKAction.play())})
                     tankTurnLeft = !tankTurnLeft
                 } else if (pickupTile.name == "ShieldTile") {
                     player.addShield()
@@ -870,6 +898,7 @@ extension GameScene: SKPhysicsContactDelegate {
                     player.powerup = powerUpString
                 }
                 pickupTile.removeFromParent()
+                
             }
         }
         

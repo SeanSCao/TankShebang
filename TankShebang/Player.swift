@@ -23,7 +23,6 @@ class Player: SKSpriteNode {
     var roundScore:Int = 0
     var gameScore:Int = 0
     
-    
     func addShield(){
         if (!shield) {
 //            let Circle = SKShapeNode(circleOfRadius: self.size.height) // Size of Circle
@@ -43,6 +42,13 @@ class Player: SKSpriteNode {
             shieldSprite.position = CGPoint(x:0,y:0)
             self.addChild(shieldSprite)
             shield = true
+            
+            let sound = SKAudioNode(fileNamed: "reverse.mp3")
+            sound.autoplayLooped = false
+            self.addChild(sound)
+            self.run(SKAction.run {sound.run(SKAction.play())})
+
+            
         }
     }
     
@@ -125,6 +131,11 @@ class Player: SKSpriteNode {
                         spriteFile = self.colorString + "D" + String(ammo)
                     }
                     self.texture = SKTexture(imageNamed: spriteFile)
+                    
+                    let sound = SKAudioNode(fileNamed: "hit.mp3")
+                    sound.autoplayLooped = false
+                    self.addChild(sound)
+                    self.run(SKAction.run {sound.run(SKAction.play())})
                 }
             }
         }
@@ -173,6 +184,10 @@ class Player: SKSpriteNode {
             } else {
                 explosion.owner.gameScore += 25
             }
+            let sound = SKAudioNode(fileNamed: "explosion.mp3")
+            sound.autoplayLooped = false
+            self.addChild(sound)
+            self.run(SKAction.run {sound.run(SKAction.play())})
             self.removeFromParent()
         } else {
             temporaryInvincibility()
@@ -238,6 +253,11 @@ class Player: SKSpriteNode {
                 spriteFile = self.colorString + "D" + String(ammo)
             }
             self.texture = SKTexture(imageNamed: spriteFile)
+            
+            let sound = SKAudioNode(fileNamed: "shoot.mp3")
+            sound.autoplayLooped = false
+            self.addChild(sound)
+            self.run(SKAction.run {sound.run(SKAction.play())})
         }
     }
     
@@ -266,6 +286,11 @@ class Player: SKSpriteNode {
         let shoot = SKAction.move(to: direction, duration: 1.0)
         let shootDone = SKAction.removeFromParent()
         projectile.run(SKAction.sequence([shoot, shootDone]))
+        
+        let sound = SKAudioNode(fileNamed: "laser.mp3")
+        sound.autoplayLooped = false
+        self.addChild(sound)
+        self.run(SKAction.run {sound.run(SKAction.play())})
     }
     
     func fireBubble(){
@@ -289,6 +314,11 @@ class Player: SKSpriteNode {
         let shoot = SKAction.move(to: direction, duration: 2.0)
         let shootDone = SKAction.removeFromParent()
         projectile.run(SKAction.sequence([shoot, shootDone]))
+        
+        let sound = SKAudioNode(fileNamed: "shoot.mp3")
+        sound.autoplayLooped = false
+        self.addChild(sound)
+        self.run(SKAction.run {sound.run(SKAction.play())})
     }
     
     func fireRocket(){
@@ -315,6 +345,11 @@ class Player: SKSpriteNode {
         let shoot = SKAction.move(to: direction, duration: 2.0)
         let shootDone = SKAction.removeFromParent()
         projectile.run(SKAction.sequence([shoot, shootDone]))
+        
+        let sound = SKAudioNode(fileNamed: "rocket.mp3")
+        sound.autoplayLooped = false
+        self.addChild(sound)
+        self.run(SKAction.run {sound.run(SKAction.play())})
     }
     
     func dropMine(){

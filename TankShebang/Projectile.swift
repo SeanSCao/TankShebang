@@ -26,6 +26,10 @@ class Projectile: SKSpriteNode {
         self.physicsBody?.contactTestBitMask = PhysicsCategory.player
         self.physicsBody?.collisionBitMask = PhysicsCategory.none
         
+        let sound = SKAudioNode(fileNamed: "explosion.mp3")
+        sound.autoplayLooped = false
+        self.addChild(sound)
+        self.run(SKAction.run {sound.run(SKAction.play())})
     }
     
     func activateMine(){
@@ -41,6 +45,7 @@ class Projectile: SKSpriteNode {
         let removeAction = SKAction.removeFromParent()
         let explodeAction = SKAction.run({self.explode(scale: 0.5, position:CGPoint(x:0,y:0))})
         let fadeAction = SKAction.fadeOut(withDuration: 0.5)
+        
         self.run(SKAction.sequence([explodeAction, SKAction.wait(forDuration: 0.25), fadeAction, removeAction]))
     }
 }
