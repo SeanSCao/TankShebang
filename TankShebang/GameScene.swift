@@ -59,6 +59,8 @@ class GameScene: SKScene {
     var startWithShield = false
     
     var countdownLabel: SKLabelNode!
+    var restartButton = SKSpriteNode()
+    var menuButton = SKSpriteNode()
     
     override func didMove(to view: SKView) {
         
@@ -79,9 +81,6 @@ class GameScene: SKScene {
 //        scoreboard()
         countdown(length:3)
         
-        for player in players {
-            Timer.scheduledTimer(timeInterval: 1, target: player, selector: #selector(player.reload), userInfo: nil, repeats: true)
-        }
         gameLayer.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 3.0), SKAction.run(spawnPowerTile)])))
         
         
@@ -128,6 +127,9 @@ class GameScene: SKScene {
             players.append(player)
         }
         resetTanks()
+        for player in players {
+            Timer.scheduledTimer(timeInterval: 1, target: player, selector: #selector(player.reload), userInfo: nil, repeats: true)
+        }
     }
     
     func resetTanks(){
@@ -212,7 +214,7 @@ class GameScene: SKScene {
             } else {
                 players[i-1].removeShield()
             }
-            players[i-1].powerup = "Rocket"
+            players[i-1].powerup = ""
             gameLayer.addChild(players[i-1])
         }
     }
@@ -472,6 +474,8 @@ class GameScene: SKScene {
                 self.resetTanks()
                 self.changeMap()
                 self.countdown(length:5)
+                self.tankTurnLeft = true
+                self.tankDriveForward = true
             }
             
         } else {
@@ -492,11 +496,61 @@ class GameScene: SKScene {
             self.leftPressed = [false, false, false, false]
             self.pauseGame()
             self.countdownLabel = SKLabelNode(fontNamed: "Avenir")
+            self.countdownLabel.name = "winner"
             self.countdownLabel.text = winner.name! + " Wins"
             self.countdownLabel.horizontalAlignmentMode = .center
             self.countdownLabel.position = CGPoint(x:self.size.width/2, y:self.size.height/2-45)
             self.pauseLayer.addChild(self.countdownLabel)
+            
+            if let button = self.pauseLayer.childNode(withName: "restart") as? SKSpriteNode {
+                button.removeFromParent()
+            }
+            if let button = self.pauseLayer.childNode(withName: "menu") as? SKSpriteNode {
+                button.removeFromParent()
+            }
+            self.restartButton = SKSpriteNode(imageNamed: "Restart")
+            self.restartButton.position = CGPoint(x:self.size.width/2-50, y:self.size.height/3)
+            self.restartButton.setScale(0.25)
+            self.restartButton.name = "restart"
+            self.pauseLayer.addChild(self.restartButton)
+            self.menuButton = SKSpriteNode(imageNamed: "Menu")
+            self.menuButton.position = CGPoint(x:self.size.width/2+50, y:self.size.height/3)
+            self.menuButton.setScale(0.25)
+            self.menuButton.name = "menu"
+            self.pauseLayer.addChild(self.menuButton)
+            winner.removeFromParent()
         }
+    }
+    
+    func resetGame() {
+        players.removeAll()
+        initPlayers()
+        for player in players{
+            player.gameScore = 0
+            player.roundScore = 0
+        }
+        for child in self.pauseLayer.children {
+            if (child.name=="scoreboard"){
+                child.removeFromParent()
+            }
+            if (child.name=="menu"){
+                child.removeFromParent()
+            }
+            if (child.name=="restart"){
+                child.removeFromParent()
+            }
+            if (child.name=="winner"){
+                child.removeFromParent()
+            }
+        }
+        self.tankTurnLeft = true
+        self.tankDriveForward = true
+        self.unpauseGame()
+        self.removeElements()
+        self.leftPressed = [false, false, false, false]
+//        self.resetTanks()
+        self.changeMap()
+        self.countdown(length:3)
     }
     
     func initScoreboard(){
@@ -577,7 +631,7 @@ class GameScene: SKScene {
     
     func checkGameOver() -> Bool {
         for player in players{
-            if ( player.gameScore > 1000 ){
+            if ( player.gameScore > 200 ){
                 return true
             }
         }
@@ -615,6 +669,14 @@ class GameScene: SKScene {
                     if (rightButtons[i-1].contains(location)){
                         players[i-1].fireProjectile()
                     }
+                }
+            }
+            if(!pauseLayer.isHidden){
+                if (restartButton.contains(location)){
+                    resetGame()
+                }
+                if (menuButton.contains(location)){
+                    
                 }
             }
         }
@@ -660,8 +722,10 @@ class GameScene: SKScene {
         // Called before each frame is rendered
         
         // move tanks forward
-        for player in players {
-            player.drive(tankDriveForward: tankDriveForward, tankMoveSpeed: tankMoveSpeed)
+        if (!gameLayer.isPaused){
+            for player in players {
+                player.drive(tankDriveForward: tankDriveForward, tankMoveSpeed: tankMoveSpeed)
+            }
         }
         
         // turn tanks

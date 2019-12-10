@@ -17,7 +17,7 @@ class Player: SKSpriteNode {
     var invincible:Bool = false
     var shield:Bool = false
     var ammo:Int = 4
-    var powerup:String = "Rocket"
+    var powerup:String = ""
     
     var gameScale:CGFloat = 1
     var roundScore:Int = 0
