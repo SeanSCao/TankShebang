@@ -7,14 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1430F68B239080A300AFBADB /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1430F68A239080A300AFBADB /* Options.swift */; };
-		1430F68D2394886B00AFBADB /* TitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1430F68C2394886B00AFBADB /* TitleViewController.swift */; };
-		1430F68F23948ADD00AFBADB /* GameOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1430F68E23948ADD00AFBADB /* GameOptionsViewController.swift */; };
-		1430F691239700B300AFBADB /* PlayerSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1430F690239700B300AFBADB /* PlayerSelectViewController.swift */; };
-		1430F693239700EE00AFBADB /* AdvancedOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1430F692239700EE00AFBADB /* AdvancedOptionsViewController.swift */; };
-		1430F695239B5C9000AFBADB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1430F694239B5C9000AFBADB /* Player.swift */; };
-		1430F697239B5CB800AFBADB /* Projectile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1430F696239B5CB700AFBADB /* Projectile.swift */; };
-		1430F699239B5DF500AFBADB /* Tiles.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1430F698239B5DF500AFBADB /* Tiles.sks */; };
 		145A1C452372441F006D8603 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145A1C442372441F006D8603 /* AppDelegate.swift */; };
 		145A1C472372441F006D8603 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 145A1C462372441F006D8603 /* GameScene.sks */; };
 		145A1C492372441F006D8603 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 145A1C482372441F006D8603 /* Actions.sks */; };
@@ -25,9 +17,8 @@
 		145A1C5523724421006D8603 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 145A1C5323724421006D8603 /* LaunchScreen.storyboard */; };
 		145A1C6023724421006D8603 /* TankShebangTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145A1C5F23724421006D8603 /* TankShebangTests.swift */; };
 		145A1C6B23724421006D8603 /* TankShebangUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145A1C6A23724421006D8603 /* TankShebangUITests.swift */; };
-		14A7605D239CA818006B4B78 /* Menu.sks in Resources */ = {isa = PBXBuildFile; fileRef = 14A7605C239CA817006B4B78 /* Menu.sks */; };
-		14A7605F239CA81E006B4B78 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7605E239CA81E006B4B78 /* Menu.swift */; };
-		14A76069239CBD7B006B4B78 /* tank.png in Resources */ = {isa = PBXBuildFile; fileRef = 14A76068239CBD7B006B4B78 /* tank.png */; };
+		72C95286239048FD00EBAF27 /* Menu.sks in Resources */ = {isa = PBXBuildFile; fileRef = 72C95285239048FD00EBAF27 /* Menu.sks */; };
+		72C9528823904A2A00EBAF27 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C9528723904A2A00EBAF27 /* Menu.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,14 +39,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1430F68A239080A300AFBADB /* Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
-		1430F68C2394886B00AFBADB /* TitleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleViewController.swift; sourceTree = "<group>"; };
-		1430F68E23948ADD00AFBADB /* GameOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOptionsViewController.swift; sourceTree = "<group>"; };
-		1430F690239700B300AFBADB /* PlayerSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSelectViewController.swift; sourceTree = "<group>"; };
-		1430F692239700EE00AFBADB /* AdvancedOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedOptionsViewController.swift; sourceTree = "<group>"; };
-		1430F694239B5C9000AFBADB /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
-		1430F696239B5CB700AFBADB /* Projectile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Projectile.swift; sourceTree = "<group>"; };
-		1430F698239B5DF500AFBADB /* Tiles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Tiles.sks; path = ../../../Downloads/Tiles.sks; sourceTree = "<group>"; };
 		145A1C412372441F006D8603 /* TankShebang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TankShebang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		145A1C442372441F006D8603 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		145A1C462372441F006D8603 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -72,9 +55,8 @@
 		145A1C6623724421006D8603 /* TankShebangUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TankShebangUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		145A1C6A23724421006D8603 /* TankShebangUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankShebangUITests.swift; sourceTree = "<group>"; };
 		145A1C6C23724421006D8603 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		14A7605C239CA817006B4B78 /* Menu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = Menu.sks; path = "../../TankShebang-Aru/TankShebang/Menu.sks"; sourceTree = "<group>"; };
-		14A7605E239CA81E006B4B78 /* Menu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Menu.swift; path = "../../TankShebang-Aru/TankShebang/Menu.swift"; sourceTree = "<group>"; };
-		14A76068239CBD7B006B4B78 /* tank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tank.png; path = ../../../Downloads/tank.png; sourceTree = "<group>"; };
+		72C95285239048FD00EBAF27 /* Menu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Menu.sks; sourceTree = "<group>"; };
+		72C9528723904A2A00EBAF27 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,22 +111,13 @@
 				145A1C462372441F006D8603 /* GameScene.sks */,
 				145A1C482372441F006D8603 /* Actions.sks */,
 				145A1C4A2372441F006D8603 /* GameScene.swift */,
-				1430F68E23948ADD00AFBADB /* GameOptionsViewController.swift */,
 				145A1C4C2372441F006D8603 /* GameViewController.swift */,
 				145A1C4E2372441F006D8603 /* Main.storyboard */,
-				1430F694239B5C9000AFBADB /* Player.swift */,
-				1430F696239B5CB700AFBADB /* Projectile.swift */,
-				1430F692239700EE00AFBADB /* AdvancedOptionsViewController.swift */,
-				1430F690239700B300AFBADB /* PlayerSelectViewController.swift */,
-				1430F698239B5DF500AFBADB /* Tiles.sks */,
-				1430F68C2394886B00AFBADB /* TitleViewController.swift */,
-				1430F68A239080A300AFBADB /* Options.swift */,
-				14A7605C239CA817006B4B78 /* Menu.sks */,
-				14A7605E239CA81E006B4B78 /* Menu.swift */,
 				145A1C5123724421006D8603 /* Assets.xcassets */,
-				14A76068239CBD7B006B4B78 /* tank.png */,
 				145A1C5323724421006D8603 /* LaunchScreen.storyboard */,
 				145A1C5623724421006D8603 /* Info.plist */,
+				72C95285239048FD00EBAF27 /* Menu.sks */,
+				72C9528723904A2A00EBAF27 /* Menu.swift */,
 			);
 			path = TankShebang;
 			sourceTree = "<group>";
@@ -271,12 +244,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				72C95286239048FD00EBAF27 /* Menu.sks in Resources */,
 				145A1C502372441F006D8603 /* Main.storyboard in Resources */,
-				14A76069239CBD7B006B4B78 /* tank.png in Resources */,
 				145A1C472372441F006D8603 /* GameScene.sks in Resources */,
 				145A1C5223724421006D8603 /* Assets.xcassets in Resources */,
-				1430F699239B5DF500AFBADB /* Tiles.sks in Resources */,
-				14A7605D239CA818006B4B78 /* Menu.sks in Resources */,
 				145A1C5523724421006D8603 /* LaunchScreen.storyboard in Resources */,
 				145A1C492372441F006D8603 /* Actions.sks in Resources */,
 			);
@@ -303,17 +274,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1430F697239B5CB800AFBADB /* Projectile.swift in Sources */,
-				1430F68B239080A300AFBADB /* Options.swift in Sources */,
-				1430F691239700B300AFBADB /* PlayerSelectViewController.swift in Sources */,
 				145A1C4B2372441F006D8603 /* GameScene.swift in Sources */,
 				145A1C4D2372441F006D8603 /* GameViewController.swift in Sources */,
-				14A7605F239CA81E006B4B78 /* Menu.swift in Sources */,
-				1430F68F23948ADD00AFBADB /* GameOptionsViewController.swift in Sources */,
+				72C9528823904A2A00EBAF27 /* Menu.swift in Sources */,
 				145A1C452372441F006D8603 /* AppDelegate.swift in Sources */,
-				1430F68D2394886B00AFBADB /* TitleViewController.swift in Sources */,
-				1430F695239B5C9000AFBADB /* Player.swift in Sources */,
-				1430F693239700EE00AFBADB /* AdvancedOptionsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,7 +452,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = TankShebang/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -506,7 +470,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = TankShebang/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -11,38 +11,25 @@ import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
-    var Mode = String()
-    var Level = String()
-    var Kill = String()
-    var sound = String()
-    var music = String()
-    var AutoBalance = String()
-    var Powerups = String()
-    var FixedSpawn = String()
-    var ScatterShot = String()
-    var num_players = 0
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let scene = GameScene(size: view.bounds.size)
-        scene.mode = Mode
-        scene.level = Level
-        scene.kill = Kill
-        scene.sound = sound
-        scene.music = music
-        scene.AutoBalance = AutoBalance
-        scene.Powerups = Powerups
-        scene.FixedSpawn = FixedSpawn
-        scene.ScatterShot = ScatterShot
-        scene.num_players = num_players
-        let skView = view as! SKView
-        skView.showsFPS = true
-        skView.showsNodeCount = true
-        skView.ignoresSiblingOrder = true
-        scene.scaleMode = .resizeFill
-        skView.presentScene(scene)
+    //    let scene =  Menu(size: view.bounds.size)
+     //   let skView = view as! SKView
+    //    skView.showsFPS = true
+     //   skView.showsNodeCount = true
+     //   skView.ignoresSiblingOrder = true
+     //   scene.scaleMode = .resizeFill
+      //  skView.presentScene(scene)
+        
+        if let view = self.view as! SKView? {
+            if let scene = SKScene(fileNamed: "Menu") {
+                scene.scaleMode = .aspectFit
+                
+                view.presentScene(scene)
+            }
+        }
         
 //        if let view = self.view as! SKView? {
 //            // Load the SKScene from 'GameScene.sks'
