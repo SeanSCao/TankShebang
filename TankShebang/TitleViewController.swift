@@ -11,8 +11,21 @@ import UIKit
 class TitleViewController: UIViewController {
     var Music = String()
     var Sound = String()
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "PlayerSelect"){
+            var game_options = segue.destination as! PlayerSelectViewController
+            game_options.Music = Music
+            game_options.Sound = Sound
+            
+        }
+        
+        
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(Music)
+        print(Sound)
 
         // Do any additional setup after loading the view.
     }
