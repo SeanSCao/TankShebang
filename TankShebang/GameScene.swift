@@ -71,8 +71,8 @@ class GameScene: SKScene {
     var MUSIC = true
     var POWERUPS = true
     var STARTPOWERUPS = true
-    var gameOverScore = 150
-    
+    var gameOverScore = 500
+     
     override func didMove(to view: SKView) {
         
         backgroundColor = SKColor.white
@@ -97,9 +97,9 @@ class GameScene: SKScene {
 //
 //        countdown(length:3)
 //
-//        if (POWERUPS){
-//            gameLayer.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 3.0), SKAction.run(spawnPowerTile)])))
-//        }
+        if (POWERUPS){
+            gameLayer.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 3.0), SKAction.run(spawnPowerTile)])))
+        }
         
         if (self.MUSIC){
             backgroundSound.name = "bgSound"
@@ -126,9 +126,9 @@ class GameScene: SKScene {
         
         countdown(length:3)
         
-        if (POWERUPS){
-            gameLayer.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 3.0), SKAction.run(spawnPowerTile)])))
-        }
+//        if (POWERUPS){
+//            gameLayer.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 3.0), SKAction.run(spawnPowerTile)])))
+//        }
     }
     
     // create sprite node for each player tank and position accordingly
@@ -601,7 +601,7 @@ class GameScene: SKScene {
             }
         }
         
-        gameLayer.removeAllActions()
+//        gameLayer.removeAllActions()
         for player in players{
             player.removeAllActions()
         }

@@ -18,6 +18,8 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(music)
+        print(sound)
         
         let scene = GameScene(size: view.bounds.size)
         if(FixedSpawn == "On"){

@@ -114,7 +114,8 @@ class PlayerSelectViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        print(Music)
+        print(Sound)
         // Do any additional setup after loading the view.
     }
     
