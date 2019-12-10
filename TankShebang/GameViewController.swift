@@ -20,6 +20,13 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         
         let scene = GameScene(size: view.bounds.size)
+        scene.mode = Mode
+        scene.terrain = Terrain
+        scene.kill = Kill
+        scene.sound = sound
+        scene.music = music
+        scene.AutoBalance = AutoBalance
+        scene.Powerups = Powerups
         if(FixedSpawn == "On"){
             scene.startWithShield = true
         }
@@ -43,7 +50,7 @@ class GameViewController: UIViewController {
         if(music == "On"){
             scene.MUSIC = true
         }
-        else{
+        if (music == "Off"){
             scene.MUSIC = false
         }
         if(sound == "On"){
@@ -60,7 +67,9 @@ class GameViewController: UIViewController {
             
         }
         
+        scene.ScatterShot = ScatterShot
         scene.numberOfPlayers = num_players
+        scene.num_players = num_players
         let skView = view as! SKView
         skView.showsFPS = true
         skView.showsNodeCount = true
