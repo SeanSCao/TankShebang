@@ -471,10 +471,10 @@ class GameScene: SKScene {
             for i in 1...10 {
                 let bottomBush = SKSpriteNode(imageNamed: "Bush")
                 bottomBush.name = "obstacle"
+                bottomBush.physicsBody = SKPhysicsBody(rectangleOf: bottomBush.size)
                 bottomBush.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
                 bottomBush.physicsBody?.contactTestBitMask = PhysicsCategory.projectile
                 bottomBush.physicsBody?.collisionBitMask = PhysicsCategory.player | PhysicsCategory.pickupTile
-                bottomBush.physicsBody = SKPhysicsBody(rectangleOf: bottomBush.size)
                 bottomBush.physicsBody?.isDynamic = false
                 bottomBush.setScale(0.3)
                 
@@ -485,10 +485,10 @@ class GameScene: SKScene {
                 
                 let topBush = SKSpriteNode(imageNamed: "Bush")
                 topBush.name = "obstacle"
+                topBush.physicsBody = SKPhysicsBody(rectangleOf: topBush.size)
                 topBush.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
                 topBush.physicsBody?.contactTestBitMask = PhysicsCategory.projectile
                 topBush.physicsBody?.collisionBitMask = PhysicsCategory.player | PhysicsCategory.pickupTile
-                topBush.physicsBody = SKPhysicsBody(rectangleOf: topBush.size)
                 topBush.physicsBody?.isDynamic = false
                 topBush.setScale(0.3)
                 X = size.width/2
@@ -498,10 +498,10 @@ class GameScene: SKScene {
                 
                 let leftBush = SKSpriteNode(imageNamed: "Bush")
                 leftBush.name = "obstacle"
+                leftBush.physicsBody = SKPhysicsBody(rectangleOf: leftBush.size)
                 leftBush.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
                 leftBush.physicsBody?.contactTestBitMask = PhysicsCategory.projectile
                 leftBush.physicsBody?.collisionBitMask = PhysicsCategory.player | PhysicsCategory.pickupTile
-                leftBush.physicsBody = SKPhysicsBody(rectangleOf: leftBush.size)
                 leftBush.physicsBody?.isDynamic = false
                 leftBush.setScale(0.3)
                 X = CGFloat(i) * leftBush.size.height/2
@@ -511,10 +511,10 @@ class GameScene: SKScene {
                 
                 let rightBush = SKSpriteNode(imageNamed: "Bush")
                 rightBush.name = "obstacle"
+                rightBush.physicsBody = SKPhysicsBody(rectangleOf: rightBush.size)
                 rightBush.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
                 rightBush.physicsBody?.contactTestBitMask = PhysicsCategory.projectile
                 rightBush.physicsBody?.collisionBitMask = PhysicsCategory.player | PhysicsCategory.pickupTile
-                rightBush.physicsBody = SKPhysicsBody(rectangleOf: rightBush.size)
                 rightBush.physicsBody?.isDynamic = false
                 rightBush.setScale(0.3)
                 X = size.width -  (CGFloat(i) * rightBush.size.height/2)
@@ -524,10 +524,10 @@ class GameScene: SKScene {
             }
             let bush = SKSpriteNode(imageNamed: "Bush")
             bush.name = "obstacle"
+            bush.physicsBody = SKPhysicsBody(rectangleOf: bush.size)
             bush.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
             bush.physicsBody?.contactTestBitMask = PhysicsCategory.projectile
             bush.physicsBody?.collisionBitMask = PhysicsCategory.player | PhysicsCategory.pickupTile
-            bush.physicsBody = SKPhysicsBody(rectangleOf: bush.size)
             bush.physicsBody?.isDynamic = false
             bush.setScale(0.3)
             let X = size.width/2
@@ -538,10 +538,10 @@ class GameScene: SKScene {
             for _ in 1...25 {
                 let rock = SKSpriteNode(imageNamed: "Rock")
                 rock.name = "obstacle"
+                rock.physicsBody = SKPhysicsBody(rectangleOf: rock.size)
                 rock.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
                 rock.physicsBody?.contactTestBitMask = PhysicsCategory.projectile
                 rock.physicsBody?.collisionBitMask = PhysicsCategory.player | PhysicsCategory.pickupTile
-                rock.physicsBody = SKPhysicsBody(rectangleOf: rock.size)
                 rock.physicsBody?.isDynamic = true
                 
                 let randX = Int.random(in: 100...Int(size.width-100))

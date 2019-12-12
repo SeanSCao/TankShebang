@@ -165,12 +165,7 @@
 				145A1C4A2372441F006D8603 /* GameScene.swift */,
 				141D181523961B170016E03F /* Player.swift */,
 				141D18172396E6AD0016E03F /* Projectile.swift */,
-				145A1C4C2372441F006D8603 /* GameViewController.swift */,
-				148D10A5239F67A2004EF9F8 /* GameOptionsViewController.swift */,
-				148D10A3239F6746004EF9F8 /* AdvancedOptionsViewController.swift */,
-				148D10A9239F67B1004EF9F8 /* OptionsViewController.swift */,
-				148D10AB239F67B5004EF9F8 /* TitleViewController.swift */,
-				148D10A7239F67A8004EF9F8 /* PlayerSelectViewController.swift */,
+				14AF755423A2B66300C6922E /* ViewControllers */,
 				145A1C4E2372441F006D8603 /* Main.storyboard */,
 				145A1C5123724421006D8603 /* Assets.xcassets */,
 				145A1C5323724421006D8603 /* LaunchScreen.storyboard */,
@@ -196,6 +191,19 @@
 				145A1C6C23724421006D8603 /* Info.plist */,
 			);
 			path = TankShebangUITests;
+			sourceTree = "<group>";
+		};
+		14AF755423A2B66300C6922E /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				145A1C4C2372441F006D8603 /* GameViewController.swift */,
+				148D10AB239F67B5004EF9F8 /* TitleViewController.swift */,
+				148D10A9239F67B1004EF9F8 /* OptionsViewController.swift */,
+				148D10A3239F6746004EF9F8 /* AdvancedOptionsViewController.swift */,
+				148D10A5239F67A2004EF9F8 /* GameOptionsViewController.swift */,
+				148D10A7239F67A8004EF9F8 /* PlayerSelectViewController.swift */,
+			);
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
