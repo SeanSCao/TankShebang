@@ -84,7 +84,6 @@ class Player: SKSpriteNode {
                     projectile.owner.gameScore -= 10
                 } else {
                     projectile.owner.gameScore += 10
-                    print(projectile.owner.gameScore)
                 }
             } else {
                 health = 0
@@ -92,7 +91,6 @@ class Player: SKSpriteNode {
                     projectile.owner.gameScore -= 25
                 } else {
                     projectile.owner.gameScore += 25
-                    print(projectile.owner.gameScore)
                 }
             }
         } else if (shield) {
@@ -101,7 +99,6 @@ class Player: SKSpriteNode {
                 projectile.owner.gameScore -= 10
             } else {
                 projectile.owner.gameScore += 10
-                print(projectile.owner.gameScore)
             }
         } else {
             if (!invincible){
@@ -114,7 +111,6 @@ class Player: SKSpriteNode {
                         projectile.owner.gameScore -= 10
                     } else {
                         projectile.owner.gameScore += 10
-                        print(projectile.owner.gameScore)
                     }
                     var spriteFile:String = ""
                     if (self.health == 2){
@@ -153,7 +149,6 @@ class Player: SKSpriteNode {
     }
     
     func explode(explosion: Projectile) {
-        print("player explode")
         // Calculate damage
         if (shield) {
             removeShield()

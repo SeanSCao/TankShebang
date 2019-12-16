@@ -185,8 +185,10 @@ class GameScene: SKScene {
         let topLeftCorner = CGPoint(x: size.width * 0.1, y: playableMargin + size.width * 0.9)
         let topRightCorner = CGPoint(x: size.width * 0.9, y: playableMargin + size.width * 0.9)
         
+        for player in players{
+            player.removeFromParent()
+        }
         for i in 1...numberOfPlayers {
-            players[i-1].removeFromParent()
             if (numberOfPlayers==2){ // 2 player game
                 if (i==1){
                     // player 1 tank positioning
@@ -263,7 +265,9 @@ class GameScene: SKScene {
             } else {
                 players[i-1].powerup = ""
             }
-            gameLayer.addChild(players[i-1])
+        }
+        for player in players{
+            gameLayer.addChild(player)
         }
     }
     
@@ -271,8 +275,8 @@ class GameScene: SKScene {
     func createTriangle() -> SKShapeNode{
         let path = UIBezierPath()
         path.move(to: CGPoint(x: 0.0, y: 0.0))
-        path.addLine(to: CGPoint(x: size.width * 0.2, y: 0.0))
-        path.addLine(to: CGPoint(x: 0.0, y: size.width * 0.2))
+        path.addLine(to: CGPoint(x: size.width * 0.3, y: 0.0))
+        path.addLine(to: CGPoint(x: 0.0, y: size.width * 0.3))
         path.addLine(to: CGPoint(x: 0.0, y: 0.0))
         let triangle = SKShapeNode(path: path.cgPath)
         return triangle
@@ -282,8 +286,8 @@ class GameScene: SKScene {
     func createSmallLeftTriangle() -> SKShapeNode{
         let path = UIBezierPath()
         path.move(to: CGPoint(x: 0.0, y: 0.0))
-        path.addLine(to: CGPoint(x: size.width * 0.1, y: size.width * 0.1))
-        path.addLine(to: CGPoint(x: 0.0, y: size.width * 0.2))
+        path.addLine(to: CGPoint(x: size.width * 0.15, y: size.width * 0.15))
+        path.addLine(to: CGPoint(x: 0.0, y: size.width * 0.3))
         path.addLine(to: CGPoint(x: 0.0, y: 0.0))
         let triangle = SKShapeNode(path: path.cgPath)
         return triangle
@@ -293,8 +297,8 @@ class GameScene: SKScene {
     func createSmallRightTriangle() -> SKShapeNode{
         let path = UIBezierPath()
         path.move(to: CGPoint(x: 0.0, y: 0.0))
-        path.addLine(to: CGPoint(x: size.width * 0.2, y: 0))
-        path.addLine(to: CGPoint(x: size.width * 0.1, y: size.width * 0.1))
+        path.addLine(to: CGPoint(x: size.width * 0.3, y: 0))
+        path.addLine(to: CGPoint(x: size.width * 0.15, y: size.width * 0.15))
         path.addLine(to: CGPoint(x: 0.0, y: 0.0))
         let triangle = SKShapeNode(path: path.cgPath)
         return triangle
@@ -786,6 +790,9 @@ class GameScene: SKScene {
                 child.removeFromParent()
             }
             if child.name == "bgSound"{
+                child.removeFromParent()
+            }
+            if child.physicsBody?.categoryBitMask == PhysicsCategory.player{
                 child.removeFromParent()
             }
         }
