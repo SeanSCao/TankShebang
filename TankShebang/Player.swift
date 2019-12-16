@@ -25,6 +25,7 @@ class Player: SKSpriteNode {
     var roundScore:Int = 0
     var gameScore:Int = 0
     
+    //Add shield
     func addShield(){
         if (!shield) {
             
@@ -44,6 +45,7 @@ class Player: SKSpriteNode {
         }
     }
     
+    //Remove shield
     func removeShield() {
         if let shieldNode = self.childNode(withName: "shield") as? SKSpriteNode {
             shieldNode.removeFromParent()
@@ -71,6 +73,7 @@ class Player: SKSpriteNode {
         }
     }
     
+    //If shot by projectile
     func hit(projectile: Projectile) {
         
         // Calculate damage
@@ -148,6 +151,7 @@ class Player: SKSpriteNode {
         }
     }
     
+    //If touching an explosion
     func explode(explosion: Projectile) {
         // Calculate damage
         if (shield) {
@@ -186,6 +190,7 @@ class Player: SKSpriteNode {
         }
     }
     
+    //Gain temporary invincibility after taking damage
     func temporaryInvincibility() {
         let fadeOut = SKAction.fadeAlpha(to: 0.4, duration: 0.25)
         let fadeIn = SKAction.fadeAlpha(to: 1, duration: 0.25)
@@ -202,6 +207,7 @@ class Player: SKSpriteNode {
         }
     }
     
+    //Determine what projectile to shoot
     func fireProjectile() {
         if ( !self.powerup.isEmpty ){
             if (self.powerup == "Laser"){
@@ -257,6 +263,7 @@ class Player: SKSpriteNode {
         }
     }
     
+    //Fire laser
     func fireLaser() {
         let projectile:Projectile = Projectile(imageNamed: "Laser")
         projectile.owner = self
@@ -293,6 +300,7 @@ class Player: SKSpriteNode {
         
     }
     
+    //Fire bubble
     func fireBubble(){
         let projectile:Projectile = Projectile(imageNamed: "Bubble")
         projectile.owner = self
@@ -325,6 +333,7 @@ class Player: SKSpriteNode {
         
     }
     
+    //Fire a rocket
     func fireRocket(){
         let projectile:Projectile = Projectile(imageNamed: "Rocket")
         projectile.owner = self
@@ -360,6 +369,7 @@ class Player: SKSpriteNode {
         
     }
     
+    //Drops a landmine on their position
     func dropMine(){
         let projectile:Projectile = Projectile(imageNamed: "Landmine")
         projectile.owner = self
@@ -380,6 +390,7 @@ class Player: SKSpriteNode {
         self.parent?.addChild(projectile)
     }
     
+    //Add 1 ammo every second
     @objc func reload() {
         if (self.ammo < 4) {
             self.ammo += 1

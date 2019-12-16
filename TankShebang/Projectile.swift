@@ -12,10 +12,11 @@ import SpriteKit
 
 class Projectile: SKSpriteNode {
     
-    var owner:Player = Player()
+    var owner:Player = Player() //Player that shot the projectile, used to calculate scoring
     var isLaser:Bool = false
     var SFX:Bool = true
     
+    //Explode projectile
     func explode(scale:CGFloat, position: CGPoint){
         self.texture = SKTexture(imageNamed: "Explosion")
         self.size = self.texture!.size()
@@ -35,6 +36,7 @@ class Projectile: SKSpriteNode {
         }
     }
     
+    //Activate landmine when stepped on
     func activateMine(){
         let rotateAction = SKAction.rotate(toAngle: 10 * .pi, duration: 1)
         let removeAction = SKAction.removeFromParent()
@@ -43,6 +45,7 @@ class Projectile: SKSpriteNode {
         self.run(SKAction.sequence([rotateAction, explodeAction, SKAction.wait(forDuration: 0.25), fadeAction, removeAction]))
     }
     
+    //Explode rocket when it hits something
     func activateRocket(){
         self.removeAllActions()
         let removeAction = SKAction.removeFromParent()

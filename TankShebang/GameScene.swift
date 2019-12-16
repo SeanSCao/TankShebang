@@ -42,8 +42,8 @@ class GameScene: SKScene {
     
     var map = SKNode()
     
-    var players = [Player]()
-    let playerColors = ["Black", "Red", "Blue", "Green"]
+    var players = [Player]() //Array holding player objects
+    let playerColors = ["Black", "Red", "Blue", "Green"] //Color of players' tanks
     let colorsDict:[String:SKColor] = ["Black":SKColor.black, "Red": SKColor(red: 194/255.0, green: 39/255.0, blue: 14/255.0, alpha: 1), "Blue":SKColor(red: 13/255.0, green: 80/255.0, blue: 194/255.0, alpha: 1), "Green":SKColor(red: 90/255.0, green: 194/255.0, blue: 15/255.0, alpha: 1)]
     
     var rightButtons = [SKShapeNode]()
@@ -64,14 +64,14 @@ class GameScene: SKScene {
     
     var isPausedFix = true
     
-    var mapSetting = 2
+    var mapSetting = 2 //select map
     var numberOfPlayers = 4
     var startWithShield = false
-    var SFX = true
-    var MUSIC = true
-    var POWERUPS = true
+    var SFX = true //SFX On/Off
+    var MUSIC = true //Music On/Off
+    var POWERUPS = true //Powerups On/Off
     var STARTPOWERUPS = true
-    var gameOverScore = 500
+    var gameOverScore = 500 //Score needed to win
      
     override func didMove(to view: SKView) {
         
@@ -85,27 +85,12 @@ class GameScene: SKScene {
         
         startGame()
         
-//        initMap()
-//
-//        initPlayers()
-//
-//        initButtons()
-//
-//        drawPlayableArea()
-//
-//        self.gameLayer.isPaused = true
-//
-//        countdown(length:3)
-//
         if (POWERUPS){
             gameLayer.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 3.0), SKAction.run(spawnPowerTile)])))
         }
         
         if (self.MUSIC){
             backgroundSound.name = "bgSound"
-//            gameLayer.addChild(backgroundSound)
-//            self.backgroundSound.run(SKAction.changeVolume(to: Float(0.5), duration: 0))
-//            self.backgroundSound.run(SKAction.stop())
         }
         
         physicsWorld.gravity = .zero
@@ -113,6 +98,7 @@ class GameScene: SKScene {
         
     }
     
+    //Start a new game
     func startGame(){
         initMap()
         
@@ -125,10 +111,6 @@ class GameScene: SKScene {
         self.gameLayer.isPaused = true
         
         countdown(length:3)
-        
-//        if (POWERUPS){
-//            gameLayer.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 3.0), SKAction.run(spawnPowerTile)])))
-//        }
     }
     
     // create sprite node for each player tank and position accordingly
@@ -175,6 +157,8 @@ class GameScene: SKScene {
         }
     }
     
+    
+    // resets tanks to their initial position and adds all tanks to game layer
     func resetTanks(){
         let playableHeight = size.width
         let playableMargin = (size.height-playableHeight)/2.0
@@ -249,6 +233,7 @@ class GameScene: SKScene {
                 }
                 
             }
+            // reset player statuses
             players[i-1].health = 2
             players[i-1].ammo = 4
             players[i-1].invincible = false
@@ -443,6 +428,7 @@ class GameScene: SKScene {
         changeMap()
     }
     
+    // add map terrain
     func changeMap() {
         let playableHeight = size.width
         let playableMargin = (size.height-playableHeight)/2.0
@@ -557,6 +543,7 @@ class GameScene: SKScene {
         }
     }
     
+    // randomly add power tiles to game
     func spawnPowerTile() {
         let tilesArr = ["Direction", "LandmineTile", "LaserTile", "Reverse", "RocketTile", "ShieldTile", "BubbleTile"]
         let gameScale = 0.3 * size.width / 1024
@@ -582,6 +569,7 @@ class GameScene: SKScene {
         
     }
     
+    // check if one or less tanks are left
     func checkRoundOver() -> Bool {
         var alive = 0
         for player in players{
@@ -597,6 +585,7 @@ class GameScene: SKScene {
         }
     }
     
+    // start a new round
     func newRound(){
         for player in players{
             if ( player.health > 0 ){
@@ -605,7 +594,6 @@ class GameScene: SKScene {
             }
         }
         
-//        gameLayer.removeAllActions()
         for player in players{
             player.removeAllActions()
         }
@@ -627,8 +615,8 @@ class GameScene: SKScene {
         }
     }
     
+    //When game is over, display score and menu
     func gameOver() {
-//        self.backgroundSound.removeFromParent()
         for child in gameLayer.children{
             if child.name == "bgSound"{
                 child.removeFromParent()
@@ -685,6 +673,7 @@ class GameScene: SKScene {
         }
     }
     
+    //Opens pause menu
     func pauseMenu() {
         self.pauseGame()
         self.leftPressed = [false, false, false, false]
@@ -713,43 +702,22 @@ class GameScene: SKScene {
         self.pauseLayer.addChild(self.menuButton)
     }
     
+    //Resets game to start a new game
     func resetGame() {
         players.removeAll()
         gameLayer.removeAllChildren()
         pauseLayer.removeAllChildren()
         gameLayer.removeAllActions()
         pauseLayer.removeAllActions()
-//        initPlayers()
-//        for player in players{
-//            player.gameScore = 0
-//            player.roundScore = 0
-//        }
-//        for child in self.pauseLayer.children {
-//            if (child.name=="scoreboard"){
-//                child.removeFromParent()
-//            }
-//            if (child.name=="menu"){
-//                child.removeFromParent()
-//            }
-//            if (child.name=="restart"){
-//                child.removeFromParent()
-//            }
-//            if (child.name=="winner"){
-//                child.removeFromParent()
-//            }
-//        }
         self.tankTurnLeft = true
         self.tankDriveForward = true
-//        self.unpauseGame()
         self.removeElements()
         self.leftPressed = [false, false, false, false]
-//        self.resetTanks()
-//        self.changeMap()
-//        self.countdown(length:3)
         
         startGame()
     }
     
+    //Shows the scoreboard
     func initScoreboard(){
         for i in 1 ... numberOfPlayers {
             let box = SKShapeNode()
@@ -778,6 +746,7 @@ class GameScene: SKScene {
         }
     }
     
+    //Between rounds, removes all elements generated during the round
     func removeElements(){
         for child in gameLayer.children{
             if let projectile = child as? Projectile {
@@ -798,6 +767,7 @@ class GameScene: SKScene {
         }
     }
     
+    //Pauses game and countsdown before starting a round
     func countdown(length:Int) {
         countdownLabel = SKLabelNode(fontNamed: "Avenir")
         countdownLabel.name = "countdown"
@@ -838,6 +808,7 @@ class GameScene: SKScene {
         }
     }
     
+    //Check if player has reached points needed to win
     func checkGameOver() -> Bool {
         for player in players{
             if ( player.gameScore > self.gameOverScore ){
@@ -847,8 +818,8 @@ class GameScene: SKScene {
         return false
     }
     
+    //Pauses gamelayer, shows pauselayer, stops music
     func pauseGame() {
-//        self.backgroundSound.removeFromParent()
         for child in gameLayer.children{
             if child.name == "bgSound"{
                 child.removeFromParent()
@@ -861,6 +832,7 @@ class GameScene: SKScene {
         self.isPausedFix = true
     }
     
+    //Unpauses gamelayer, hides pauselayer, starts music
     func unpauseGame() {
         gameLayer.isPaused = false
         pauseLayer.isHidden = true
@@ -884,31 +856,39 @@ class GameScene: SKScene {
         for touch in touches {
             let location = touch.location(in:self)
             let playableMargin = (size.height-size.width)/2.0
+            //During active game
             if ( !self.isPausedFix ) {
                 for i in 1...numberOfPlayers {
+                    
+                    //Player turn
                     if (leftButtons[i-1].contains(location)){
                         leftPressed[i-1] = true
                     }
-                    
+                    //Player shoot
                     if (rightButtons[i-1].contains(location)){
                         players[i-1].fireProjectile()
                     }
                 }
+                //Pause game if center area pressed
                 if (location.y > playableMargin && location.y < size.height - playableMargin){
                     pauseMenu()
                 }
             }
+            //Menu buttons pressed
             if(!pauseLayer.isHidden){
                 if ( !checkGameOver() ){
+                    //Unpause game
                     if (playButton.contains(location)){
                         unpauseGame()
                     }
                 } else {
+                    //Resets game
                     if (restartButton.contains(location)){
                         resetGame()
                     }
                 }
                 
+                //Leaves game view
                 if (menuButton.contains(location)){
                     for child in gameLayer.children {
                         if child.name == "bgSound"{
@@ -941,13 +921,11 @@ class GameScene: SKScene {
         for touch in touches {
             let location = touch.location(in:self)
             
+            //Stop turning
             if ( !gameLayer.isPaused ) {
                 for i in 1...numberOfPlayers {
                     if (leftButtons[i-1].contains(location)){
                         leftPressed[i-1] = false
-                    }
-                    
-                    if (rightButtons[i-1].contains(location)){
                     }
                 }
             }
@@ -984,6 +962,7 @@ class GameScene: SKScene {
             }
         }
         
+        //Spin power tiles
         for child in gameLayer.children{
             if child.physicsBody?.categoryBitMask == PhysicsCategory.pickupTile{
                 if (tankTurnLeft) {
@@ -994,9 +973,11 @@ class GameScene: SKScene {
             }
         }
         
+        //Make sure tanks are in the boundary
         boundsChecktanks()
     }
     
+    //Keeps tanks in boundary
     func boundsChecktanks(){
         let bottomLeft = CGPoint(x:0, y:playableRect.minY)
         let topRight = CGPoint(x: size.width, y: playableRect.maxY)
@@ -1018,6 +999,7 @@ class GameScene: SKScene {
         }
     }
     
+    //Create border walls
     func drawPlayableArea(){
         let shape = SKShapeNode()
         let path = CGMutablePath()
@@ -1030,11 +1012,12 @@ class GameScene: SKScene {
         shape.physicsBody?.isDynamic = true
         shape.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
         shape.physicsBody?.contactTestBitMask = PhysicsCategory.projectile
-        shape.physicsBody?.collisionBitMask = PhysicsCategory.player
+        shape.physicsBody?.collisionBitMask = PhysicsCategory.none
         
         gameLayer.addChild(shape)
     }
     
+    //Call when tank is shot
     func projectileDidCollideWithTank(projectile: Projectile, player: Player) {
         
         player.hit(projectile: projectile)
@@ -1044,6 +1027,7 @@ class GameScene: SKScene {
         }
     }
     
+    //Call when tank is exploded
     func explosionDidCollideWithTank(explosion: Projectile, player: Player) {
         player.explode(explosion: explosion)
 
@@ -1066,18 +1050,19 @@ extension GameScene: SKPhysicsContactDelegate {
             secondBody = contact.bodyA
         }
         
+        //Player hits projectile
         if ((firstBody.categoryBitMask == PhysicsCategory.player) && (secondBody.categoryBitMask == PhysicsCategory.projectile)) {
             if let player = firstBody.node as? Player, let projectile = secondBody.node as? Projectile {
                 projectileDidCollideWithTank(projectile: projectile, player: player)
             }
         }
-        
+        //Player hits laser
         if ((firstBody.categoryBitMask == PhysicsCategory.player) && (secondBody.categoryBitMask == PhysicsCategory.laser)) {
             if let player = firstBody.node as? Player, let projectile = secondBody.node as? Projectile {
                 projectileDidCollideWithTank(projectile: projectile, player: player)
             }
         }
-        
+        //Player hits landmine
         if ((firstBody.categoryBitMask == PhysicsCategory.player) && (secondBody.categoryBitMask == PhysicsCategory.landmine)) {
             if let player = firstBody.node as? Player, let mine = secondBody.node as? Projectile {
                 if (mine.owner != player){
@@ -1085,16 +1070,16 @@ extension GameScene: SKPhysicsContactDelegate {
                 }
             }
         }
-        
+        //Player hits explosion
         if ((firstBody.categoryBitMask == PhysicsCategory.player) && (secondBody.categoryBitMask == PhysicsCategory.explosion)) {
             if let player = firstBody.node as? Player, let explosion = secondBody.node as? Projectile {
                 explosionDidCollideWithTank(explosion: explosion, player: player)
             }
         }
-        
+        //Player hits power tile
         if ((firstBody.categoryBitMask == PhysicsCategory.player) && (secondBody.categoryBitMask == PhysicsCategory.pickupTile)) {
             if let player = firstBody.node as? Player, let pickupTile = secondBody.node as? SKSpriteNode {
-                if (pickupTile.name == "Direction" ) {
+                if (pickupTile.name == "Direction" ) { //Direction tile changes driving direction
                     tankDriveForward = !tankDriveForward
                     if (self.SFX) {
                         let sound = SKAudioNode(fileNamed: "reverse.mp3")
@@ -1103,7 +1088,7 @@ extension GameScene: SKPhysicsContactDelegate {
                         self.run(SKAction.run {sound.run(SKAction.play())})
                     }
                     
-                } else if (pickupTile.name == "Reverse" ) {
+                } else if (pickupTile.name == "Reverse" ) { //Reverse tile changes direction
                     if (self.SFX) {
                         let sound = SKAudioNode(fileNamed: "reverse.mp3")
                         sound.autoplayLooped = false
@@ -1111,18 +1096,18 @@ extension GameScene: SKPhysicsContactDelegate {
                         self.run(SKAction.run {sound.run(SKAction.play())})
                     }
                     tankTurnLeft = !tankTurnLeft
-                } else if (pickupTile.name == "ShieldTile") {
+                } else if (pickupTile.name == "ShieldTile") { //Shield tile gives player a shield
                     player.addShield()
                 }
                 else {
-                    let powerUpString = String(pickupTile.name?.dropLast(4) ?? "")
+                    let powerUpString = String(pickupTile.name?.dropLast(4) ?? "") //Other powerups
                     player.powerup = powerUpString
                 }
                 pickupTile.removeFromParent()
                 
             }
         }
-        
+        //If projectile hits obstacle
         if ((firstBody.categoryBitMask == PhysicsCategory.obstacle) && (secondBody.categoryBitMask == PhysicsCategory.projectile)) {
             if let projectile = secondBody.node as? Projectile {
                 if (projectile.name=="Rocket"){
