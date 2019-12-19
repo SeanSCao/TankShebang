@@ -76,6 +76,13 @@ class GameOptionsViewController: UIViewController {
             game_view.ScatterShot = ScatterShot
             
         }
+        if(segue.identifier == "advancedoptions"){
+            let advanced = segue.destination as! AdvancedOptionsViewController
+            advanced.num_players = num_players
+            advanced.Music = Music
+            advanced.Sound = Sound
+            
+        }
         
     }
    

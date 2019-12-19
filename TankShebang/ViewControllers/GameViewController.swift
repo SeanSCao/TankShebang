@@ -26,19 +26,19 @@ class GameViewController: UIViewController {
             scene.startWithShield = true
         }
         else{
-            scene.startWithShield = true
+            scene.startWithShield = false
         }
         if(ScatterShot == "On"){
             scene.STARTPOWERUPS = true
         }
         else{
-           scene.STARTPOWERUPS = true
+           scene.STARTPOWERUPS = false
         }
         if(Powerups == "On"){
             scene.POWERUPS = true
         }
         else{
-            scene.POWERUPS = true
+            scene.POWERUPS = false
 
             
         }

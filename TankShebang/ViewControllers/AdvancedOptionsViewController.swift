@@ -18,6 +18,9 @@ class AdvancedOptionsViewController: UIViewController {
     @IBOutlet weak var FixedSpawnButton: UIButton!
     
     @IBOutlet weak var ScatterShotButton: UIButton!
+    var num_players = 2
+    var Music = String()
+    var Sound = String()
     var auto = "Off"
     var power = "Off"
     var spawn = "Off"
@@ -69,6 +72,9 @@ class AdvancedOptionsViewController: UIViewController {
         game_options.Powerups = power
         game_options.FixedSpawn = spawn
         game_options.ScatterShot = scatter
+        game_options.Music = Music
+        game_options.Sound = Sound
+        game_options.num_players = num_players
         
     }
     
